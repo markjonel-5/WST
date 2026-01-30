@@ -1,13 +1,8 @@
 *{
     margin: 0;
     padding: 0;
-}
-
-html{
     font-family: Poppins, Segoe UI, sans-serif;
-    font-size: 12pt;
-    color: rgb(44, 43, 43);
-    text-align: center;
+    font-size: 11pt;
 }
 
 body{
@@ -22,19 +17,21 @@ body{
     font-size: 3rem;
     font-weight: 1000;
     color: #479D6E;
+    text-align: center;
 }
 
 .title2{
     font-size: 15px;
     font-weight: 500;
     color: rgb(63, 61, 61);
+    text-align: center;
 }
 
 .signup-box{
     background-color: white;
     padding: 10px;
     height: 100vh;
-    width: max(50%, 600px);
+    width: max(50%, 500px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -71,7 +68,7 @@ body{
     border: none;
     background-color: #479D6E;
     color: white;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 1000;
     cursor: pointer;
 }
@@ -83,7 +80,23 @@ body{
 .link{
     text-decoration: none;
     color: #479D6E;
+    font-weight: 500;
 }
 .link:hover{
+    text-decoration: underline;
+}
+
+.forgot-box{
+    margin-bottom: 10px;
+}
+
+.forgot{
+    font-size: 11pt;
+    text-decoration: none;
+    color: #479D6E;
+    font-weight: 500;
+}
+
+.forgot:hover{
     text-decoration: underline;
 }
