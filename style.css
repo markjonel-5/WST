@@ -7,7 +7,7 @@
 
 body{
     height: 100vh;
-    background-image: url(background1.jpg);
+    background-image: url(1\ cover.jpg);
     background-size: 110vh;
     background-position: right;
     overflow: hidden;
@@ -16,7 +16,7 @@ body{
 .title1{
     font-size: 3rem;
     font-weight: 1000;
-    color: #479D6E;
+    color: #C06C37;
     text-align: center;
 }
 
@@ -66,7 +66,7 @@ body{
     padding: 10px 30px 10px 30px;
     border-radius: 500px;
     border: none;
-    background-color: #479D6E;
+    background-color: #C06C37;
     color: white;
     font-size: 20px;
     font-weight: 1000;
@@ -79,7 +79,7 @@ body{
 
 .link{
     text-decoration: none;
-    color: #479D6E;
+    color: #C06C37;
     font-weight: 500;
 }
 .link:hover{
@@ -93,7 +93,7 @@ body{
 .forgot{
     font-size: 11pt;
     text-decoration: none;
-    color: #479D6E;
+    color: #C06C37;
     font-weight: 500;
 }
 
