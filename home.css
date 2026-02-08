@@ -1,0 +1,387 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Poppins, Segoe UI, sans-serif;
+    font-size: 11pt;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 0 28px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.nav-menu {
+    display: flex;
+    gap: 28px;
+}
+
+.nav-menu button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-menu button:hover {
+    color: #C06C37;
+}
+
+.nav-icon {
+    display: flex;
+    gap: 22px;
+    padding-top: 5px;
+    align-items: center;
+}
+
+.nav-icon button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-icon button i {
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.nav-icon button:hover i {
+    color: #C06C37;
+}
+
+.nav-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.nav-logo button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding-top: 5px;
+}
+
+.nav-logo img {
+    height: 25px;
+    display: block;
+}
+
+.cover {
+    background-image: url(Cover\ Photo.png);
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.explore-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.explore-btn {
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #C06C37;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 140px;
+    position: fixed;
+
+    font-weight: 500;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+}
+
+.explore-btn:hover {
+    background-color: rgb(33, 33, 33);
+}
+
+.featured {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 30px;
+    background-color: white;
+    position: relative;
+    z-index: 10;
+
+}
+
+.featured-text {
+    font-size: 50px;
+    font-weight: 600;
+    color: #C06C37;
+}
+
+.seeall-btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #C06C37;
+    cursor: pointer;
+    transition: 0.3s;
+
+    font-weight: 500;
+    text-decoration: none;
+    color: white;
+}
+
+.seeall-btn:hover {
+    background-color: rgb(33, 33, 33);
+}
+
+.featured-product {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: white;
+    position: relative;
+    z-index: 10;
+}
+
+.product-card {
+    width: 350px;
+    border: none;
+    text-align: center;
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 2px solid #C06C37;
+    padding: 10px;
+    background-color: white;
+    z-index: 10;
+}
+
+.product-image {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.product-image img {
+    height: auto;
+    width: 100%;
+    transition: opacity 0.3s ease;
+}
+
+.product-image .hover-img {
+    display: none;
+    opacity: 0;
+}
+
+.product-card:hover .primary-img {
+    display: none;
+    opacity: 0;
+}
+
+.product-card:hover .hover-img {
+    display: block;
+    opacity: 1;
+}
+
+.product-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-name h5 {
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.product-name p {
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 5px;
+    color: #848484;
+}
+
+.product-price p {
+    text-align: left;
+    color: #C06C37;
+    font-weight: 700;
+    font-size: 25px;
+}
+
+.product-price p i {
+    text-align: left;
+    color: #848484;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.product-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7.5px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-btn {
+    opacity: 1;
+}
+
+.wishlist button {
+    border: none;
+    color: #C06C37;
+    background-color: white;
+    padding-top: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.wishlist button i {
+    font-size: 30px;
+}
+
+.wishlist button:hover {
+    color: rgb(33, 33, 33);
+}
+
+.add button {
+    background-color: white;
+    border: 2px solid #C06C37;
+    color: #C06C37;
+    padding: 5px;
+    font-size: 21px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add button:hover {
+    border: 2px solid rgb(33, 33, 33);
+    background-color: rgb(33, 33, 33);
+    color: white;
+}
+
+.buy button {
+    background-color: #C06C37;
+    border: 2px solid #C06C37;
+    color: white;
+    padding: 5px 14px 5px 14px;
+    font-size: 21px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.buy button:hover {
+    background-color: rgb(33, 33, 33);
+    border: 2px solid rgb(33, 33, 33);
+}
+
+.category-text {
+    display: column;
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    position: relative;
+    z-index: 0;
+}
+
+.category-text h1 {
+    font-size: 60px;
+    font-weight: 600;
+    color: #C06C37;
+}
+
+.category-text p {
+    color: black;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 10px 0px 20px 0px;
+}
+
+.category {
+    display: flex;
+    height: 90vh;
+    margin: 0 28px;
+    background-color: white;
+    position: relative;
+    z-index: 0;
+}
+
+.category-image, .category-info{
+    flex: 0 0 50%; 
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.category-image button {
+    border: none;   
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+}
+
+.category-info {
+    background-color: #C06C37;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px;
+    color: white;
+}
+
+.category-info h1 {
+    font-size: 80px;
+}
+
+.category-info p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.category-info button {
+    padding: 7px 10px;
+    border: none;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.category-info button:hover {
+    color: white;
+    background-color: rgb(33, 33, 33);
+}
