@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 50px;
+    height: 60px;
     padding: 0 28px;
     position: fixed;
     top: 0;
@@ -28,7 +28,7 @@
 .nav-menu button {
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 500;
     cursor: pointer;
     transition: 0.3s;
@@ -40,7 +40,7 @@
 
 .nav-icon {
     display: flex;
-    gap: 22px;
+    gap: 25px;
     padding-top: 5px;
     align-items: center;
 }
@@ -52,7 +52,7 @@
 }
 
 .nav-icon button i {
-    font-size: 20px;
+    font-size: 25px;
     transition: 0.3s;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .nav-logo img {
-    height: 25px;
+    height: 30px;
     display: block;
 }
 
@@ -102,10 +102,11 @@
     background-color: #C06C37;
     cursor: pointer;
     transition: 0.3s;
-    margin-top: 140px;
+    margin-top: 170px;
     position: fixed;
 
     font-weight: 500;
+    font-size: 18px;
     text-decoration: none;
     color: white;
     text-align: center;
@@ -119,7 +120,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 30px;
+    padding: 30px 35px;
     background-color: white;
     position: relative;
     z-index: 10;
@@ -127,7 +128,7 @@
 }
 
 .featured-text p {
-    font-size: 50px;
+    font-size: 70px;
     font-weight: 600;
     color: #C06C37;
 }
@@ -141,6 +142,7 @@
     transition: 0.3s;
 
     font-weight: 500;
+    font-size: 20px;
     text-decoration: none;
     color: white;
 }
@@ -244,6 +246,7 @@
     justify-content: space-between;
     align-items: stretch;
     width: 100%;
+    height: 45px;
     gap: 8px;
     margin-top: 10px;
     opacity: 0;
@@ -255,26 +258,28 @@
 }
 
 .wishlist {
-    flex: 0 0 auto;
+    flex: 0 0 45px;
+    padding-top: 5px;
 }
 
 .add,
 .buy {
     flex: 1;
+    container-type: inline-size;
 }
 
 .wishlist button,
 .add button,
 .buy button {
     width: 100%;
-    height: 95%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: 0.3s;
-    padding: 5px 0;
-    font-size: clamp(14px, 1.5vw, 20px);
+    padding: 0;
+    font-size: clamp(0.1rem, 15cqi, 1.5rem);
     white-space: nowrap;
 }
 
@@ -285,7 +290,7 @@
 }
 
 .wishlist button i {
-    font-size: 30px;
+    font-size: 2.5rem;
 }
 
 .wishlist button:hover {
@@ -327,21 +332,21 @@
 }
 
 .category-text h1 {
-    font-size: 60px;
+    font-size: 70px;
     font-weight: 600;
     color: #C06C37;
 }
 
 .category-text p {
     color: black;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 400;
     padding: 10px 0px 20px 0px;
 }
 
 .category {
     display: flex;
-    height: 90vh;
+    height: 85vh;
     margin: 0 28px;
     background-color: white;
     position: relative;
@@ -365,6 +370,8 @@
     width: 100%;
     height: 100%;
     padding: 0;
+    object-fit: cover;
+    object-position: bottom center;
 }
 
 .category-info {
@@ -453,14 +460,14 @@
 
 .about-text h1 {
     color: #C06C37;
-    font-size: 60px;
+    font-size: 70px;
     font-weight: 600;
 }
 
 .about-text p {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 400;
-    padding: 10px 0px 20px 0px;
+    padding: 10px 0px 10px 0px;
 }
 
 .about-section {
@@ -484,12 +491,18 @@
     height: 600px;
     object-fit: cover;
     display: block;
+    opacity: .1;
+    transition: opacity 0.3s ease;
 }
 
 .shoe-card p {
     color: #C06C37;
-    font-size: 60px;
-    font-weight: 600;
+    font-size: 70px;
+    font-weight: 500;
     font-style: italic;
     padding-top: 20px;
+}
+
+.shoe-card img:hover {
+    opacity: 1;
 }
