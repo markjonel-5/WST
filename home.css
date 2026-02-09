@@ -28,8 +28,8 @@
 .nav-menu button {
     background: none;
     border: none;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 500;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -52,7 +52,7 @@
 }
 
 .nav-icon button i {
-    font-size: 18px;
+    font-size: 20px;
     transition: 0.3s;
 }
 
@@ -126,7 +126,7 @@
 
 }
 
-.featured-text {
+.featured-text p {
     font-size: 50px;
     font-weight: 600;
     color: #C06C37;
@@ -255,16 +255,18 @@
 }
 
 .wishlist {
-    flex: 0 0 auto; /* Don't grow, don't shrink */
+    flex: 0 0 auto;
 }
 
-/* 3. The Add and Buy containers will grow to fill space */
-.add, .buy {
-    flex: 1; /* Both take up equal remaining space */
+.add,
+.buy {
+    flex: 1;
 }
 
-.wishlist button, .add button, .buy button {
-    width: 100%; 
+.wishlist button,
+.add button,
+.buy button {
+    width: 100%;
     height: 95%;
     display: flex;
     justify-content: center;
@@ -346,23 +348,23 @@
     z-index: 0;
 }
 
-.category-image, .category-info{
-    flex: 0 0 50%; 
+.category-image {
+    position: relative;
+}
+
+.category-image,
+.category-info {
+    flex: 0 0 50%;
     width: 50%;
     box-sizing: border-box;
 }
 
-.category-image button {
-    border: none;   
+.category-image img {
+    border: none;
     cursor: pointer;
     width: 100%;
     height: 100%;
     padding: 0;
-}
-
-.category-image img {
-    width: 100%;
-    height: 100%;
 }
 
 .category-info {
@@ -397,4 +399,97 @@
 .category-info button:hover {
     color: white;
     background-color: rgb(33, 33, 33);
+}
+
+.arrow-prev,
+.arrow-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+
+    cursor: pointer;
+    z-index: 10;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.arrow-prev:hover,
+.arrow-next:hover {
+    background: white;
+}
+
+.arrow-prev i,
+.arrow-next i {
+    font-size: 24px;
+    color: rgb(33, 33, 33);
+    display: flex;
+}
+
+.arrow-prev {
+    left: 20px;
+}
+
+.arrow-next {
+    right: 20px;
+}
+
+.about-text {
+    display: column;
+    text-align: center;
+    padding: 30px;
+    background-color: white;
+    position: relative;
+    z-index: 0;
+}
+
+.about-text h1 {
+    color: #C06C37;
+    font-size: 60px;
+    font-weight: 600;
+}
+
+.about-text p {
+    font-size: 20px;
+    font-weight: 400;
+    padding: 10px 0px 20px 0px;
+}
+
+.about-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 28px;
+    background-color: white;
+    position: relative;
+    z-index: 0;
+    max-width: 1864px;
+    margin: 0 auto;
+}
+
+.shoe-card {
+    width: calc((100% - 56px) / 3); 
+    text-align: center;
+}
+
+.shoe-card img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    display: block;
+}
+
+.shoe-card p {
+    color: #C06C37;
+    font-size: 60px;
+    font-weight: 600;
+    font-style: italic;
+    padding-top: 20px;
 }
