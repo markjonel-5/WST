@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home.css">
-    <link rel='stylesheet'
-        href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link rel='stylesheet'
-        href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css'>
 </head>
 
 <body>
-    <section class="navbar">
+    <section class="navbar-section">
         <div class="nav-menu">
             <button>HOME</button>
             <button>MEN</button>
@@ -33,30 +32,26 @@
         </div>
     </section>
 
-    <section class="cover">
+    <section class="cover-photo">
         <div class="explore-box">
             <button class="explore-btn">EXPLORE COLLECTION</button>
         </div>
     </section>
 
-    <section class="featured">
-        <div class="featured-text">
-            <p>YOU MIGHT LIKE THIS</p>
-        </div>
+    <section class="featured-text">
+        <p>YOU MIGHT LIKE THIS</p>
 
         <button class="seeall-btn">SEE ALL</button>
     </section>
 
-    <section class="featured-product" id="product-container"></section>
+    <section class="featured-section reveal" id="product-container"></section>
 
-    <script src="home.js"></script>
-
-    <section class="category-text">
+    <section class="category-text reveal">
         <h1>GREAT STYLE STARTS HERE</h1>
         <p>CHOOSE A CATEGORY THAT FITS YOU</p>
     </section>
 
-    <section class="category">
+    <section class="category-section reveal">
         <div class="category-image">
             <img src="Men Category.jpg" alt="" id="cat-img">
 
@@ -76,28 +71,95 @@
         </div>
     </section>
 
-    <section class="about-text">
+    <section class="about-text reveal">
         <h1>ABOUT PACE</h1>
         <p>PACE is a footwear brand built for people who move with purpose. We design shoes that balance style, comfort,
             and durability for everyday life.</p>
     </section>
 
-    <section class="about-section">
-        <div class="shoe-card">
-            <img src="comfort.jpg" alt="">
-            <p>COMFORT</p>
+    <section class="about-section reveal" id="about-info"></section>
+
+    <section class="contact-text reveal">
+        <h1>CONTACT US</h1>
+        <p>Find your perfect fit. Whether it's a sizing question or a style tip, our team is ready to help you step up
+            your game.</p>
+    </section>
+
+    <section class="contact-section reveal">
+
+        <div class="contact-image">
+            <img src="contact shoe.jpg" alt="">
         </div>
 
-        <div class="shoe-card">
-            <img src="quality.jpg" alt="">
-            <p>QUALITY</p>
-        </div>
+        <div class="contact-box">
 
-        <div class="shoe-card">
-            <img src="style.jpg" alt="">
-            <p>STYLE</p>
+            <div class="contact-content">
+                <div>
+                    <h3>VISIT US</h3>
+                    <p>123 Pace Hagonoy, Bulacan</p>
+                </div>
+
+                <div>
+                    <h3>EMAIL US</h3>
+                    <p>pace@gmail.com</p>
+                </div>
+            </div>
+
+            <form>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="How can we help?" required></textarea>
+                <button type="submit" class="contact-btn">SEND MESSAGE</button>
+            </form>
+
         </div>
     </section>
+
+    <section class="team-text reveal">
+        <h1>MEET OUR TEAM</h1>
+        <p>Setting the pace for modern street style. We run the code so you can run the streets.</p>
+    </section>
+
+    <section class="team-section" id="team-card"></section>
+
+    <footer class="footer-section">
+        <div class="footer-container">
+
+            <div class="footer-column">
+                <h4>COMPANY</h4>
+                <a href="">About Pace</a>
+                <a href="">Collection</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>SUPPORT</h4>
+                <a href="">Contact Us</a>
+                <a href="">FAQs</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>CONNECT WITH US</h4>
+                <div class="social">
+                    <a href="#"><i class="fi fi-brands-facebook"></i></a>
+                    <a href="#"><i class="fi fi-brands-instagram"></i></a>
+                    <a href="#"><i class="fi fi-brands-twitter-alt"></i></a>
+                    <a href="#"><i class="fi fi-brands-youtube"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 PACE, Inc. All Rights Reserved.</p>
+
+            <div class="legal-links">
+                <a href="">Privacy Policy</a>
+                <a href="">Terms & Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
 
 </body>
 

@@ -1,3 +1,37 @@
+// navbar hiding
+let lastScroll = 0;
+const nav = document.querySelector('.navbar-section');
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+
+    if (currentScroll > lastScroll) {
+        nav.style.transform = "translateY(-100%)";
+    } else {
+        nav.style.transform = "translateY(0)";
+    }
+    lastScroll = currentScroll;
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (e.clientY < 50) {
+        nav.style.transform = "translateY(0)";
+    }
+});
+
+// every section animation
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.1 });
+
+const hiddenElements = document.querySelectorAll('.reveal');
+hiddenElements.forEach((el) => observer.observe(el));
+
+// product info
 const products = [
     { name: 'Pace 680', price: '4,999.00', type: 'MEN', img: 'M PACE 680.jpg', hover: 'M PACE 680 (2).jpg' },
     { name: 'Pace 740', price: '4,999.00', type: 'MEN', img: 'M PACE 740.jpg', hover: 'M PACE 740 (2).jpg' },
@@ -32,7 +66,7 @@ document.getElementById('product-container').innerHTML =
         </div>
     `).join('');
 
-
+// category info
 const categories = [
     {
         title: "MEN",
@@ -75,3 +109,76 @@ function nextCategory(direction) {
 function visitCategory() {
     window.location.href = categories[index].link;
 }
+
+const aboutData = [
+    {
+        title: "COMFORT",
+        img: "comfort.jpg",
+        desc: "Engineered with advanced cushioning systems to support you through every step of your daily journey."
+    },
+    {
+        title: "QUALITY",
+        img: "quality.jpg",
+        desc: "Hand-selected materials and precision stitching ensure that your pair stands the test of time."
+    },
+    {
+        title: "STYLE",
+        img: "style.jpg",
+        desc: "Modern silhouettes inspired by urban culture, designed to fit seamlessly into your wardrobe."
+    }
+];
+
+// about info
+const aboutContainer = document.getElementById('about-info');
+
+aboutContainer.innerHTML = aboutData.map(about => `
+    <div class="shoe-card">
+        <img src="${about.img}" alt="${about.title}">
+        <div class="card-text">
+            <h3>${about.title}</h3>
+            <p>${about.desc}</p>
+        </div>
+    </div>
+`).join('');
+
+// team info
+const teamData = [
+    {
+        name: "Perez, Mark Jonel S.",
+        role: "BACKEND DEVELOPER",
+        img: "Perez, M.jpeg"
+    },
+    {
+        name: "Sumala, John Aldrin S.",
+        role: "BACKEND DEVELOPER",
+        img: "Perez, M.jpeg"
+    },
+    {
+        name: "Francia, Gad Daniel Kellyn",
+        role: "FRONTEND DEVELOPER",
+        img: "Perez, M.jpeg"
+    },
+    {
+        name: "Javier, Mikel Kyan",
+        role: "FRONTEND DEVELOPER",
+        img: "Perez, M.jpeg"
+    },
+    {
+        name: "Crisostomo, Jomari",
+        role: "FRONTEND DEVELOPER",
+        img: "Perez, M.jpeg"
+    }
+];
+const container = document.getElementById('team-card');
+
+const teamHTML = teamData.map(member => `
+        <div class="member-card">
+            <img src="${member.img}" alt="${member.name}">
+            <div class="member-info">
+                <h1>${member.name}</h1>
+                <p>${member.role}</p>
+            </div>
+        </div>
+    `).join('');
+
+container.innerHTML = teamHTML;
