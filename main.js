@@ -33,7 +33,7 @@ hiddenElements.forEach((el) => observer.observe(el));
 
 // product info
 const products = [
-    { name: 'Pace 680', price: '4,999.00', type: 'MEN', img: 'M PACE 680.jpg', hover: 'M PACE 680 (2).jpg' },
+    { name: 'Pace 680', price: '4,999.00', type: 'MEN', img: 'M PACE 680 (Gray).jpg', hover: 'M PACE 680 (Gray) (2).jpg' },
     { name: 'Pace 740', price: '4,999.00', type: 'MEN', img: 'M PACE 740.jpg', hover: 'M PACE 740 (2).jpg' },
     { name: 'Pace Fuel Cell', price: '4,499.00', type: 'WOMEN', img: 'W PACE FuelCell.jpg', hover: 'W PACE FuelCell (2).jpg' },
     { name: 'Pace T500', price: '3,999.00', type: 'MEN', img: 'M PACE T500.jpg', hover: 'M PACE T500 (2).jpg' },
