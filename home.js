@@ -77,7 +77,7 @@ const categories = [
     },
     {
         title: "WOMEN",
-        desc: "Built with elegant, versatile, and empowered",
+        desc: "Built for elegant, versatile, and empowered",
         img: "Women Category.jpg",
         color: "#C06C37",
         link: "women.html"
@@ -110,6 +110,7 @@ function visitCategory() {
     window.location.href = categories[index].link;
 }
 
+// about info
 const aboutData = [
     {
         title: "COMFORT",
@@ -128,7 +129,6 @@ const aboutData = [
     }
 ];
 
-// about info
 const aboutContainer = document.getElementById('about-info');
 
 aboutContainer.innerHTML = aboutData.map(about => `
