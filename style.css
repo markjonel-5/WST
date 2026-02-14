@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Poppins, Segoe UI, sans-serif;
+    font-family: Segoe UI;
     font-size: 16px;
     box-sizing: border-box;
 }
@@ -54,12 +54,15 @@ body {
     padding: 0 28px;
 }
 
+.navbar-section a,
 .navbar-section button {
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
     transition: 0.3s ease;
+    text-decoration: none;
+    color: var(--darkgray-text);
 }
 
 .nav-menu {
@@ -67,14 +70,14 @@ body {
     gap: 30px;
 }
 
-.nav-menu button {
+.nav-menu a {
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 1px;
     position: relative;
 }
 
-.nav-menu button::after {
+.nav-menu a::after {
     content: '';
     position: absolute;
     width: 0;
@@ -85,29 +88,8 @@ body {
     transition: width 0.3s ease;
 }
 
-.nav-menu button:hover::after {
+.nav-menu a:hover::after {
     width: 100%;
-}
-
-.nav-icon {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-}
-
-.nav-icon i {
-    font-size: 23px;
-    transition: all 0.3s ease;
-}
-
-.nav-menu button:hover,
-.nav-icon button:hover {
-    color: var(--brand-color);
-    transform: translateY(-1px);
-}
-
-.nav-icon button:hover i {
-    color: var(--brand-color);
 }
 
 .nav-logo {
@@ -121,6 +103,83 @@ body {
 .nav-logo img {
     height: 30px;
     display: block;
+}
+
+.nav-icon {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-icon i {
+    font-size: 23px;
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover,
+.nav-icon a:hover,
+.nav-icon button:hover {
+    color: var(--brand-color);
+}
+
+.nav-icon a:hover i,
+.nav-icon button:hover i {
+    color: var(--brand-color);
+}
+
+.search-box {
+    background-color: transparent;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0; 
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: 0.4s ease;
+}
+
+.search-text {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 0px;
+    color: var(--darkgray-text);
+    font-size: 16px;
+    transition: 0.4s ease;
+    line-height: 40px;
+}
+
+.search-btn {
+    color: var(--darkgray-text);
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.search-box:hover .search-text,
+.search-text:focus {
+    width: 250px;
+    padding-left: 15px;
+}
+
+.search-box:hover,
+.search-box:has(.search-text:focus) {
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.search-box:hover .search-btn i,
+.search-text:focus + .search-btn i {
+    color: var(--brand-color);
 }
 
 .cover-photo {
@@ -162,7 +221,7 @@ body {
 }
 
 .cover-box p {
-    font-size: 22px;
+    font-size: 26px;
     color: var(--bg-color);
     font-weight: 400;
     margin-bottom: 40px;
@@ -181,6 +240,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
 }
 
 .explore-btn:hover {
@@ -224,6 +284,7 @@ body {
     letter-spacing: 1.5px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .seeall-btn:hover {
@@ -444,6 +505,7 @@ body {
     font-size: 25px;
     font-weight: 400;
     color: var(--darkgray-text);
+    margin-bottom: 5px;
 }
 
 .category-section {
@@ -623,7 +685,7 @@ body {
 .shoe-card h3 {
     color: var(--brand-color);
     font-size: 50px;
-    font-weight: 700;
+    font-weight: 600;
     padding-bottom: 15px;
     letter-spacing: 1px;
 }
