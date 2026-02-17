@@ -132,7 +132,7 @@ const aboutData = [
 const aboutContainer = document.getElementById('about-info');
 
 aboutContainer.innerHTML = aboutData.map(about => `
-    <div class="shoe-card">
+    <div class="about-card">
         <img src="${about.img}" alt="${about.title}">
         <div class="card-text">
             <h3>${about.title}</h3>
