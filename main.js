@@ -109,12 +109,12 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
     displayProducts = storedList.slice(0, limitToUse);
 
     container.innerHTML = displayProducts.map(p => {
-        const newBadge = p.isNew ? `<span class="new-badge">NEW</span>` : "";
 
         return `
         <div class="product-card">
             <button class="product-image">
-                ${newBadge} <img src="${p.img}" class="primary-img">
+                ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
+                <img src="${p.img}" class="primary-img">
                 <img src="${p.hover}" class="hover-img">
             </button>
             <div class="product-name">
@@ -277,22 +277,22 @@ const teamData = [
     {
         name: "Sumala, John Aldrin S.",
         role: "BACKEND DEVELOPER",
-        img: "Team Image/Perez, M.jpeg"
+        img: "Team Image/Sumala, J.A.jpg"
     },
     {
         name: "Francia, Gad Daniel Kellyn",
         role: "FRONTEND DEVELOPER",
-        img: "Team Image/Perez, M.jpeg"
+        img: "Team Image/Francia, G.jpg"
     },
     {
         name: "Javier, Mikel Kyan",
         role: "FRONTEND DEVELOPER",
-        img: "Team Image/Perez, M.jpeg"
+        img: "Team Image/Javier, M.jfif"
     },
     {
         name: "Crisostomo, Jomari",
         role: "FRONTEND DEVELOPER",
-        img: "Team Image/Perez, M.jpeg"
+        img: "Team Image/Crisostomo, J.jfif"
     }
 ];
 const container = document.getElementById('team-card');

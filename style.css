@@ -319,7 +319,7 @@ body {
     transform: translateY(-12px);
     transform: scale(1.05);
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
-    border: 2px solid var(--brand-color);
+    border: 2px solid var(--bg-color);
     padding: 8px;
     background-color: var(--bg-color);
     z-index: 10;

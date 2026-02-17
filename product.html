@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - PACE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet"
+        href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel="stylesheet" href='https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css'>
+    <link rel="stylesheet"
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'>
+
+    <style>
+        /* --- INTERNAL CSS FOR PRODUCT PAGE (Add this to style.css later if you want) --- */
+
+        .pd-container {
+            max-width: var(--max-wide);
+            margin: 0 auto;
+            padding: 120px 20px 60px 20px;
+            /* Top padding to clear navbar */
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+        }
+
+        /* Left Side - Images */
+        .pd-images {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column-reverse;
+            /* Thumbnails below on mobile, or side logic */
+            gap: 20px;
+        }
+
+        .main-image-box {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-image-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image-box:hover img {
+            transform: scale(1.05);
+        }
+
+        .thumbnail-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .thumb {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .thumb.active-thumb {
+            border-color: var(--brand-color);
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Right Side - Info */
+        .pd-info {
+            flex: 1;
+        }
+
+        .pd-breadcrumb {
+            color: var(--gray-text);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .pd-breadcrumb a {
+            text-decoration: none;
+            color: var(--gray-text);
+            transition: 0.3s;
+        }
+
+        .pd-breadcrumb a:hover {
+            color: var(--brand-color);
+        }
+
+        .pd-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--darkgray-text);
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+
+        .pd-price {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--brand-color);
+            margin-bottom: 30px;
+        }
+
+        /* Selectors */
+        .selector-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--darkgray-text);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .color-box {
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-box.selected {
+            border: 2px solid var(--darkgray-text);
+        }
+
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .size-btn {
+            padding: 12px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+            color: var(--darkgray-text);
+        }
+
+        .size-btn:hover {
+            border-color: var(--darkgray-text);
+        }
+
+        .size-btn.active-size {
+            background-color: var(--darkgray-text);
+            color: white;
+            border-color: var(--darkgray-text);
+        }
+
+        .size-guide-link {
+            font-size: 13px;
+            text-decoration: underline;
+            color: var(--gray-text);
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        /* Actions */
+        .pd-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            height: 55px;
+        }
+
+        .btn-wish {
+            width: 55px;
+            height: 55px;
+            border: 1px solid #ddd;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--brand-color);
+        }
+
+        .btn-wish:hover {
+            background: #fff4ec;
+        }
+
+        .btn-cart,
+        .btn-buy {
+            flex: 1;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-cart {
+            background: white;
+            border: 2px solid var(--brand-color);
+            color: var(--brand-color);
+        }
+
+        .btn-cart:hover {
+            background: var(--darkgray-text);
+            color: white;
+            border: 2px solid var(--darkgray-text);
+        }
+
+        .btn-buy {
+            background: var(--brand-color);
+            border: 2px solid var(--brand-color);
+            color: white;
+        }
+
+        .btn-buy:hover {
+            background: var(--darkgray-text);
+            border-color: var(--darkgray-text);
+        }
+
+        /* Description / Improvements */
+        .pd-description {
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .pd-description h4 {
+            margin-bottom: 10px;
+            color: var(--darkgray-text);
+        }
+
+        .pd-description p {
+            color: var(--gray-text);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .pd-container {
+                flex-direction: column;
+            }
+
+            .pd-images {
+                flex: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar-section">
+        <div class="nav-wrapper">
+            <div class="nav-menu">
+                <a href="homepage.html">HOME</a>
+                <a href="men.html">MEN</a>
+                <a href="women.html">WOMEN</a>
+                <a href="kids.html">KIDS</a>
+                <a href="new.html">NEW ARRIVAL</a>
+            </div>
+            <div class="nav-logo">
+                <a href="homepage.html"><img src="pace logo orange.png" alt="Pace Logo" class="logo-img"></a>
+            </div>
+            <div class="nav-icon">
+                <div class="search-box">
+                    <input type="search" class="search-text" placeholder="Type to search">
+                    <button class="search-btn"><i class="fi fi-rr-search"></i></button>
+                </div>
+                <a href="#"><i class="fi fi-rs-heart"></i></a>
+                <a href="#"><i class="fi fi-rr-shopping-cart"></i></a>
+                <a href="signup.html"><i class="fi fi-rs-user"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pd-container" id="product-detail-view">
+
+        <div class="pd-images">
+            <div class="thumbnail-row">
+                <div class="thumb active-thumb" onclick="changeImage(this)"><img id="thumb-1" src="" alt=""></div>
+                <div class="thumb" onclick="changeImage(this)"><img id="thumb-2" src="" alt=""></div>
+                <div class="thumb" onclick="changeImage(this)"><img src="pace logo orange.png"
+                        style="object-fit:contain; padding:10px" alt=""></div>
+            </div>
+            <div class="main-image-box">
+                <img id="main-display-img" src="" alt="Product Image">
+                <span id="pd-new-badge" class="new-badge" style="display:none">NEW</span>
+            </div>
+        </div>
+
+        <div class="pd-info">
+            <div class="pd-breadcrumb">
+                <a href="homepage.html">Home</a> / <a href="#" id="bread-cat">Men</a> / <span id="bread-name"
+                    style="color:var(--darkgray-text)">Pace 680</span>
+            </div>
+
+            <h1 class="pd-title" id="pd-name">Loading...</h1>
+            <p class="pd-price" id="pd-price">--</p>
+
+            <span class="selector-label">Color</span>
+            <div class="color-options">
+                <div class="color-box selected" style="background-color: #ddd;"></div>
+                <div class="color-box" style="background-color: #999;"></div>
+                <div class="color-box" style="background-color: #333;"></div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="selector-label">Size</span>
+                <span style="font-size:12px; color:var(--brand-color); font-weight:600;"><i
+                        class="fi fi-rs-check-circle"></i> True to Size</span>
+            </div>
+
+            <div class="size-grid">
+                <button class="size-btn">M 8</button>
+                <button class="size-btn">M 8.5</button>
+                <button class="size-btn">M 9</button>
+                <button class="size-btn">M 9.5</button>
+                <button class="size-btn active-size">M 10</button>
+                <button class="size-btn">M 10.5</button>
+                <button class="size-btn">M 11</button>
+                <button class="size-btn">M 11.5</button>
+            </div>
+            <a class="size-guide-link">Size Guide</a>
+
+            <div class="pd-actions">
+                <button class="btn-wish"><i class="fi fi-rs-heart"></i></button>
+                <button class="btn-cart">ADD TO CART</button>
+                <button class="btn-buy">BUY NOW</button>
+            </div>
+
+            <div class="pd-description">
+                <h4>Description</h4>
+                <p>Designed for the modern mover. The <span id="desc-name">Pace 680</span> combines our signature Abzorb
+                    technology with a breathable mesh upper. Whether you're hitting the streets or the track, this
+                    silhouette offers superior stability and style.</p>
+                <br>
+                <h4>Delivery & Returns</h4>
+                <p><i class="fi fi-rr-truck-side"></i> Free standard shipping on orders over ₱5,000.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-section">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>COMPANY</h4>
+                <a href="">About Pace</a>
+                <a href="">Collection</a>
+            </div>
+            <div class="footer-column">
+                <h4>SUPPORT</h4>
+                <a href="">Contact Us</a>
+                <a href="">FAQs</a>
+            </div>
+            <div class="footer-column">
+                <h4>CONNECT WITH US</h4>
+                <div class="social">
+                    <a href="#"><i class="fi fi-brands-facebook"></i></a>
+                    <a href="#"><i class="fi fi-brands-instagram"></i></a>
+                    <a href="#"><i class="fi fi-brands-twitter-alt"></i></a>
+                    <a href="#"><i class="fi fi-brands-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 PACE, Inc. All Rights Reserved.</p>
+            <div class="legal-links">
+                <a href="">Privacy Policy</a>
+                <a href="">Terms & Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+
+    <script>
+        // 1. Get the Product Name from the URL (e.g., product.html?name=Pace%20680)
+        const params = new URLSearchParams(window.location.search);
+        const targetName = params.get('name');
+
+        // 2. Find the product in your existing 'products' array (from main.js)
+        // We use a safe check in case products array isn't loaded yet
+        window.onload = function () {
+            if (typeof products !== 'undefined' && targetName) {
+                const product = products.find(p => p.name === targetName);
+
+                if (product) {
+                    loadProductDetails(product);
+                } else {
+                    document.getElementById('pd-name').innerText = "Product Not Found";
+                }
+            } else {
+                // Fallback if no URL param (just load the first one for demo)
+                loadProductDetails(products[0]);
+            }
+        };
+
+        function loadProductDetails(p) {
+            // Update Text Info
+            document.getElementById('pd-name').innerText = p.name;
+            document.getElementById('desc-name').innerText = p.name;
+            document.getElementById('pd-price').innerText = '₱ ' + p.price;
+
+            // Update Breadcrumbs
+            const breadCat = document.getElementById('bread-cat');
+            breadCat.innerText = p.type;
+            breadCat.href = p.type.toLowerCase() + '.html'; // e.g. men.html
+            document.getElementById('bread-name').innerText = p.name;
+
+            // Update Images
+            const mainImg = document.getElementById('main-display-img');
+            mainImg.src = p.img;
+
+            // Update Thumbnails
+            document.getElementById('thumb-1').src = p.img;
+            document.getElementById('thumb-2').src = p.hover; // Using the hover image as 2nd thumb
+
+            // New Badge Logic
+            if (p.isNew) {
+                document.getElementById('pd-new-badge').style.display = 'block';
+            }
+        }
+
+        // 3. Image Switcher Logic
+        function changeImage(element) {
+            // Remove active class from all thumbs
+            document.querySelectorAll('.thumb').forEach(el => el.classList.remove('active-thumb'));
+            // Add to clicked
+            element.classList.add('active-thumb');
+            // Change main image
+            const newSrc = element.querySelector('img').src;
+            document.getElementById('main-display-img').src = newSrc;
+        }
+
+        // 4. Size Selector Logic
+        const sizeBtns = document.querySelectorAll('.size-btn');
+        sizeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                sizeBtns.forEach(b => b.classList.remove('active-size'));
+                btn.classList.add('active-size');
+            });
+        });
+    </script>
+</body>
+
+</html>
