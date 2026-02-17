@@ -41,102 +41,30 @@
         </div>
     </div>
 
-    <div class="cover-photo">
-        <div class="cover-box">
-            <div class="cover-tag">FIND YOUR RHYTHM</div>
-
-            <h1>MOVE AT YOUR OWN PACE</h1>
-
-            <p>Footwear made to match your step and your lifestyle</p>
-
-            <a href="all-product.html" class="explore-btn">EXPLORE COLLECTION</a>
-        </div>
+    <div class="breadcrumb-section">
+        <a href="homepage.html">Home /</a>
+        <a href="all-product.html">All Shoes /</a>
+        <span class="current-page">Men</span>
     </div>
 
-    <div class="featured-text">
-        <p>YOU MIGHT LIKE THIS</p>
+    <div class="product-header-wrapper">
 
-        <a href="all-product.html" class="seeall-btn">SEE ALL</a>
-    </div>
-
-    <div class="featured-section reveal" id="product-container"></div>
-
-    <div class="section-header reveal">
-        <h1>GREAT STYLE STARTS HERE</h1>
-        <p>CHOOSE A CATEGORY THAT FITS YOU</p>
-    </div>
-
-    <div class="category-section reveal">
-        <div class="category-image">
-            <img src="Category Image/Men Category.jpg" alt="" id="cat-img">
-
-            <button class="arrow-prev" onclick="nextCategory(-1)">
-                <i class="fi fi-rr-arrow-small-left"></i>
-            </button>
-
-            <button class="arrow-next" onclick="nextCategory(1)">
-                <i class="fi fi-rr-arrow-small-right"></i>
-            </button>
+        <div class="product-header">
+            <h1>Men's Shoes <span>(12)</span></h1>
         </div>
 
-        <div class="category-info" id="cat-bg">
-            <h1 id="cat-title">MEN</h1>
-            <p id="cat-desc">Build for style, comfort, and confidence</p>
-            <button onclick="visitCategory()">Explore Collection</button>
-        </div>
-    </div>
+        <div class="sort-dropdown">
+            <button class="sort-btn">Sort by <i class="fi fi-rr-angle-small-down"></i></button>
 
-    <div class="section-header reveal">
-        <h1>ABOUT PACE</h1>
-        <p>PACE is a footwear brand built for people who move with purpose. We design shoes that balance style, comfort,
-            <br>and durability for everyday life.
-        </p>
-    </div>
-
-    <div class="about-section reveal" id="about-info"></div>
-
-    <div class="section-header reveal">
-        <h1>CONTACT US</h1>
-        <p>Find your perfect fit. Whether it's a sizing question or a style tip, our team is ready to help you step up
-            your game.</p>
-    </div>
-
-    <div class="contact-section reveal">
-
-        <div class="contact-image">
-            <img src="Contact Image/contact shoe.jpg" alt="">
-        </div>
-
-        <div class="contact-box">
-
-            <div class="contact-content">
-                <div>
-                    <h3>VISIT US</h3>
-                    <p>123 Iba, Hagonoy, Bulacan</p>
-                </div>
-
-                <div>
-                    <h3>EMAIL US</h3>
-                    <p>pace@gmail.com</p>
-                </div>
+            <div class="sort-menu">
+                <a href="#" onclick="sortProducts('new')">New Arrivals</a>
+                <a href="#" onclick="sortProducts('low-high')">Price: Low to High</a>
+                <a href="#" onclick="sortProducts('high-low')">Price: High to Low</a>
             </div>
-
-            <form>
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="How can we help?" required></textarea>
-                <button type="submit" class="contact-btn">SEND MESSAGE</button>
-            </form>
-
         </div>
     </div>
 
-    <div class="section-header reveal">
-        <h1>MEET OUR TEAM</h1>
-        <p>Setting the pace for modern street style. We run the code so you can run the streets.</p>
-    </div>
-
-    <div class="team-section" id="team-card"></div>
+    <div class="featured-section" id="product-container"></div>
 
     <footer class="footer-section">
         <div class="footer-container">
@@ -176,7 +104,6 @@
     </footer>
 
     <script src="main.js"></script>
-
 </body>
 
 </html>
