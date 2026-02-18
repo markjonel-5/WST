@@ -115,7 +115,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
             <button class="product-image">
                 ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
                 <img src="${p.img}" class="primary-img">
-                <img src="${p.hover}" class="hover-img">
+                <img src="${p.hover}" class="hover-img" onclick="window.location.href='product-detail.html?name=${encodeURIComponent(p.name)}'">
             </button>
             <div class="product-name">
                 <h5>${p.name}</h5>
@@ -275,14 +275,14 @@ const teamData = [
         img: "Team Image/Perez, M.jpeg"
     },
     {
-        name: "Sumala, John Aldrin S.",
-        role: "BACKEND DEVELOPER",
-        img: "Team Image/Sumala, J.A.jpg"
-    },
-    {
-        name: "Francia, Gad Daniel Kellyn",
+        name: "Francia, Gad Daniel Kellyn C.",
         role: "FRONTEND DEVELOPER",
         img: "Team Image/Francia, G.jpg"
+    },
+    {
+        name: "Crisostomo, Jomari",
+        role: "FRONTEND DEVELOPER",
+        img: "Team Image/Crisostomo, J.jfif"
     },
     {
         name: "Javier, Mikel Kyan",
@@ -290,9 +290,9 @@ const teamData = [
         img: "Team Image/Javier, M.jfif"
     },
     {
-        name: "Crisostomo, Jomari",
-        role: "FRONTEND DEVELOPER",
-        img: "Team Image/Crisostomo, J.jfif"
+        name: "Sumala, John Aldrin S.",
+        role: "BACKEND DEVELOPER",
+        img: "Team Image/Sumala, J.A.jpg"
     }
 ];
 const container = document.getElementById('team-card');

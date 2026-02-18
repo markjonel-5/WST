@@ -1,0 +1,244 @@
+/* COMBINED LOGIN/SIGNUP START */
+.auth-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding-top: 60px;
+}
+
+.auth-card {
+    position: relative;
+    width: 1300px;
+    height: 750px;
+    background: var(--bg-color);
+    border-radius: 12px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.auth-image {
+    width: 50%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Brand Image/1 cover.jpg');
+    background-position: center;
+    background-size: cover;
+    z-index: 10;
+}
+
+.auth-content {
+    width: 50%;
+    height: 100%;
+    padding: 0 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg-color);
+}
+
+.auth-content form {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.auth-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--darkgray-text);
+    text-align: center;
+}
+
+.auth-title span {
+    font-size: 45px;
+    font-weight: 700;
+    color: var(--brand-color);
+}
+
+.auth-subtitle {
+    font-size: 14px;
+    color: var(--gray-text);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 0;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    background-color: var(--bg-color);
+}
+
+.input-field:focus {
+    outline: none;
+    box-shadow: none;
+    border-bottom: 1px solid var(--brand-color);
+}
+
+.name-input {
+    display: flex;
+    gap: 15px;
+}
+
+.forgot-link {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gray-text);
+    text-decoration: none;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+.forgot-link:hover {
+    color: var(--brand-color);
+    text-decoration: underline;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--darkgray-text);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.auth-btn:hover {
+    background: var(--brand-color);
+    transform: translateY(-2px);
+}
+
+.auth-divider {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    line-height: 0.1em;
+    margin: 30px 0 20px;
+}
+
+.auth-divider span {
+    background: var(--bg-color);
+    padding: 0 10px;
+    color: #bbb;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.auth-social {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 25px 0 20px;
+}
+
+.auth-social a {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--darkgray-text);
+    text-decoration: none;
+    transition: 0.3s;
+    padding-top: 4px;
+    padding-left: 1px;
+}
+
+.auth-social a:hover {
+    color: var(--brand-color);
+    border-color: var(--brand-color);
+    transform: translateY(-2px);
+}
+
+.bottom-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--gray-text);
+    text-align: center;
+}
+
+.bottom-link {
+    color: var(--brand-color);
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bottom-link:hover {
+    text-decoration: underline;
+}
+/* COMBINED LOGIN/SIGNUP END */
+
+/* FORGOT PASSWORD START */
+.forgot-card {
+    width: 100%;
+    max-width: 450px;
+    background: var(--bg-color);
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.forgot-icons {
+    width: 80px;
+    height: 80px;
+    background-color: #FFF4EC;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.forgot-icons i {
+    font-size: 35px;
+    padding-top: 10px;
+    color: var(--brand-color);
+}
+
+.forgot-card .auth-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.forgot-card .auth-subtitle {
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.forgot-card form {
+    width: 100%;
+}
+
+.back-link {
+    margin-top: 25px;
+    text-align: center;
+    color: var(--gray-text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    color: var(--brand-color);
+}
+/* FORGOT PASSWORD END */
