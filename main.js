@@ -31,6 +31,80 @@ const observer = new IntersectionObserver((entries) => {
 const hiddenElements = document.querySelectorAll('.reveal');
 hiddenElements.forEach((el) => observer.observe(el));
 
+// category info
+const categories = [
+    { title: "MEN", desc: "Built for style, comfort, and confidence", img: "Category Image/Men Category.jpg", color: "#C06C37", link: "men.html" },
+    { title: "WOMEN", desc: "Built for elegant, versatile, and empowered", img: "Category Image/Women Category.jpg", color: "#C06C37", link: "women.html" },
+    { title: "KIDS", desc: "Built for playful designs for every adventure", img: "Category Image/Kid Category.jpg", color: "#C06C37", link: "kids.html" }
+];
+
+let index = 0;
+
+function nextCategory(direction) {
+
+    const catTitle = document.getElementById("cat-title");
+    if (!catTitle) return;
+
+    index += direction;
+
+    if (index >= categories.length) index = 0;
+    if (index < 0) index = categories.length - 1;
+
+    const current = categories[index];
+    document.getElementById("cat-title").innerText = current.title;
+    document.getElementById("cat-desc").innerText = current.desc;
+    document.getElementById("cat-img").src = current.img;
+    document.getElementById("cat-bg").style.backgroundColor = current.color;
+}
+
+function visitCategory() {
+    window.location.href = categories[index].link;
+}
+
+// about info
+const aboutContainer = document.getElementById('about-info');
+
+if (aboutContainer) {
+    const aboutData = [
+        { title: "COMFORT", img: "About Image/comfort.jpg", desc: "Engineered with advanced cushioning systems to support you through every step of your daily journey." },
+        { title: "QUALITY", img: "About Image/quality.jpg", desc: "Hand-selected materials and precision stitching ensure that your pair stands the test of time." },
+        { title: "STYLE", img: "About Image/style.jpg", desc: "Modern silhouettes inspired by urban culture, designed to fit seamlessly into your wardrobe." }
+    ];
+
+    aboutContainer.innerHTML = aboutData.map(about => `
+        <div class="about-card">
+            <img src="${about.img}" alt="${about.title}">
+            <div class="card-text">
+                <h3>${about.title}</h3>
+                <p>${about.desc}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+// team info
+const teamContainer = document.getElementById('team-card');
+
+if (teamContainer) {
+    const teamData = [
+        { name: "Perez, Mark Jonel S.", role: "BACKEND DEVELOPER", img: "Team Image/Perez, M.jpeg" },
+        { name: "Francia, Gad Daniel Kellyn C.", role: "FRONTEND DEVELOPER", img: "Team Image/Francia, G.jpg" },
+        { name: "Crisostomo, Jomari", role: "FRONTEND DEVELOPER", img: "Team Image/Crisostomo, J.jfif" },
+        { name: "Javier, Mikel Kyan", role: "FRONTEND DEVELOPER", img: "Team Image/Javier, M.jfif" },
+        { name: "Sumala, John Aldrin S.", role: "BACKEND DEVELOPER", img: "Team Image/Sumala, J.A.jpg" }
+    ];
+
+    teamContainer.innerHTML = teamData.map(member => `
+        <div class="member-card">
+            <img src="${member.img}" alt="${member.name}">
+            <div class="member-info">
+                <h1>${member.name}</h1>
+                <p>${member.role}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
 // product info
 const products = [
 
@@ -75,6 +149,7 @@ const products = [
 
 ];
 
+// all, men, women, kids, new product rendering
 let currentLimit = 12;
 let activeCategory = '';
 let storedList = [];
@@ -88,6 +163,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
         activeCategory = category;
         currentLimit = 12;
 
+        // chcek if new, if not refers to category type
         let tempProducts = products;
         if (category === 'NEW') {
             tempProducts = products.filter(p => p.isNew === true);
@@ -95,6 +171,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
             tempProducts = products.filter(p => p.type === category);
         }
 
+        // randomize product in homepage & all product every refresh
         if (randomize) {
             tempProducts = [...tempProducts].sort(() => Math.random() - 0.5);
         }
@@ -192,119 +269,173 @@ function sortProducts(sortType) {
     }
 }
 
-// category info
-const categories = [
-    {
-        title: "MEN",
-        desc: "Built for style, comfort, and confidence",
-        img: "Category Image/Men Category.jpg",
-        color: "#C06C37",
-        link: "men.html"
-    },
-    {
-        title: "WOMEN",
-        desc: "Built for elegant, versatile, and empowered",
-        img: "Category Image/Women Category.jpg",
-        color: "#C06C37",
-        link: "women.html"
-    },
-    {
-        title: "KIDS",
-        desc: "Built for playful designs for every adventure",
-        img: "Category Image/Kid Category.jpg",
-        color: "#C06C37",
-        link: "kids.html"
+// product detail connection from product info
+const params = new URLSearchParams(window.location.search);
+const targetName = params.get('name');
+
+window.onload = function () {
+    if (!document.getElementById('pd-name')) return;
+
+    if (typeof products !== 'undefined' && targetName) {
+        const product = products.find(p => p.name === targetName);
+
+        if (product) {
+            loadProductDetails(product);
+        } else {
+            document.getElementById('pd-name').innerText = "Product Not Found";
+        }
+    } else {
+        loadProductDetails(products[0]);
     }
-];
+};
 
-let index = 0;
+// to get the details from product info
+function loadProductDetails(p) {
+    if (!document.getElementById('pd-name')) return;
 
-function nextCategory(direction) {
-    index += direction;
+    document.getElementById('pd-name').innerText = p.name;
+    document.getElementById('desc-name').innerText = p.name;
+    document.getElementById('pd-price').innerText = '₱ ' + p.price;
 
-    if (index >= categories.length) index = 0;
-    if (index < 0) index = categories.length - 1;
+    const breadCat = document.getElementById('bread-cat');
+    breadCat.innerText = p.type.charAt(0).toUpperCase() + p.type.slice(1).toLowerCase();
+    breadCat.href = p.type.toLowerCase() + '.html';
+    document.getElementById('bread-name').innerText = p.name;
 
-    const current = categories[index];
-    document.getElementById("cat-title").innerText = current.title;
-    document.getElementById("cat-desc").innerText = current.desc;
-    document.getElementById("cat-img").src = current.img;
-    document.getElementById("cat-bg").style.backgroundColor = current.color;
+    const mainImg = document.getElementById('main-display-image');
+    mainImg.src = p.img;
+
+    const colorThumb = document.getElementById('color-thumb');
+    colorThumb.src = p.img;
+
+    document.getElementById('thumb-1').src = p.img;
+    document.getElementById('thumb-2').src = p.hover;
+
+    // different product details for men, women, kids
+    const detailsContainer = document.getElementById('pd-details-content');
+    if (detailsContainer) {
+        let detailsContent = '';
+
+        if (p.type === 'MEN') {
+            detailsContent = `
+                <ul style="list-style: none; padding: 0; line-height: 2.2;">
+                    <li><strong>Weight:</strong> Approx. 285g (varies by size)</li>
+                    <li><strong>Upper:</strong> Breathable engineered mesh with supportive overlays</li>
+                    <li><strong>Midsole:</strong> High-rebound foam for all-day comfort and energy return</li>
+                    <li><strong>Outsole:</strong> Durable rubber designed for multi-surface traction</li>
+                    <li><strong>Fit:</strong> Standard men's width, fits true to size</li>
+                    <li><strong>Best For:</strong> Road running, daily training, and casual wear</li>
+                </ul>
+            `;
+        } else if (p.type === 'WOMEN') {
+            detailsContent = `
+                <ul style="list-style: none; padding: 0; line-height: 2.2;">
+                    <li><strong>Weight:</strong> Approx. 240g (varies by size)</li>
+                    <li><strong>Upper:</strong> Adaptive, lightweight knit for a secure, breathable feel</li>
+                    <li><strong>Midsole:</strong> Plush, soft-cushioning foam for responsive support</li>
+                    <li><strong>Outsole:</strong> Flexible rubber designed for natural foot movement</li>
+                    <li><strong>Fit:</strong> Contoured specifically for the female foot profile</li>
+                    <li><strong>Best For:</strong> Gym workouts, walking, and everyday lifestyle</li>
+                </ul>
+            `;
+        } else if (p.type === 'KIDS') {
+            detailsContent = `
+                <ul style="list-style: none; padding: 0; line-height: 2.2;">
+                    <li><strong>Weight:</strong> Ultra-lightweight design to prevent foot fatigue</li>
+                    <li><strong>Upper:</strong> Durable synthetic materials and breathable mesh</li>
+                    <li><strong>Midsole:</strong> Supportive EVA foam to cushion growing feet</li>
+                    <li><strong>Outsole:</strong> Non-marking grippy rubber for indoor and outdoor play</li>
+                    <li><strong>Fit:</strong> Snug fit with alternative closures for easy on and off</li>
+                    <li><strong>Best For:</strong> School, sports, and weekend adventures</li>
+                </ul>
+            `;
+        }
+        detailsContainer.innerHTML = detailsContent;
+    }
+
+    // categories different sizes
+    const sizeContainer = document.getElementById('size-grid');
+    let sizes = [];
+
+    if (p.type === 'MEN') {
+        sizes = ['8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '12.5', '13', '13.5'];
+    } else if (p.type === 'WOMEN') {
+        sizes = ['5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'];
+    } else if (p.type === 'KIDS') {
+        sizes = ['1Y', '1.5Y', '2Y', '2.5Y', '3Y', '3.5Y', '4Y', '4.5Y', '5Y', '5.5Y', '6Y', '6.5Y'];
+    }
+
+    sizeContainer.innerHTML = sizes.map(size => {
+
+        let label = size;
+        if (p.type === 'MEN') {
+            label = 'M ' + size;
+        } else if (p.type === 'WOMEN') {
+            label = 'W ' + size;
+        }
+
+        return `<button class="size-btn" onclick="selectSize(this, '${label}')">${label}</button>`;
+    }).join('');
+
+    // check if new arrival
+    if (p.isNew) {
+        document.getElementById('pd-new-badge').style.display = 'block';
+    } else {
+        document.getElementById('pd-new-badge').style.display = 'none';
+    }
 }
 
-function visitCategory() {
-    window.location.href = categories[index].link;
+// product detail change image
+function changeImage(element) {
+
+    document.querySelectorAll('.thumb').forEach(el => el.classList.remove('active-thumb'));
+
+    element.classList.add('active-thumb');
+
+    const newImg = element.querySelector('img').src;
+    document.getElementById('main-display-image').src = newImg;
 }
 
-// about info
-const aboutData = [
-    {
-        title: "COMFORT",
-        img: "About Image/comfort.jpg",
-        desc: "Engineered with advanced cushioning systems to support you through every step of your daily journey."
-    },
-    {
-        title: "QUALITY",
-        img: "About Image/quality.jpg",
-        desc: "Hand-selected materials and precision stitching ensure that your pair stands the test of time."
-    },
-    {
-        title: "STYLE",
-        img: "About Image/style.jpg",
-        desc: "Modern silhouettes inspired by urban culture, designed to fit seamlessly into your wardrobe."
-    }
-];
+// product detail change size
+function selectSize(btn) {
+    const allBtns = document.querySelectorAll('.size-btn');
+    allBtns.forEach(b => b.classList.remove('active-size'));
 
-const aboutContainer = document.getElementById('about-info');
+    btn.classList.add('active-size');
+}
 
-aboutContainer.innerHTML = aboutData.map(about => `
-    <div class="about-card">
-        <img src="${about.img}" alt="${about.title}">
-        <div class="card-text">
-            <h3>${about.title}</h3>
-            <p>${about.desc}</p>
-        </div>
-    </div>
-`).join('');
+// size guide open panel
+function openSG() {
+    document.getElementById('sg-overlay').style.display = 'block';
 
-// team info
-const teamData = [
-    {
-        name: "Perez, Mark Jonel S.",
-        role: "BACKEND DEVELOPER",
-        img: "Team Image/Perez, M.jpeg"
-    },
-    {
-        name: "Francia, Gad Daniel Kellyn C.",
-        role: "FRONTEND DEVELOPER",
-        img: "Team Image/Francia, G.jpg"
-    },
-    {
-        name: "Crisostomo, Jomari",
-        role: "FRONTEND DEVELOPER",
-        img: "Team Image/Crisostomo, J.jfif"
-    },
-    {
-        name: "Javier, Mikel Kyan",
-        role: "FRONTEND DEVELOPER",
-        img: "Team Image/Javier, M.jfif"
-    },
-    {
-        name: "Sumala, John Aldrin S.",
-        role: "BACKEND DEVELOPER",
-        img: "Team Image/Sumala, J.A.jpg"
-    }
-];
-const container = document.getElementById('team-card');
+    setTimeout(() => {
+        document.getElementById('sg-panel').classList.add('open');
+    }, 10);
+}
 
-const teamHTML = teamData.map(member => `
-        <div class="member-card">
-            <img src="${member.img}" alt="${member.name}">
-            <div class="member-info">
-                <h1>${member.name}</h1>
-                <p>${member.role}</p>
-            </div>
-        </div>
-    `).join('');
+// size guide close panel
+function closeSG() {
+    document.getElementById('sg-panel').classList.remove('open');
 
-container.innerHTML = teamHTML;
+    setTimeout(() => {
+        document.getElementById('sg-overlay').style.display = 'none';
+    }, 300);
+}
+
+// Accordion animation
+const accordions = document.querySelectorAll('.accordion-header');
+
+accordions.forEach(acc => {
+    acc.addEventListener('click', function () {
+        this.classList.toggle('active');
+
+        const content = this.nextElementSibling;
+
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+});
+

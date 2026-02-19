@@ -191,9 +191,11 @@ body {
 .search-text:focus+.search-btn i {
     color: var(--brand-color);
 }
+
 /* NAVIGATION BAR END */
 
 /* FOOTER SECTION START */
+
 .footer-section {
     background-color: black;
     color: var(--bg-color);
@@ -286,4 +288,5 @@ body {
 .legal-links a:hover {
     color: var(--bg-color);
 }
+
 /* FOOTER SECTION END */

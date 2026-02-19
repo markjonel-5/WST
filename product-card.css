@@ -1,201 +1,3 @@
-/* CATEGORIES IMAGE START */
-.all-category {
-    max-width: 1920px;
-    margin: 0 auto;
-    padding-top: 60px;
-    height: 550px;
-}
-
-.all-wrapper {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    height: 100%;
-    width: 100%;
-}
-
-.all-card {
-    flex: 1;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-}
-
-.all-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: bottom center;
-    transition: transform 0.6s ease;
-    display: block;
-}
-
-.all-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    text-align: center;
-    transition: transform 0.6s ease;
-}
-
-.all-title h3 {
-    color: var(--bg-color);
-    font-size: 60px;
-    font-style: italic;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin: 0;
-    text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
-}
-
-.all-card:hover img {
-    transform: scale(1.05);
-}
-
-.all-card:hover .all-title {
-    transform: translate(-50%, -50%) scale(1.05);
-}
-
-.load-box {
-    text-align: center;
-    margin: 40px 0;
-    width: 100%;
-}
-
-#load-btn {
-    background-color: var(--darkgray-text);
-    color: var(--bg-color);
-    border: none;
-    padding: 12px 30px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    cursor: pointer;
-    display: none;
-    transition: 0.3s ease;
-}
-
-#load-btn:hover {
-    background-color: var(--brand-color);
-}
-/* CATEGORIES IMAGE END */
-
-/* PRODUCT HEADER START */
-.product-header-wrapper {
-    max-width: var(--max-wide);
-    margin: 30px auto 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    z-index: 100;
-}
-
-.product-header h1 {
-    font-size: 46px;
-    font-weight: 700;
-    color: var(--darkgray-text);
-    letter-spacing: 1px;
-}
-
-.product-header span {
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--darkgray-text);
-    margin-left: 5px;
-}
-
-.sort-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.sort-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
-    background: transparent;
-    border: 1px solid var(--gray-text);
-    border-radius: 4px;
-    color: var(--darkgray-text);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.sort-btn:hover {
-    color: var(--brand-color);
-    border-color: var(--brand-color);
-}
-
-.sort-menu {
-    position: absolute;
-    top: 110%;
-    right: 0;
-    width: 180px;
-    padding: 10px 0;
-    background: var(--bg-color);
-    border-radius: 6px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-}
-
-.sort-dropdown:hover .sort-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.sort-menu a {
-    display: block;
-    padding: 10px 20px;
-    color: var(--gray-text);
-    text-decoration: none;
-    font-size: 14px;
-    transition: 0.2s;
-}
-
-.sort-menu a:hover {
-    background-color: #FFF4EC;
-    color: var(--brand-color);
-    padding-left: 25px;
-}
-
-.breadcrumb-section {
-    max-width: var(--max-wide);
-    margin: 20px auto;
-    font-size: 14px;
-    color: var(--gray-text);
-    margin-top: 100px;
-}
-
-.breadcrumb-section a {
-    text-decoration: none;
-    color: var(--gray-text);
-    transition: color 0.3s ease;
-}
-
-.breadcrumb-section a:hover {
-    color: var(--brand-color); 
-}
-
-.breadcrumb-section .current-page {
-    font-weight: 600; 
-    color: var(--darkgray-text);      
-    margin-left: 4px;
-}
-/* PRODUCT HEADER END */
-
 /* PRODUCT CARD START */
 .product-section {
     max-width: var(--max-wide);
@@ -399,6 +201,213 @@
     letter-spacing: 1px;
     z-index: 10;
     border-radius: 2px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 /* PRODUCT CARD END */
+
+/* ALL PRODUCT CATEGORIES IMAGE START */
+.all-category {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding-top: 60px;
+    height: 550px;
+}
+
+.all-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.all-card {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.all-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom center;
+    transition: transform 0.6s ease;
+    display: block;
+}
+
+.all-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    transition: transform 0.6s ease;
+}
+
+.all-title h3 {
+    color: var(--bg-color);
+    font-size: 60px;
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+    text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.all-card:hover img {
+    transform: scale(1.05);
+}
+
+.all-card:hover .all-title {
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.load-box {
+    text-align: center;
+    margin: 40px 0;
+    width: 100%;
+}
+
+#load-btn {
+    background-color: var(--darkgray-text);
+    color: var(--bg-color);
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: none;
+    transition: 0.3s ease;
+}
+
+#load-btn:hover {
+    background-color: var(--brand-color);
+}
+
+/* ALL PRODUCT CATEGORIES IMAGE END */
+
+/* ALL, MEN, WOMEN, KIDS, NEW - HEADER AND SORT START */
+.product-header-wrapper {
+    max-width: var(--max-wide);
+    margin: 30px auto 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 100;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 20px;
+}
+
+.product-header h1 {
+    font-size: 46px;
+    font-weight: 700;
+    color: var(--darkgray-text);
+    letter-spacing: 1px;
+}
+
+.product-header span {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--darkgray-text);
+    margin-left: 5px;
+}
+
+.sort-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--gray-text);
+    border-radius: 4px;
+    color: var(--darkgray-text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sort-btn:hover {
+    color: var(--brand-color);
+    border-color: var(--brand-color);
+}
+
+.sort-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    width: 180px;
+    padding: 10px 0;
+    background: var(--bg-color);
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.sort-dropdown:hover .sort-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sort-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    color: var(--gray-text);
+    text-align: left;
+    font-size: 14px;
+    transition: 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.sort-menu button:hover {
+    background-color: #FFF4EC;
+    color: var(--brand-color);
+    padding-left: 25px;
+}
+
+.breadcrumb-section {
+    max-width: var(--max-wide);
+    margin: 20px auto;
+    font-size: 14px;
+    color: var(--gray-text);
+    margin-top: 100px;
+}
+
+.breadcrumb-section a {
+    text-decoration: none;
+    color: var(--gray-text);
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-section a:hover {
+    color: var(--brand-color);
+}
+
+.breadcrumb-section .current-page {
+    font-weight: 600;
+    color: var(--darkgray-text);
+    margin-left: 4px;
+}
+
+/* ALL, MEN, WOMEN, KIDS, NEW - TITLE AND SORT END */

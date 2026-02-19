@@ -1,0 +1,481 @@
+/* PRODUCT DETAIL START */
+
+.pd-container {
+    max-width: var(--min-wide);
+    margin: 0 auto;
+    padding: 100px 20px 60px 20px;
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+}
+
+/* PRODUCT DETAIL IMAGE (LEFT) */
+.pd-image {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main-pd-image {
+    width: 100%;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.main-pd-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.main-pd-image:hover img {
+    transform: scale(1.05);
+}
+
+.main-pd-thumb {
+    display: flex;
+    gap: 10px;
+}
+
+.thumb {
+    width: 100px;
+    height: 100px;
+    background: var(--bg-color);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.thumb.active-thumb {
+    border-color: var(--brand-color);
+}
+
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* PRODUCT DETAIL INFO (RIGHT) */
+.pd-info {
+    flex: 1.2;
+}
+
+.pd-breadcrumb {
+    color: var(--gray-text);
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.pd-breadcrumb a {
+    text-decoration: none;
+    color: var(--gray-text);
+    transition: 0.3s;
+}
+
+.pd-breadcrumb a:hover {
+    color: var(--brand-color);
+}
+
+.pd-title {
+    font-size: 60px;
+    font-weight: 700;
+    color: var(--darkgray-text);
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+
+.pd-price {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--brand-color);
+    margin-bottom: 20px;
+}
+
+.pd-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--darkgray-text);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.size-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.size-guide-link {
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: underline;
+    color: var(--darkgray-text);
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.size-guide-link:hover {
+    color: var(--brand-color);
+}
+
+.size-header .pd-label,
+.size-header .size-guide-link {
+    margin-bottom: 0;
+}
+
+.color-option {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.color-box {
+    width: 60px;
+    height: 60px;
+    background-color: var(--bg-color);
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+
+.color-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+.color-box.selected {
+    border: 2px solid var(--brand-color);
+}
+
+.size-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.size-btn {
+    padding: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+    color: var(--darkgray-text);
+}
+
+.size-btn:hover {
+    border-color: var(--darkgray-text);
+}
+
+.size-btn.active-size {
+    background-color: var(--darkgray-text);
+    color: white;
+    border-color: var(--darkgray-text);
+}
+
+.pd-btn {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    height: 55px;
+}
+
+.pd-wish {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: var(--bg-color);
+    border: 2px solid var(--brand-color);
+    transition: 0.3s;
+    color: var(--brand-color);
+}
+
+.pd-wish i {
+    font-size: 30px;
+    display: flex;
+}
+
+.pd-wish:hover {
+    background: #fff4ec;
+    border: 2px solid var(--brand-color);
+}
+
+.pd-cart,
+.pd-buy {
+    flex: 1;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pd-cart {
+    background: white;
+    border: 2px solid var(--brand-color);
+    color: var(--brand-color);
+}
+
+.pd-cart:hover {
+    background: var(--darkgray-text);
+    color: white;
+    border: 2px solid var(--darkgray-text);
+}
+
+.pd-buy {
+    background: var(--brand-color);
+    border: 2px solid var(--brand-color);
+    color: white;
+}
+
+.pd-buy:hover {
+    background: var(--darkgray-text);
+    border-color: var(--darkgray-text);
+}
+
+.pd-description {
+    margin-top: 30px;
+}
+
+.pd-description p {
+    color: #1b8f50;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.pd-description p i {
+    font-size: 20px;
+    padding-right: 10px;
+    vertical-align: middle;
+}
+
+/* PRODUCT DETAILS ACCORDION START */
+.accordion-container {
+    margin-top: 10px;
+}
+
+.accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px 0;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--darkgray-text);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.accordion-header:hover {
+    color: var(--brand-color);
+}
+
+.accordion-header .icon {
+    font-size: 20px;
+    font-weight: 400;
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.active .icon {
+    transform: rotate(45deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.ac-text {
+    padding: 15px 0 25px 0;
+    color: var(--gray-text);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* REVIEW ACCORDION */
+.review-summary {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.review-overall {
+    text-align: center;
+    min-width: 120px;
+}
+
+.review-score {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--darkgray-text);
+    line-height: 1;
+}
+
+.review-stars {
+    color: #eda500;
+    font-size: 20px;
+    margin: 5px 0;
+}
+
+.review-count {
+    font-size: 12px;
+    color: var(--gray-text);
+}
+
+.review-bars {
+    flex: 1;
+    width: 100%;
+}
+
+.review-bar-row {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    font-size: 13px;
+    color: var(--gray-text);
+}
+
+.bar-track {
+    flex: 1;
+    height: 6px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    margin: 0 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background-color: var(--brand-color);
+    border-radius: 10px;
+}
+/* PRODUCT ACCORDION END */
+
+/* SIZE GUIDE OVERLAY START */
+.sg-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.sg-panel {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    background: white;
+    z-index: 1001;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.sg-panel.open {
+    right: 0;
+}
+
+/* SIZE GUIDE HEADER */
+.sg-header-top {
+    padding: 20px 30px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sg-header-top h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--darkgray-text);
+}
+
+.sg-header-top button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--gray-text);
+}
+
+.sg-header-top button:hover {
+    color: var(--brand-color);
+}
+
+/* SIZE GUIDE TABLE CONTENT */
+.sg-scroll-area {
+    padding: 20px 30px 40px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.sg-section-title {
+    font-size: 20px;
+    color: var(--darkgray-text);
+    margin-bottom: 15px;
+    font-weight: 600;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sg-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.sg-table th,
+.sg-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--darkgray-text);
+}
+
+.sg-table thead tr {
+    background-color: var(--darkgray-text);
+}
+
+.sg-table th {
+    color: var(--bg-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    border-color: #444;
+}
+
+/* SIZE GUIDE OVERLAY END */

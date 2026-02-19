@@ -64,6 +64,7 @@
     transform: translateY(-3px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
+
 /* COVER SECTION END */
 
 /* FEATURED SECTION START */
@@ -108,6 +109,7 @@
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
+
 /* FEATURED SECTION END */
 
 /* ALL SECTION HEADER START */
@@ -132,6 +134,7 @@
     color: var(--darkgray-text);
     margin-bottom: 30px;
 }
+
 /* ALL SECTION HEADER END */
 
 /* CATEGORY SECTION START */
@@ -265,6 +268,7 @@
 .arrow-next {
     right: 20px;
 }
+
 /* CATEGORY SECTION END */
 
 /* ABOUT SECTION START */
@@ -332,6 +336,7 @@
     font-size: 18px;
     font-weight: 400;
 }
+
 /* ABOUT SECTION END */
 
 /* CONTACT SECTION START */
@@ -435,6 +440,7 @@ textarea {
     background-color: var(--darkgray-text);
     transform: translateY(-2px)
 }
+
 /* CONTACT SECTION END */
 
 /* TEAM SECTION START */
@@ -506,4 +512,5 @@ textarea {
     margin-bottom: 10px;
     font-size: 20px;
 }
+
 /* TEAM SECTION END */
