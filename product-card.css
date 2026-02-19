@@ -295,7 +295,7 @@
 /* ALL, MEN, WOMEN, KIDS, NEW - HEADER AND SORT START */
 .product-header-wrapper {
     max-width: var(--max-wide);
-    margin: 30px auto 30px;
+    margin: 20px auto 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -388,10 +388,9 @@
 
 .breadcrumb-section {
     max-width: var(--max-wide);
-    margin: 20px auto;
+    margin: 100px auto 10px;
     font-size: 14px;
     color: var(--gray-text);
-    margin-top: 100px;
 }
 
 .breadcrumb-section a {

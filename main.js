@@ -107,46 +107,44 @@ if (teamContainer) {
 
 // product info
 const products = [
+    { id: 'M1', name: 'Pace 680', price: '4,999.00', type: 'MEN', color: 'Gray', isNew: false, img: 'All Products/Men Products/M PACE 680 (Gray).jpg', hover: 'All Products/Men Products/M PACE 680 (Gray) (2).jpg' },
+    { id: 'M2', name: 'Pace 740', price: '5,499.00', type: 'MEN', color: 'Brown', isNew: true, img: 'All Products/Men Products/M PACE 740.jpg', hover: 'All Products/Men Products/M PACE 740 (2).jpg' },
+    { id: 'M3', name: 'Pace T500', price: '3,499.00', type: 'MEN', color: 'White', isNew: false, img: 'All Products/Men Products/M PACE T500.jpg', hover: 'All Products/Men Products/M PACE T500 (2).jpg' },
+    { id: 'M4', name: 'Pace Abzorb', price: '4,499.00', type: 'MEN', color: 'Gray', isNew: false, img: 'All Products/Men Products/M PACE Abzorb.jpg', hover: 'All Products/Men Products/M PACE Abzorb (2).jpg' },
+    { id: 'M5', name: 'Pace 2010', price: '5,299.00', type: 'MEN', color: 'Violet', isNew: false, img: 'All Products/Men Products/M PACE 2010.jpg', hover: 'All Products/Men Products/M PACE 2010 (2).jpg' },
+    { id: 'M6', name: 'Pace 204L', price: '6,499.00', type: 'MEN', color: 'Black', isNew: false, img: 'All Products/Men Products/M PACE 204L.jpg', hover: 'All Products/Men Products/M PACE 204L (2).jpg' },
+    { id: 'M7', name: 'Pace 442', price: '4,799.00', type: 'MEN', color: 'White', isNew: true, img: 'All Products/Men Products/M PACE 442.jpg', hover: 'All Products/Men Products/M PACE 442 (2).jpg' },
+    { id: 'M8', name: 'Pace 991', price: '3,999.00', type: 'MEN', color: 'Brown', isNew: false, img: 'All Products/Men Products/M PACE 991.jpg', hover: 'All Products/Men Products/M PACE 991 (2).jpg' },
+    { id: 'M9', name: 'Pace 471', price: '4,299.00', type: 'MEN', color: 'Cream', isNew: false, img: 'All Products/Men Products/M PACE 471.jpg', hover: 'All Products/Men Products/M PACE 471 (2).jpg' },
+    { id: 'M10', name: 'Pace 1080', price: '4,699.00', type: 'MEN', color: 'Violet', isNew: false, img: 'All Products/Men Products/M PACE 1080.jpg', hover: 'All Products/Men Products/M PACE 1080 (2).jpg' },
+    { id: 'M11', name: 'Pace P400', price: '6,299.00', type: 'MEN', color: 'Red', isNew: false, img: 'All Products/Men Products/M PACE P400.jpg', hover: 'All Products/Men Products/M PACE P400 (2).jpg' },
+    { id: 'M12', name: 'Pace Runner', price: '5,999.00', type: 'MEN', color: 'Orange', isNew: true, img: 'All Products/Men Products/M PACE Runner.jpg', hover: 'All Products/Men Products/M PACE Runner (2).jpg' },
 
-    { name: 'Pace 680', price: '4,999.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE 680 (Gray).jpg', hover: 'All Products/Men Products/M PACE 680 (Gray) (2).jpg' },
-    { name: 'Pace 740', price: '5,499.00', type: 'MEN', isNew: true, img: 'All Products/Men Products/M PACE 740.jpg', hover: 'All Products/Men Products/M PACE 740 (2).jpg' },
-    { name: 'Pace T500', price: '3,499.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE T500.jpg', hover: 'All Products/Men Products/M PACE T500 (2).jpg' },
-    { name: 'Pace Abzorb', price: '4,499.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE Abzorb.jpg', hover: 'All Products/Men Products/M PACE Abzorb (2).jpg' },
-    { name: 'Pace 2010', price: '5,299.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE 2010.jpg', hover: 'All Products/Men Products/M PACE 2010 (2).jpg' },
-    { name: 'Pace 204L', price: '6,499.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE 204L.jpg', hover: 'All Products/Men Products/M PACE 204L (2).jpg' },
-    { name: 'Pace 442', price: '4,799.00', type: 'MEN', isNew: true, img: 'All Products/Men Products/M PACE 442.jpg', hover: 'All Products/Men Products/M PACE 442 (2).jpg' },
-    { name: 'Pace 991', price: '3,999.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE 991.jpg', hover: 'All Products/Men Products/M PACE 991 (2).jpg' },
-    { name: 'Pace 471', price: '4,299.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE 471.jpg', hover: 'All Products/Men Products/M PACE 471 (2).jpg' },
-    { name: 'Pace 1080', price: '4,699.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE 1080.jpg', hover: 'All Products/Men Products/M PACE 1080 (2).jpg' },
-    { name: 'Pace P400', price: '6,299.00', type: 'MEN', isNew: false, img: 'All Products/Men Products/M PACE P400.jpg', hover: 'All Products/Men Products/M PACE P400 (2).jpg' },
-    { name: 'Pace Runner', price: '5,999.00', type: 'MEN', isNew: true, img: 'All Products/Men Products/M PACE Runner.jpg', hover: 'All Products/Men Products/M PACE Runner (2).jpg' },
+    { id: 'W1', name: 'Pace Fuel Cell', price: '3,999.00', type: 'WOMEN', color: 'Green', isNew: false, img: 'All Products/Women Products/W PACE FuelCell.jpg', hover: 'All Products/Women Products/W PACE FuelCell (2).jpg' },
+    { id: 'W2', name: 'Pace 327', price: '3,499.00', type: 'WOMEN', color: 'Violet', isNew: false, img: 'All Products/Women Products/W PACE 327.png', hover: 'All Products/Women Products/W PACE 327 (2).jpg' },
+    { id: 'W3', name: 'Pace Ice', price: '4,199.00', type: 'WOMEN', color: 'White', isNew: false, img: 'All Products/Women Products/W PACE Ice.jpg', hover: 'All Products/Women Products/W PACE Ice (2).jpg' },
+    { id: 'W4', name: 'Pace Reese', price: '4,499.00', type: 'WOMEN', color: 'Orange', isNew: false, img: 'All Products/Women Products/W PACE Reese.jpg', hover: 'All Products/Women Products/W PACE Reese (2).jpg' },
+    { id: 'W5', name: 'Pace Gator', price: '4,999.00', type: 'WOMEN', color: 'Maroon', isNew: true, img: 'All Products/Women Products/W PACE Gator.jpg', hover: 'All Products/Women Products/W PACE Gator (2).jpg' },
+    { id: 'W6', name: 'Pace Pattern', price: '4,799.00', type: 'WOMEN', color: 'Cream', isNew: false, img: 'All Products/Women Products/W PACE Pattern.jpg', hover: 'All Products/Women Products/W PACE Pattern (2).jpg' },
+    { id: 'W7', name: 'Pace Jamie', price: '3,799.00', type: 'WOMEN', color: 'White', isNew: false, img: 'All Products/Women Products/W PACE Jamie.jpg', hover: 'All Products/Women Products/W PACE Jamie (2).jpg' },
+    { id: 'W8', name: 'Pace Trainer', price: '4,499.00', type: 'WOMEN', color: 'Violet', isNew: true, img: 'All Products/Women Products/W PACE Trainer.jpg', hover: 'All Products/Women Products/W PACE Trainer (2).jpg' },
+    { id: 'W9', name: 'Pace 991', price: '3,999.00', type: 'WOMEN', color: 'Pink', isNew: false, img: 'All Products/Women Products/W PACE 991.jpg', hover: 'All Products/Women Products/W PACE 991 (2).jpg' },
+    { id: 'W10', name: 'Pace Hierro', price: '3,799.00', type: 'WOMEN', color: 'Pink', isNew: false, img: 'All Products/Women Products/W PACE Hierro.jpg', hover: 'All Products/Women Products/W PACE Hierro (2).jpg' },
+    { id: 'W11', name: 'Pace Minimus', price: '4,499.00', type: 'WOMEN', color: 'Black', isNew: false, img: 'All Products/Women Products/W PACE Minimus.jpg', hover: 'All Products/Women Products/W PACE Minimus (2).jpg' },
+    { id: 'W12', name: 'Pace Rally', price: '4,999.00', type: 'WOMEN', color: 'Violet', isNew: true, img: 'All Products/Women Products/W PACE Rally.jpg', hover: 'All Products/Women Products/W PACE Rally (2).jpg' },
 
-    { name: 'Pace Fuel Cell', price: '3,999.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE FuelCell.jpg', hover: 'All Products/Women Products/W PACE FuelCell (2).jpg' },
-    { name: 'Pace 327', price: '3,499.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE 327.png', hover: 'All Products/Women Products/W PACE 327 (2).jpg' },
-    { name: 'Pace Ice', price: '4,199.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE Ice.jpg', hover: 'All Products/Women Products/W PACE Ice (2).jpg' },
-    { name: 'Pace Reese', price: '4,499.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE Reese.jpg', hover: 'All Products/Women Products/W PACE Reese (2).jpg' },
-    { name: 'Pace Gator', price: '4,999.00', type: 'WOMEN', isNew: true, img: 'All Products/Women Products/W PACE Gator.jpg', hover: 'All Products/Women Products/W PACE Gator (2).jpg' },
-    { name: 'Pace Pattern', price: '4,799.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE Pattern.jpg', hover: 'All Products/Women Products/W PACE Pattern (2).jpg' },
-    { name: 'Pace Jamie', price: '3,799.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE Jamie.jpg', hover: 'All Products/Women Products/W PACE Jamie (2).jpg' },
-    { name: 'Pace Trainer', price: '4,499.00', type: 'WOMEN', isNew: true, img: 'All Products/Women Products/W PACE Trainer.jpg', hover: 'All Products/Women Products/W PACE Trainer (2).jpg' },
-    { name: 'Pace 991', price: '3,999.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE 991.jpg', hover: 'All Products/Women Products/W PACE 991 (2).jpg' },
-    { name: 'Pace Hierro', price: '3,799.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE Hierro.jpg', hover: 'All Products/Women Products/W PACE Hierro (2).jpg' },
-    { name: 'Pace Minimus', price: '4,499.00', type: 'WOMEN', isNew: false, img: 'All Products/Women Products/W PACE Minimus.jpg', hover: 'All Products/Women Products/W PACE Minimus (2).jpg' },
-    { name: 'Pace Rally', price: '4,999.00', type: 'WOMEN', isNew: true, img: 'All Products/Women Products/W PACE Rally.jpg', hover: 'All Products/Women Products/W PACE Rally (2).jpg' },
-
-    { name: 'Pace Lace', price: '2,999.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Lace.jpg', hover: 'All Products/Kids Products/K PACE Lace (2).jpg' },
-    { name: 'Pace Super', price: '2,499.00', type: 'KIDS', isNew: true, img: 'All Products/Kids Products/K PACE Super.jpg', hover: 'All Products/Kids Products/K PACE Super (2).jpg' },
-    { name: 'Pace 1000', price: '2,799.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE 1000.jpg', hover: 'All Products/Kids Products/K PACE 1000 (2).jpg' },
-    { name: 'Pace Boa', price: '2,299.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Boa.jpg', hover: 'All Products/Kids Products/K PACE Boa (2).jpg' },
-    { name: 'Pace Coco', price: '3,299.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Coco.jpg', hover: 'All Products/Kids Products/K PACE Coco (2).jpg' },
-    { name: 'Pace Arishi', price: '2,499.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Arishi.jpg', hover: 'All Products/Kids Products/K PACE Arishi (2).jpg' },
-    { name: 'Pace Tekela', price: '3,999.00', type: 'KIDS', isNew: true, img: 'All Products/Kids Products/K PACE Tekela.jpg', hover: 'All Products/Kids Products/K PACE Tekela (2).jpg' },
-    { name: 'Pace Coze', price: '2,999.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Coze.jpg', hover: 'All Products/Kids Products/K PACE Coze (2).jpg' },
-    { name: 'Pace Fresh', price: '3,499.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Fresh.jpg', hover: 'All Products/Kids Products/K PACE Fresh (2).jpg' },
-    { name: 'Pace Eco', price: '2,799.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Eco.jpg', hover: 'All Products/Kids Products/K PACE Eco (2).jpg' },
-    { name: 'Pace Hook', price: '2,699.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Hook.jpg', hover: 'All Products/Kids Products/K PACE Hook (2).jpg' },
-    { name: 'Pace Neon', price: '2,999.00', type: 'KIDS', isNew: false, img: 'All Products/Kids Products/K PACE Neon.jpg', hover: 'All Products/Kids Products/K PACE Neon (2).jpg' }
-
+    { id: 'K1', name: 'Pace Lace', price: '2,999.00', type: 'KIDS', color: 'White', isNew: false, img: 'All Products/Kids Products/K PACE Lace.jpg', hover: 'All Products/Kids Products/K PACE Lace (2).jpg' },
+    { id: 'K2', name: 'Pace Super', price: '2,499.00', type: 'KIDS', color: 'Violet', isNew: true, img: 'All Products/Kids Products/K PACE Super.jpg', hover: 'All Products/Kids Products/K PACE Super (2).jpg' },
+    { id: 'K3', name: 'Pace 1000', price: '2,799.00', type: 'KIDS', color: 'Pink', isNew: false, img: 'All Products/Kids Products/K PACE 1000.jpg', hover: 'All Products/Kids Products/K PACE 1000 (2).jpg' },
+    { id: 'K4', name: 'Pace Boa', price: '2,299.00', type: 'KIDS', color: 'Black', isNew: false, img: 'All Products/Kids Products/K PACE Boa.jpg', hover: 'All Products/Kids Products/K PACE Boa (2).jpg' },
+    { id: 'K5', name: 'Pace Coco', price: '3,299.00', type: 'KIDS', color: 'Violet', isNew: false, img: 'All Products/Kids Products/K PACE Coco.jpg', hover: 'All Products/Kids Products/K PACE Coco (2).jpg' },
+    { id: 'K6', name: 'Pace Arishi', price: '2,499.00', type: 'KIDS', color: 'Pink', isNew: false, img: 'All Products/Kids Products/K PACE Arishi.jpg', hover: 'All Products/Kids Products/K PACE Arishi (2).jpg' },
+    { id: 'K7', name: 'Pace Tekela', price: '3,999.00', type: 'KIDS', color: 'Violet', isNew: true, img: 'All Products/Kids Products/K PACE Tekela.jpg', hover: 'All Products/Kids Products/K PACE Tekela (2).jpg' },
+    { id: 'K8', name: 'Pace Coze', price: '2,999.00', type: 'KIDS', color: 'Gray', isNew: false, img: 'All Products/Kids Products/K PACE Coze.jpg', hover: 'All Products/Kids Products/K PACE Coze (2).jpg' },
+    { id: 'K9', name: 'Pace Fresh', price: '3,499.00', type: 'KIDS', color: 'Black', isNew: false, img: 'All Products/Kids Products/K PACE Fresh.jpg', hover: 'All Products/Kids Products/K PACE Fresh (2).jpg' },
+    { id: 'K10', name: 'Pace Eco', price: '2,799.00', type: 'KIDS', color: 'Gray', isNew: false, img: 'All Products/Kids Products/K PACE Eco.jpg', hover: 'All Products/Kids Products/K PACE Eco (2).jpg' },
+    { id: 'K11', name: 'Pace Hook', price: '2,699.00', type: 'KIDS', color: 'Violet', isNew: false, img: 'All Products/Kids Products/K PACE Hook.jpg', hover: 'All Products/Kids Products/K PACE Hook (2).jpg' },
+    { id: 'K12', name: 'Pace Neon', price: '2,999.00', type: 'KIDS', color: 'Neon', isNew: false, img: 'All Products/Kids Products/K PACE Neon.jpg', hover: 'All Products/Kids Products/K PACE Neon (2).jpg' }
 ];
 
 // all, men, women, kids, new product rendering
@@ -192,7 +190,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
             <button class="product-image">
                 ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
                 <img src="${p.img}" class="primary-img">
-                <img src="${p.hover}" class="hover-img" onclick="window.location.href='product-detail.html?name=${encodeURIComponent(p.name)}'">
+                <img src="${p.hover}" class="hover-img" onclick="window.location.href='product-detail.html?id=${p.id}'"> 
             </button>
             <div class="product-name">
                 <h5>${p.name}</h5>
@@ -204,7 +202,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
             </div>
             <div class="product-btn">
                 <div class="wishlist"><button><i class="fi fi-rs-heart"></i></button></div>
-                <div class="add"><button>ADD TO CART</button></div>
+                <div class="add" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>ADD TO CART</button></div>
                 <div class="buy"><button>BUY NOW</button></div>
             </div>
         </div>
@@ -271,13 +269,20 @@ function sortProducts(sortType) {
 
 // product detail connection from product info
 const params = new URLSearchParams(window.location.search);
+const targetId = params.get('id');
 const targetName = params.get('name');
 
 window.onload = function () {
     if (!document.getElementById('pd-name')) return;
 
-    if (typeof products !== 'undefined' && targetName) {
-        const product = products.find(p => p.name === targetName);
+    if (typeof products !== 'undefined') {
+        let product;
+        
+        if (targetId) {
+            product = products.find(p => p.id === targetId);
+        } else if (targetName) {
+            product = products.find(p => p.name === targetName);
+        }
 
         if (product) {
             loadProductDetails(product);
@@ -383,6 +388,16 @@ function loadProductDetails(p) {
     } else {
         document.getElementById('pd-new-badge').style.display = 'none';
     }
+
+    // every add to cart button goes to product detail page
+    const addToCartBtn = document.querySelector('.pd-cart');
+    if (addToCartBtn) {
+
+        addToCartBtn.onclick = function (event) {
+            event.preventDefault();
+            addToCart(p);
+        };
+    }
 }
 
 // product detail change image
@@ -397,11 +412,15 @@ function changeImage(element) {
 }
 
 // product detail change size
-function selectSize(btn) {
+let currentSelectedSize = null;
+
+function selectSize(btn, sizeValue) {
     const allBtns = document.querySelectorAll('.size-btn');
     allBtns.forEach(b => b.classList.remove('active-size'));
 
     btn.classList.add('active-size');
+
+    currentSelectedSize = sizeValue;
 }
 
 // size guide open panel
@@ -422,7 +441,7 @@ function closeSG() {
     }, 300);
 }
 
-// Accordion animation
+// product detail accordion animation
 const accordions = document.querySelectorAll('.accordion-header');
 
 accordions.forEach(acc => {
@@ -439,3 +458,139 @@ accordions.forEach(acc => {
     });
 });
 
+// add to cart function
+function addToCart(product) {
+    if (!currentSelectedSize) {
+        alert("Please select a size first!");
+        return;
+    }
+
+    try {
+        let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+        const uniqueCartId = product.id + "-" + currentSelectedSize; 
+
+        const existingItemIndex = cart.findIndex(item => item.cartItemId === uniqueCartId);
+
+        if (existingItemIndex > -1) {
+            cart[existingItemIndex].quantity += 1;
+        } else {
+            const newItem = {
+                productId: product.id,
+                cartItemId: uniqueCartId,
+                name: product.name,
+                type: product.type,
+                price: product.price,
+                size: currentSelectedSize,
+                color: product.color,
+                image: product.img,
+                quantity: 1
+            };
+            cart.push(newItem);
+        }
+
+        localStorage.setItem('pace_cart', JSON.stringify(cart));
+        alert(`${product.name} (Size: ${currentSelectedSize}) has successfully added to your shopping cart`);
+
+        currentSelectedSize = null;
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active-size'));
+        
+        if(typeof renderCartPage === 'function') renderCartPage();
+
+    } catch (error) {
+        console.error("Cart Memory Error:", error);
+        localStorage.removeItem('pace_cart'); 
+        alert("A background memory glitch was fixed. Please click 'Add to Cart' again.");
+    }
+}
+
+// cart items function and design
+function renderCartPage() {
+    const container = document.getElementById('cart-items-container');
+    const emptyState = document.getElementById('cart-empty');
+    const cartContent = document.getElementById('cart-content');
+    const countHeader = document.getElementById('cart-item-count');
+
+    if (!container) return;
+
+    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+
+    let totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+    countHeader.innerText = totalItems === 1 ? ' (1)' : ' (' + totalItems + ')';
+
+    if (cart.length === 0) {
+        emptyState.classList.remove('hidden');
+        cartContent.classList.add('hidden');
+        return;
+    }
+
+    emptyState.classList.add('hidden');
+    cartContent.classList.remove('hidden');
+
+    let subtotal = 0;
+
+    container.innerHTML = cart.map((item, index) => {
+        let qty = item.quantity || 1; 
+        let cleanPrice = parseFloat(item.price.replace(/,/g, ''));
+        let lineTotal = cleanPrice * qty;
+        subtotal += lineTotal; 
+
+        let formattedLineTotal = lineTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        return `
+            <div class="cart-item-card">
+                <div class="cart-item-img-container">
+                    <img src="${item.image}" class="cart-item-img" alt="${item.name}">
+                </div>
+                
+                <div class="cart-item-info">
+                    <div class="cart-item-top">
+                        <div class="item-text">
+                            <h3>${item.name}</h3>
+                            <p>${item.type}</p>
+                            <p>Color: ${item.color}</p>
+                            <p>Size: ${item.size}</p>
+                        </div>
+                        <button class="cart-delete-btn" onclick="removeFromCart(${index})" title="Remove Item">
+                            <i class="fi fi-rs-trash"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="cart-item-bottom">
+                        <div class="qty-selector">
+                            <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                            <span class="qty-number">${qty}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                        </div>
+                        <div class="cart-item-price">₱ ${formattedLineTotal}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const formattedTotal = subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('summary-subtotal').innerText = '₱ ' + formattedTotal;
+    document.getElementById('summary-total').innerText = '₱ ' + formattedTotal;
+}
+
+// function to add/minus quantity in shopping cart
+function updateQuantity(index, change) {
+    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    if (!cart[index]) return;
+
+    if (!cart[index].quantity) cart[index].quantity = 1;
+    cart[index].quantity += change;
+
+    localStorage.setItem('pace_cart', JSON.stringify(cart));
+    renderCartPage(); 
+}
+
+// function to delete items in shopping cart
+function removeFromCart(index) {
+    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    cart.splice(index, 1); 
+    localStorage.setItem('pace_cart', JSON.stringify(cart)); 
+    renderCartPage(); 
+}
+
+window.addEventListener('DOMContentLoaded', renderCartPage);
