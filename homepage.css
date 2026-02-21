@@ -91,6 +91,10 @@
     display: inline-block;
 }
 
+#product-container {
+    max-width: var(--max-wide);
+}
+
 .seeall-btn {
     padding: 10px 25px;
     border-radius: 5px;

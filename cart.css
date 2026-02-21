@@ -305,13 +305,3 @@
 }
 
 /* SHOPPING CART END */
-
-/* WISHLIST ONLY */
-.wishlist-page-container {
-    max-width: var(--min-wide);
-}
-
-.wishlist-card:hover {
-    z-index: 1000;
-    /* REMOVED: padding-bottom: 5px; */
-}

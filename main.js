@@ -175,13 +175,17 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
             const isBack = performance.getEntriesByType("navigation")[0]?.type === "back_forward";
 
             if (isBack && sessionStorage.getItem("saved_products")) {
-
                 tempProducts = JSON.parse(sessionStorage.getItem("saved_products"));
+
+                if (sessionStorage.getItem("saved_limit")) {
+                    currentLimit = parseInt(sessionStorage.getItem("saved_limit"));
+                }
+
             } else {
-
                 tempProducts = [...tempProducts].sort(() => Math.random() - 0.5);
-
                 sessionStorage.setItem("saved_products", JSON.stringify(tempProducts));
+
+                sessionStorage.setItem("saved_limit", 12);
             }
         }
 
@@ -237,6 +241,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
 
 function loadMore() {
     currentLimit += 8;
+    sessionStorage.setItem("saved_limit", currentLimit);
     renderProducts(activeCategory, null, true);
 }
 
