@@ -169,9 +169,20 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
             tempProducts = products.filter(p => p.type === category);
         }
 
-        // randomize product in homepage & all product every refresh
+        // randomize product in 'homepage' & 'all product' every refresh
         if (randomize) {
-            tempProducts = [...tempProducts].sort(() => Math.random() - 0.5);
+
+            const isBack = performance.getEntriesByType("navigation")[0]?.type === "back_forward";
+
+            if (isBack && sessionStorage.getItem("saved_products")) {
+
+                tempProducts = JSON.parse(sessionStorage.getItem("saved_products"));
+            } else {
+
+                tempProducts = [...tempProducts].sort(() => Math.random() - 0.5);
+
+                sessionStorage.setItem("saved_products", JSON.stringify(tempProducts));
+            }
         }
 
         storedList = tempProducts;
@@ -183,7 +194,13 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
 
     displayProducts = storedList.slice(0, limitToUse);
 
+    let currentWishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+
     container.innerHTML = displayProducts.map(p => {
+
+        let isSaved = currentWishlist.some(item => item.id === p.id);
+
+        let heartClass = isSaved ? "fi-ss-heart" : "fi-rs-heart";
 
         return `
         <div class="product-card">
@@ -201,7 +218,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
                 <p>₱ ${p.price}</p>
             </div>
             <div class="product-btn">
-                <div class="wishlist"><button><i class="fi fi-rs-heart"></i></button></div>
+                <div class="wishlist"><button onclick="addToWishlist('${p.id}')"><i class="fi ${heartClass}"></i></button></div>
                 <div class="add" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>ADD TO CART</button></div>
                 <div class="buy"><button>BUY NOW</button></div>
             </div>
@@ -277,7 +294,7 @@ window.onload = function () {
 
     if (typeof products !== 'undefined') {
         let product;
-        
+
         if (targetId) {
             product = products.find(p => p.id === targetId);
         } else if (targetName) {
@@ -398,6 +415,27 @@ function loadProductDetails(p) {
             addToCart(p);
         };
     }
+
+    // product detail wishlist button connection
+    const wishBtn = document.querySelector('.pd-wish');
+    if (wishBtn) {
+
+        let wishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+        let isSaved = wishlist.some(item => item.id === p.id);
+        let heartIcon = wishBtn.querySelector('i');
+
+        heartIcon.className = isSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
+
+        wishBtn.onclick = function (event) {
+            event.preventDefault();
+
+            addToWishlist(p.id);
+
+            let updatedWishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+            let nowSaved = updatedWishlist.some(item => item.id === p.id);
+            heartIcon.className = nowSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
+        };
+    }
 }
 
 // product detail change image
@@ -458,6 +496,7 @@ accordions.forEach(acc => {
     });
 });
 
+/* ADD TO CART FUNCTIONALITY START */
 // add to cart function
 function addToCart(product) {
     if (!currentSelectedSize) {
@@ -467,7 +506,7 @@ function addToCart(product) {
 
     try {
         let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
-        const uniqueCartId = product.id + "-" + currentSelectedSize; 
+        const uniqueCartId = product.id + "-" + currentSelectedSize + "-" + product.color;
 
         const existingItemIndex = cart.findIndex(item => item.cartItemId === uniqueCartId);
 
@@ -489,16 +528,16 @@ function addToCart(product) {
         }
 
         localStorage.setItem('pace_cart', JSON.stringify(cart));
-        alert(`${product.name} (Size: ${currentSelectedSize}) has successfully added to your shopping cart`);
+        alert(`Product: ${product.name}\nCategory: ${product.type}\nSize: ${currentSelectedSize}\nColor: ${product.color}\nhas been added to your cart`);
 
         currentSelectedSize = null;
         document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active-size'));
-        
-        if(typeof renderCartPage === 'function') renderCartPage();
+
+        if (typeof renderCartPage === 'function') renderCartPage();
 
     } catch (error) {
         console.error("Cart Memory Error:", error);
-        localStorage.removeItem('pace_cart'); 
+        localStorage.removeItem('pace_cart');
         alert("A background memory glitch was fixed. Please click 'Add to Cart' again.");
     }
 }
@@ -529,12 +568,29 @@ function renderCartPage() {
     let subtotal = 0;
 
     container.innerHTML = cart.map((item, index) => {
-        let qty = item.quantity || 1; 
+        let qty = item.quantity || 1;
         let cleanPrice = parseFloat(item.price.replace(/,/g, ''));
         let lineTotal = cleanPrice * qty;
-        subtotal += lineTotal; 
+        subtotal += lineTotal;
 
         let formattedLineTotal = lineTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // Generate sizes based on type
+        let sizes = [];
+        if (item.type === 'MEN') sizes = ['8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '12.5', '13', '13.5'];
+        else if (item.type === 'WOMEN') sizes = ['5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'];
+        else if (item.type === 'KIDS') sizes = ['1Y', '1.5Y', '2Y', '2.5Y', '3Y', '3.5Y', '4Y', '4.5Y', '5Y', '5.5Y', '6Y', '6.5Y'];
+
+        let sizeOptionsHTML = sizes.map(size => {
+            let label = size;
+            if (item.type === 'MEN') label = 'M ' + size;
+            if (item.type === 'WOMEN') label = 'W ' + size;
+
+            let isSelected = item.size === label ? 'selected' : '';
+            return `<option value="${label}" ${isSelected}>${label}</option>`;
+        }).join('');
+
+        let colorOptionsHTML = `<option value="${item.color}" selected>${item.color}</option>`;
 
         return `
             <div class="cart-item-card">
@@ -547,8 +603,18 @@ function renderCartPage() {
                         <div class="item-text">
                             <h3>${item.name}</h3>
                             <p>${item.type}</p>
-                            <p>Color: ${item.color}</p>
-                            <p>Size: ${item.size}</p>
+                            <p class="cart-item-dropdown-container">
+                                Color: 
+                                <select class="cart-dropdown" onchange="updateCartItemColor(${index}, this.value)">
+                                    ${colorOptionsHTML}
+                                </select>
+                            </p>
+                            <p class="cart-item-dropdown-container">
+                                Size: 
+                                <select class="cart-dropdown" onchange="updateCartItemSize(${index}, this.value)">
+                                    ${sizeOptionsHTML}
+                                </select>
+                            </p>
                         </div>
                         <button class="cart-delete-btn" onclick="removeFromCart(${index})" title="Remove Item">
                             <i class="fi fi-rs-trash"></i>
@@ -582,15 +648,167 @@ function updateQuantity(index, change) {
     cart[index].quantity += change;
 
     localStorage.setItem('pace_cart', JSON.stringify(cart));
-    renderCartPage(); 
+    renderCartPage();
+}
+
+// function to update size directly in the shopping cart
+function updateCartItemSize(index, newSize) {
+    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    if (!cart[index]) return;
+
+    let item = cart[index];
+    let newCartItemId = item.productId + "-" + newSize + "-" + item.color;
+
+    let existingItemIndex = cart.findIndex((cartItem, i) => cartItem.cartItemId === newCartItemId && i !== index);
+
+    if (existingItemIndex > -1) {
+
+        cart[existingItemIndex].quantity += item.quantity;
+        cart.splice(index, 1);
+    } else {
+
+        cart[index].size = newSize;
+        cart[index].cartItemId = newCartItemId;
+    }
+
+    localStorage.setItem('pace_cart', JSON.stringify(cart));
+    renderCartPage();
+}
+
+// function to update color directly in the shopping cart
+function updateCartItemColor(index, newColor) {
+    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    if (!cart[index]) return;
+
+    let item = cart[index];
+
+    let newCartItemId = item.productId + "-" + item.size + "-" + newColor;
+
+    let existingItemIndex = cart.findIndex((cartItem, i) => cartItem.cartItemId === newCartItemId && i !== index);
+
+    if (existingItemIndex > -1) {
+
+        cart[existingItemIndex].quantity += item.quantity;
+        cart.splice(index, 1);
+    } else {
+        cart[index].color = newColor;
+        cart[index].cartItemId = newCartItemId;
+    }
+
+    localStorage.setItem('pace_cart', JSON.stringify(cart));
+    renderCartPage();
 }
 
 // function to delete items in shopping cart
 function removeFromCart(index) {
     let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
-    cart.splice(index, 1); 
-    localStorage.setItem('pace_cart', JSON.stringify(cart)); 
-    renderCartPage(); 
+    cart.splice(index, 1);
+    localStorage.setItem('pace_cart', JSON.stringify(cart));
+    renderCartPage();
 }
 
 window.addEventListener('DOMContentLoaded', renderCartPage);
+
+/* ADD TO CART FUNCTIONALITY END */
+
+/* ADD TO WISHLIST FUNCTIONALITY START */
+// add to wishlist function
+function addToWishlist(productId) {
+
+    let wishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+
+    const index = wishlist.findIndex(item => item.id === productId);
+
+    if (index > -1) {
+        wishlist.splice(index, 1);
+
+    } else {
+        const product = products.find(p => p.id === productId);
+
+        if (product) {
+
+            wishlist.push(product);
+            alert(`${product.name} has been added to your wishlist!`);
+        }
+    }
+
+    localStorage.setItem('pace_wishlist', JSON.stringify(wishlist));
+
+    if (document.getElementById('wishlist-container')) renderWishlistPage();
+
+    if (document.getElementById('product-container')) {
+        const path = window.location.pathname;
+        const isHomepage = path.includes('homepage.html') || path === '/';
+
+        if (isHomepage) {
+            renderProducts(activeCategory, 8, false);
+        } else {
+            renderProducts(activeCategory, null, false);
+        }
+    }
+}
+
+// wishlist item function and design
+function renderWishlistPage() {
+    const container = document.getElementById('wishlist-container');
+    const emptyState = document.getElementById('wishlist-empty');
+
+    if (!container) return;
+
+    let wishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+    document.getElementById('cart-item-count').innerText = `(${wishlist.length})`;
+
+    const isEmpty = wishlist.length === 0;
+
+    emptyState.classList.toggle('hidden', !isEmpty);
+    container.classList.toggle('hidden', isEmpty);
+
+    if (isEmpty) {
+        container.innerHTML = '';
+        return;
+    }
+
+    if (!isEmpty) {
+        container.innerHTML = wishlist.map(p => `
+            <div class="product-card wishlist-card">
+                
+                <button class="product-image" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                    ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
+                    <img src="${p.img}" class="primary-img">
+                    <img src="${p.hover}" class="hover-img"> 
+                </button>
+                <div class="product-name">
+                    <h5>${p.name}</h5>
+                    <p>1 color</p>
+                </div>
+                <div class="product-price">
+                    <p><i>${p.type}</i></p>
+                    <p>₱ ${p.price}</p>
+                </div>
+                
+                <div class="product-btn">
+                    <div class="wishlist">
+                        <button onclick="addToWishlist('${p.id}')">
+                            <i class="fi fi-ss-heart"></i>
+                        </button>
+                    </div>
+                    <div class="add" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                        <button>ADD TO CART</button>
+                    </div>
+                    <div class="buy">
+                        <button>BUY NOW</button>
+                    </div>
+                </div>
+                
+            </div>
+        `).join('');
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (typeof renderCartPage === 'function') renderCartPage();
+
+    if (document.getElementById('wishlist-container')) renderWishlistPage();
+});
+
+/* ADD TO WISHLIST FUNCTIONALITY END */
