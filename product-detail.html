@@ -29,9 +29,9 @@
                     <input type="search" class="search-text" placeholder="Type to search">
                     <button class="search-btn"><i class="fi fi-rr-search"></i></button>
                 </div>
-                <a href="wishlist.html"><i class="fi fi-rs-heart"></i></a>
-                <a href="cart.html"><i class="fi fi-rr-shopping-cart"></i></a>
-                <a href="signup.html"><i class="fi fi-rs-user"></i></a>
+                <a href="wishlist.html" onclick="openWishlistPanel(event)"><i class="fi fi-rs-heart"></i></a>
+                <a href="cart.html" onclick="openCartPanel(event)"><i class="fi fi-rr-shopping-cart"></i></a>
+                <div id="user-popup-container" class="user-popup-container"></div>
             </div>
         </div>
     </div>
@@ -50,6 +50,7 @@
         <div class="pd-info">
             <div class="pd-breadcrumb">
                 <a href="homepage.html">Home</a> /
+                <a href="all-product.html">All Shoes</a> /
                 <a href="#" id="bread-cat">Men</a> /
                 <a href="#" id="bread-name" style="color: var(--darkgray-text); font-weight: 600;">Pace 680</a>
             </div>
@@ -66,6 +67,8 @@
                 <span class="pd-label">Size</span>
                 <a class="size-guide-link" onclick="openSG()">Size Guide</a>
             </div>
+
+            <p id="size-error-message" class="error-text error-hidden">Please select a size.</p>
 
             <div class="size-grid" id="size-grid"></div>
 
@@ -190,7 +193,7 @@
         </div>
     </footer>
 
-    <div class="sg-overlay" id="sg-overlay" onclick="closeSG()"></div>
+    <div id="sg-overlay" onclick="closeSG()"></div>
 
     <div class="sg-panel" id="sg-panel">
         <div class="sg-header-top">
@@ -415,6 +418,30 @@
 
         </div>
     </div>
+
+    <dialog id="success-modal">
+        <div class="modal-header">
+            <span class="success-title"><i class="fi fi-rs-check-circle"></i>1 item added to your cart!</span>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+
+        <div class="modal-product">
+            <img id="modal-img" src="" alt="Product Image">
+            <div class="modal-details">
+                <div class="title-price-row">
+                    <h4 id="modal-name"></h4>
+                    <p id="modal-price" class="price"></p>
+                </div>
+                <p class="modal-variant">Color: <span id="modal-color"></span></p>
+                <p class="modal-variant">Size: <span id="modal-size"></span></p>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <a href="all-product.html" class="modal-btn btn-outline">CONTINUE SHOPPING</a>
+            <a href="cart.html" class="modal-btn btn-solid">VIEW CART</a>
+        </div>
+    </dialog>
 
     <script src="main.js"></script>
 </body>

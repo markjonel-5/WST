@@ -269,10 +269,12 @@
     transform: translate(-50%, -50%) scale(1.05);
 }
 
-.load-box {
-    text-align: center;
-    margin: 40px 0;
-    width: 100%;
+.load-more-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 40px auto 80px;
 }
 
 #load-btn {
@@ -290,6 +292,14 @@
 
 #load-btn:hover {
     background-color: var(--brand-color);
+}
+
+#load-count {
+    color: var(--gray-text);
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: 0.5px;
 }
 
 /* ALL PRODUCT CATEGORIES IMAGE END */

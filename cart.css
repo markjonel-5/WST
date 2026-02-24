@@ -62,7 +62,7 @@
     flex: 2;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
 
 /* CART ITEM (LEFT) */
@@ -71,12 +71,14 @@
     border-radius: 10px;
     background: #fff;
     min-height: 250px;
-    padding: 0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
 }
 
 .cart-item-img-container {
     width: 250px;
+    padding: 20px 8px 20px 0;
+    cursor: pointer;
 }
 
 .cart-item-img {
@@ -90,7 +92,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 20px 25px;
+    padding: 25px;
 }
 
 .cart-item-top {
@@ -139,12 +141,13 @@
     padding: 0;
     transition: 0.2s ease-in-out;
 }
+
 .cart-delete-btn i {
     font-size: 24px;
 }
 
 .cart-delete-btn:hover {
-    color: #e74c3c;
+    color: var(--brand-color);
     transform: scale(1.1);
 }
 
@@ -305,3 +308,135 @@
 }
 
 /* SHOPPING CART END */
+
+/* DELETE MODAL START */
+
+#delete-confirm-modal {
+    border: none;
+    padding: 24px 24px 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    background-color: var(--bg-color);
+}
+
+#delete-confirm-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(1px);
+}
+
+#delete-confirm-modal[open] {
+    animation: popIn 0.3s ease forwards;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.delete-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.delete-header i {
+    font-size: 50px;
+    color: var(--brand-color);
+    margin-bottom: 5px;
+}
+
+.delete-header h4 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--darkgray-text);
+}
+
+.delete-text {
+    text-align: center;
+    color: var(--gray-text);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.delete-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.delete-actions button {
+    flex: 1;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel {
+    border: 2px solid var(--brand-color);
+    color: var(--brand-color);
+    background: var(--bg-color);
+}
+
+.btn-cancel:hover {
+    border: 2px solid var(--darkgray-text);
+    color: var(--bg-color);
+    background: var(--darkgray-text);
+}
+
+.btn-remove {
+    background-color: var(--brand-color);
+    color: var(--bg-color);
+    border: 2px solid var(--brand-color);
+}
+
+.btn-remove:hover {
+    border: 2px solid var(--darkgray-text);
+    color: var(--bg-color);
+    background: var(--darkgray-text);
+}
+
+/* DELETE MODAL END  */
+
+/* CART CHECKBOX START */
+.select-all-wrapper {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--darkgray-text);
+}
+
+.cart-item-checkbox-container {
+    display: flex;
+    align-items: center;
+    padding: 0 15px 0 20px;
+}
+
+.cart-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--brand-color);
+}
+
+.select-all-wrapper label {
+    cursor: pointer;
+}
+/* CART CHECKBOX END */

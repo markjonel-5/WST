@@ -29,9 +29,9 @@
                     <input type="search" class="search-text" placeholder="Type to search">
                     <button class="search-btn"><i class="fi fi-rr-search"></i></button>
                 </div>
-                <a href="wishlist.html"><i class="fi fi-rs-heart"></i></a>
-                <a href="cart.html"><i class="fi fi-rr-shopping-cart"></i></a>
-                <a href="signup.html"><i class="fi fi-rs-user"></i></a>
+                <a href="wishlist.html" onclick="openWishlistPanel(event)"><i class="fi fi-rs-heart"></i></a>
+                <a href="cart.html" onclick="openCartPanel(event)"><i class="fi fi-rr-shopping-cart"></i></a>
+                <div id="user-popup-container" class="user-popup-container"></div>
             </div>
         </div>
     </div>
@@ -48,15 +48,21 @@
         </div>
 
         <div id="cart-empty" class="empty-state hidden">
-            <i class="fi fi-rr-shopping-cart-add" style="font-size: 70px; color: var(--brand-color);"></i>
+            <i class="fi fi-rr-shopping-cart" style="font-size: 70px; color: var(--brand-color);"></i>
             <h2>YOUR CART IS EMPTY</h2>
             <p>When you add products to your cart, they will appear here.</p>
-            <a href="all-product.html" class="shop-now-btn">SHOP ALL SHOES</a>
+            <a href="all-product.html" class="shop-now-btn">CONTINUE SHOPPING</a>
         </div>
 
         <div id="cart-content" class="cart-layout hidden">
 
-            <div class="cart-items-section" id="cart-items-container">
+            <div class="cart-items-section">
+                <div class="select-all-wrapper" id="select-all-container">
+                    <input type="checkbox" id="select-all-checkbox" class="cart-checkbox" onchange="toggleSelectAllCartItems(this.checked)">
+                    <label for="select-all-checkbox">Select All</label>
+                </div>
+
+                <div id="cart-items-container"></div>
             </div>
 
             <div class="cart-summary-section">
@@ -64,16 +70,16 @@
 
                 <div class="summary-row">
                     <a>Subtotal</a>
-                    <span id="summary-subtotal">₱ 0.00</span>
+                    <span id="summary-subtotal"></span>
                 </div>
                 <div class="summary-row">
                     <a>Estimated Delivery</a>
-                    <span style="color: #1b8f50">FREE</span>
+                    <span id="summary-delivery"></span>
                 </div>
                 <hr class="summary-divider">
                 <div class="summary-row total-row">
                     <a>Total</a>
-                    <span id="summary-total">₱ 0.00</span>
+                    <span id="summary-total"></span>
                 </div>
                 <button class="checkout-btn">Checkout</button>
 
@@ -149,6 +155,22 @@
             </div>
         </div>
     </footer>
+
+    <dialog id="delete-confirm-modal">
+        <div class="delete-modal-content">
+            <div class="delete-header">
+                <i class="fi fi-rs-trash"></i>
+                <h4>Remove from Cart?</h4>
+            </div>
+
+            <p class="delete-text">Are you sure you want to remove this item?</p>
+
+            <div class="delete-actions">
+                <button onclick="closeDeleteModal()" class="btn-cancel">CANCEL</button>
+                <button id="btn-confirm-remove" class="btn-remove">REMOVE</button>
+            </div>
+        </div>
+    </dialog>
 
     <script src="main.js"></script>
 </body>

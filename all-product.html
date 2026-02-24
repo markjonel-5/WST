@@ -28,9 +28,9 @@
                     <input type="search" class="search-text" placeholder="Type to search">
                     <button class="search-btn"><i class="fi fi-rr-search"></i></button>
                 </div>
-                <a href="wishlist.html"><i class="fi fi-rs-heart"></i></a>
-                <a href="cart.html"><i class="fi fi-rr-shopping-cart"></i></a>
-                <a href="signup.html"><i class="fi fi-rs-user"></i></a>
+                <a href="wishlist.html" onclick="openWishlistPanel(event)"><i class="fi fi-rs-heart"></i></a>
+                <a href="cart.html" onclick="openCartPanel(event)"><i class="fi fi-rr-shopping-cart"></i></a>
+                <div id="user-popup-container" class="user-popup-container"></div>
             </div>
         </div>
     </div>
@@ -76,8 +76,9 @@
 
     <div class="product-section" id="product-container"></div>
 
-    <div class="load-box">
-        <button id="load-btn" onclick="loadMore()">LOAD MORE</button>
+    <div class="load-more-section">
+        <p id="load-count"></p>
+        <button id="load-btn" class="load-btn" onclick="loadMore()">LOAD MORE</button>
     </div>
 
     <footer class="footer-section">

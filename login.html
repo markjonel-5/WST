@@ -28,9 +28,9 @@
                     <input type="search" class="search-text" placeholder="Type to search">
                     <button class="search-btn"><i class="fi fi-rr-search"></i></button>
                 </div>
-                <a href="wishlist.html"><i class="fi fi-rs-heart"></i></a>
-                <a href="cart.html"><i class="fi fi-rr-shopping-cart"></i></a>
-                <a href="signup.html"><i class="fi fi-rs-user"></i></a>
+                <a href="wishlist.html" onclick="openWishlistPanel(event)"><i class="fi fi-rs-heart"></i></a>
+                <a href="cart.html" onclick="openCartPanel(event)"><i class="fi fi-rr-shopping-cart"></i></a>
+                <div id="user-popup-container" class="user-popup-container"></div>
             </div>
         </div>
     </div>
@@ -41,21 +41,21 @@
             <div class="auth-image"></div>
 
             <div class="auth-content">
-                <form action="homepage.html">
+                <form id="login-form">
                     <h1 class="auth-title">Login to <span>PACE</span></h1>
                     <p class="auth-subtitle">Welcome back! Please enter your details.</p>
 
-                    <input type="text" class="input-field" placeholder="Username">
-                    <input type="password" class="input-field" placeholder="Password">
+                    <input type="text" id="login-username" class="input-field" placeholder="Username" required>
+                    <p class="field-error-msg" id="login-username-error"></p>
+
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" class="input-field" placeholder="Password" required>
+                        <i class="fi fi-rr-eye-crossed toggle-password" data-target="login-password"></i>
+                    </div>
+                    <p class="field-error-msg" id="login-password-error"></p>
 
                     <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
-                    <button class="auth-btn">LOGIN</button>
-
-                    <div class="auth-divider"><span>OR LOGIN WITH</span></div>
-                    <div class="auth-social">
-                        <a href="#"><i class="fi fi-brands-google"></i></a>
-                        <a href="#"><i class="fi fi-brands-facebook"></i></a>
-                    </div>
+                    <button type="submit" class="auth-btn">LOGIN</button>
 
                     <p class="bottom-text">New here? <a href="signup.html" class="bottom-link">Sign Up</a></p>
                 </form>
@@ -100,6 +100,8 @@
             </div>
         </div>
     </footer>
+
+    <script src="main.js"></script>
 </body>
 
 </html>

@@ -29,21 +29,21 @@
                     <input type="search" class="search-text" placeholder="Type to search">
                     <button class="search-btn"><i class="fi fi-rr-search"></i></button>
                 </div>
-                <a href="wishlist.html"><i class="fi fi-rs-heart"></i></a>
-                <a href="cart.html"><i class="fi fi-rr-shopping-cart"></i></a>
-                <a href="signup.html"><i class="fi fi-rs-user"></i></a>
+                <a href="wishlist.html" onclick="openWishlistPanel(event)"><i class="fi fi-rs-heart"></i></a>
+                <a href="cart.html" onclick="openCartPanel(event)"><i class="fi fi-rr-shopping-cart"></i></a>
+                <div id="user-popup-container" class="user-popup-container"></div>
             </div>
         </div>
     </div>
 
     <div class="cart-page-container">
         <div class="breadcrumb-section">
-            <a href="homepage.html">Home</a> / <span class="current-page">Wishlist</span>
+            <a href="homepage.html">Home</a> / <span class="current-page">My Wishlist</span>
         </div>
 
         <div class="product-header-wrapper">
             <div class="product-header">
-                <h1>Wishlist <span id="cart-item-count">(0)</span></h1>
+                <h1>My Wishlist <span id="cart-item-count">(0)</span></h1>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
             <i class="fi fi-rs-heart-crack" style="font-size: 70px; color: var(--brand-color);"></i>
             <h2>YOUR WISHLIST IS EMPTY</h2>
             <p>When you add products to your wishlist, they will appear here.</p>
-            <a href="all-product.html" class="shop-now-btn">SHOP ALL SHOES</a>
+            <a href="all-product.html" class="shop-now-btn">CONTINUE SHOPPING</a>
         </div>
 
         <div class="product-section wishlist-section" id="wishlist-container"></div>
