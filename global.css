@@ -312,6 +312,7 @@ body {
 }
 
 /* SHARED BASE */
+/* SHARED BASE */
 .user-action-card {
     position: absolute;
     right: 0;
@@ -328,12 +329,14 @@ body {
     opacity: 0;
     transform: translateY(15px);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none; 
 }
 
 .user-action-card.show {
     display: flex;
     opacity: 1;
     transform: translateY(0);
+    pointer-events: auto; 
 }
 
 /* LOGGED-IN VIEW */
