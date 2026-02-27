@@ -5,43 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="global.css">
-    <link rel="stylesheet" href="product-card.css">
+    <link rel="stylesheet" href="shop.css">
 </head>
 
 <body>
-    <div class="navbar-section">
-        <div class="nav-wrapper">
-            <div class="nav-menu">
-                <a href="homepage.html">HOME</a>
-                <a href="men.html">MEN</a>
-                <a href="women.html">WOMEN</a>
-                <a href="kids.html">KIDS</a>
-                <a href="new.html">NEW ARRIVAL</a>
-            </div>
+    <div id="navbar-container"></div>
 
-            <div class="nav-logo">
-                <a href="homepage.html"><img src="Brand Image/pace logo orange.png" alt="" class="logo-img"></a>
-            </div>
-
-            <div class="nav-icon">
-                <div class="search-box">
-                    <input type="search" class="search-text" placeholder="Type to search">
-                    <button class="search-btn"><i class="fi fi-rr-search"></i></button>
-                </div>
-                <a href="wishlist.html" onclick="openWishlistPanel(event)"><i class="fi fi-rs-heart"></i></a>
-                <a href="cart.html" onclick="openCartPanel(event)"><i class="fi fi-rr-shopping-cart"></i></a>
-                <div id="user-popup-container" class="user-popup-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="breadcrumb-section">
+    <div class="breadcrumb-section reveal">
         <a href="homepage.html">Home /</a>
         <a href="all-product.html">All Shoes /</a>
         <span class="current-page">Women</span>
     </div>
 
-    <div class="product-header-wrapper">
+    <div class="product-header-wrapper reveal">
 
         <div class="product-header">
             <h1>Women's Shoes <span>(12)</span></h1>
@@ -58,44 +34,9 @@
         </div>
     </div>
 
-    <div class="product-section" id="product-container"></div>
+    <div class="product-section reveal" id="product-container"></div>
 
-    <footer class="footer-section">
-        <div class="footer-container">
-
-            <div class="footer-column">
-                <h4>COMPANY</h4>
-                <a href="">About Pace</a>
-                <a href="">Collection</a>
-            </div>
-
-            <div class="footer-column">
-                <h4>SUPPORT</h4>
-                <a href="">Contact Us</a>
-                <a href="">FAQs</a>
-            </div>
-
-            <div class="footer-column">
-                <h4>CONNECT WITH US</h4>
-                <div class="social">
-                    <a href="#"><i class="fi fi-brands-facebook"></i></a>
-                    <a href="#"><i class="fi fi-brands-instagram"></i></a>
-                    <a href="#"><i class="fi fi-brands-twitter-alt"></i></a>
-                    <a href="#"><i class="fi fi-brands-youtube"></i></a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2026 PACE, Inc. All Rights Reserved.</p>
-
-            <div class="legal-links">
-                <a href="">Privacy Policy</a>
-                <a href="">Terms & Conditions</a>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-container"></div>
 
     <script src="global.js"></script>
     <script src="shop.js"></script>

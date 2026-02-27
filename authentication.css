@@ -103,7 +103,7 @@
 .auth-btn {
     width: 100%;
     padding: 15px;
-    background: var(--darkgray-text);
+    background-color: var(--brand-color);
     color: var(--bg-color);
     border: none;
     border-radius: 5px;
@@ -115,20 +115,20 @@
 }
 
 .auth-btn:hover {
-    background: var(--brand-color);
+    background-color: var(--darkgray-text);
     transform: translateY(-1px);
 }
 
 .bottom-text {
     margin-top: 20px;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--gray-text);
     text-align: center;
 }
 
 .bottom-link {
     color: var(--brand-color);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
@@ -139,9 +139,9 @@
 }
 
 .helper-text {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--gray-text);
-    margin-top: -10px;
+    margin-top: -15px;
     margin-bottom: 15px;
 }
 
@@ -212,32 +212,33 @@
 .terms-checkbox-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     margin: 10px 0;
 }
 
 #terms-checkbox {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     cursor: pointer;
     accent-color: var(--brand-color);
 }
 
 .terms-text {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--gray-text);
 }
 
 .terms-link {
     color: var(--brand-color);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    text-decoration: underline;
 }
 
 .terms-link:hover {
-    text-decoration: underline;
+    color: var(--darkgray-text);
 }
 
 /* TERMS AND CONDITIONS MODAL */

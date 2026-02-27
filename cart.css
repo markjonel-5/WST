@@ -31,7 +31,7 @@
 }
 
 .shop-now-btn {
-    background: var(--darkgray-text);
+    background: var(--brand-color);
     color: var(--bg-color);
     padding: 13px 26px;
     font-size: 18px;
@@ -44,7 +44,7 @@
 }
 
 .shop-now-btn:hover {
-    background: var(--brand-color);
+    background: var(--darkgray-text);
 }
 
 /* SHOPPING CART WITH ITEM */
@@ -248,7 +248,7 @@
 .checkout-btn {
     width: 100%;
     padding: 16px;
-    background: var(--darkgray-text);
+    background: var(--brand-color);
     color: var(--bg-color);
     border: none;
     font-size: 18px;
@@ -256,10 +256,11 @@
     cursor: pointer;
     margin-top: 20px;
     transition: 0.3s;
+    border-radius: 6px;
 }
 
 .checkout-btn:hover {
-    background: var(--brand-color);
+    background: var(--darkgray-text);
 }
 
 /* CART POLICIES SECTION */

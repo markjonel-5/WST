@@ -22,6 +22,8 @@ window.addEventListener('DOMContentLoaded', () => {
                             localStorage.setItem('pace_users', JSON.stringify(users));
                             localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
                             updateSidebarProfile(currentUser);
+
+                            if (typeof renderUserMenu === 'function') renderUserMenu();
                         }
                     };
                     reader.readAsDataURL(file);
@@ -55,23 +57,26 @@ function loadAccountData() {
         return;
     }
 
-    document.getElementById('disp-name').innerText = `${currentUser.firstName} ${currentUser.lastName || ''}`;
-    document.getElementById('disp-phone').innerText = currentUser.phone || 'add a phone number';
-    document.getElementById('disp-email').innerText = currentUser.email;
-    document.getElementById('disp-username').innerText = currentUser.username;
-
-    document.getElementById('acc-fname').value = currentUser.firstName;
-    document.getElementById('acc-lname').value = currentUser.lastName || '';
-    
-    let savedPhone = currentUser.phone || '';
-    if (savedPhone.startsWith('+63 9')) {
-        savedPhone = savedPhone.substring(5).trim();
-    }
-    document.getElementById('acc-phone').value = savedPhone;
-    document.getElementById('acc-email').value = currentUser.email;
-    document.getElementById('acc-username').value = currentUser.username;
-
     updateSidebarProfile(currentUser);
+
+    const dispName = document.getElementById('disp-name');
+    if (dispName) {
+        dispName.innerText = `${currentUser.firstName} ${currentUser.lastName || ''}`;
+        document.getElementById('disp-phone').innerText = currentUser.phone || 'add a phone number';
+        document.getElementById('disp-email').innerText = currentUser.email;
+        document.getElementById('disp-username').innerText = currentUser.username;
+
+        document.getElementById('acc-fname').value = currentUser.firstName;
+        document.getElementById('acc-lname').value = currentUser.lastName || '';
+        
+        let savedPhone = currentUser.phone || '';
+        if (savedPhone.startsWith('+63 9')) {
+            savedPhone = savedPhone.substring(5).trim();
+        }
+        document.getElementById('acc-phone').value = savedPhone;
+        document.getElementById('acc-email').value = currentUser.email;
+        document.getElementById('acc-username').value = currentUser.username;
+    }
 }
 /* LOAD ACCOUNT DATA FUNCTION END */
 
@@ -218,15 +223,18 @@ function updateSidebarProfile(user) {
     document.getElementById('sidebar-name').innerText = `${user.firstName} ${user.lastName || ''}`;
     const initialsEl = document.getElementById('sidebar-initials');
     const imgEl = document.getElementById('sidebar-img');
+    const deleteBtn = document.getElementById('delete-photo-btn'); // Selects the new button
 
     if (user.profilePic) {
         imgEl.src = user.profilePic;
         imgEl.style.display = 'block';
         initialsEl.style.display = 'none';
+        if (deleteBtn) deleteBtn.style.display = 'flex'; // Shows trash can
     } else {
         initialsEl.innerText = (user.firstName.charAt(0) + (user.lastName ? user.lastName.charAt(0) : '')).toUpperCase();
         initialsEl.style.display = 'flex';
         imgEl.style.display = 'none';
+        if (deleteBtn) deleteBtn.style.display = 'none'; // Hides trash can
     }
 }
 /* SIDEBAR PROFILE HELPER END */
@@ -288,15 +296,86 @@ document.querySelectorAll('.account-dialog').forEach(dialog => {
 /* MODAL OPEN AND CLOSE CONTROLS END */
 
 /* DELETE ACCOUNT FUNCTION START */
-function deleteAccount() {
-    const confirmation = confirm("Are you sure you want to delete your Pace account? This action cannot be undone.");
-    if (confirmation) {
-        const currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
-        let users = JSON.parse(localStorage.getItem('pace_users')) || [];
-        users = users.filter(u => u.email !== currentUser.email);
-        localStorage.setItem('pace_users', JSON.stringify(users));
-        localStorage.removeItem('pace_current_user');
-        window.location.href = "homepage.html";
+window.openDeleteAccountModal = function () {
+    const modal = document.getElementById('delete-account-modal');
+    const nav = document.querySelector('.navbar-section');
+
+    if (modal) {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        if (nav) nav.style.right = `${scrollbarWidth}px`;
+        modal.showModal();
     }
-}
+};
+
+window.closeDeleteAccountModal = function () {
+    const modal = document.getElementById('delete-account-modal');
+    if (modal) {
+        modal.close(); 
+    }
+};
+
+window.executeDeleteAccount = function () {
+    const currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
+    let users = JSON.parse(localStorage.getItem('pace_users')) || [];
+
+    users = users.filter(u => u.email !== currentUser.email);
+
+    localStorage.setItem('pace_users', JSON.stringify(users));
+    localStorage.removeItem('pace_current_user');
+
+    window.location.href = "homepage.html";
+};
 /* DELETE ACCOUNT FUNCTION END */
+
+/* DELETE PROFILE PHOTO MODAL START */
+window.openDeletePhotoModal = function () {
+    const modal = document.getElementById('delete-photo-modal');
+    const nav = document.querySelector('.navbar-section');
+
+    if (modal) {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        if (nav) nav.style.right = `${scrollbarWidth}px`;
+        modal.showModal();
+    }
+};
+
+window.closeDeletePhotoModal = function () {
+    const modal = document.getElementById('delete-photo-modal');
+    const nav = document.querySelector('.navbar-section');
+    
+    if (modal) {
+        modal.close();
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '0px';
+        if (nav) nav.style.right = '0px';
+    }
+};
+
+window.executeDeletePhoto = function() {
+    let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
+    if (!currentUser) return;
+
+    delete currentUser.profilePic;
+
+    let users = JSON.parse(localStorage.getItem('pace_users')) || [];
+    let userIndex = users.findIndex(u => u.email === currentUser.email);
+    if (userIndex > -1) {
+        delete users[userIndex].profilePic;
+        localStorage.setItem('pace_users', JSON.stringify(users));
+    }
+
+    localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
+    updateSidebarProfile(currentUser);
+    if (typeof renderUserMenu === 'function') renderUserMenu();
+    
+    const photoUpload = document.getElementById('profile-upload');
+    if(photoUpload) photoUpload.value = '';
+
+    closeDeletePhotoModal();
+};
+
+/* DELETE PROFILE PHOTO MODAL END */

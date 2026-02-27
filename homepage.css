@@ -272,6 +272,73 @@
     right: 20px;
 }
 
+.category-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.image-track img {
+    flex: 0 0 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom center;
+}
+
+.category-info {
+    transition: background-color 0.8s ease;
+}
+
+.text-slide-up {
+    animation: textFadeUp 0.6s ease forwards;
+}
+
+@keyframes textFadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 20;
+}
+
+.carousel-indicators .dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators .dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.carousel-indicators .dot.active {
+    background-color: #fff;
+    transform: scale(1.3);
+}
+
 /* CATEGORY SECTION END */
 
 /* ABOUT SECTION START */
@@ -399,8 +466,8 @@
     font-size: 18px;
 }
 
-input,
-textarea {
+.contact-box input,
+.contact-box textarea {
     width: 100%;
     padding: 20px;
     margin-bottom: 20px;
@@ -413,14 +480,14 @@ textarea {
     border-radius: 2px;
 }
 
-input:focus,
-textarea:focus {
+.contact-box input:focus,
+.contact-box textarea:focus {
     border-color: var(--brand-color);
     background: var(--bg-color);
     box-shadow: 0 0 0 1px rgb(0, 0, 0, 0.1);
 }
 
-textarea {
+.contact-box textarea {
     height: 200px;
     resize: vertical;
 }

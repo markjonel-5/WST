@@ -6,7 +6,7 @@ function renderCartPage() {
     const countHeader = document.getElementById('cart-item-count');
     if (!container) return;
 
-    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    let cart = getCartData();
     let totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
     countHeader.innerText = totalItems === 1 ? ' (1)' : ' (' + totalItems + ')';
 
@@ -94,36 +94,33 @@ function renderCartPage() {
 
 // SELECT INDIVIDUAL CART ITEM
 function toggleCartItem(index, isChecked) {
-    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    let cart = getCartData();
     if (cart[index]) {
         cart[index].selected = isChecked;
-        localStorage.setItem('pace_cart', JSON.stringify(cart));
-        renderCartPage();
+        saveCartData(cart);
     }
 }
 
 // SELECT ALL CART ITEMS
 function toggleSelectAllCartItems(isChecked) {
-    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    let cart = getCartData();
     cart.forEach(item => item.selected = isChecked);
-    localStorage.setItem('pace_cart', JSON.stringify(cart));
-    renderCartPage();
+    saveCartData(cart);
 }
 
 // UPDATE QUANTITY FUNCTION
 function updateQuantity(index, change) {
-    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    let cart = getCartData();
     if (!cart[index]) return;
     if (!cart[index].quantity) cart[index].quantity = 1;
     cart[index].quantity += change;
     if(cart[index].quantity < 1) cart[index].quantity = 1;
-    localStorage.setItem('pace_cart', JSON.stringify(cart));
-    renderCartPage();
+    saveCartData(cart);
 }
 
 // UPDATE COLOR FUNCTION
 function updateCartItemColor(index, newColor) {
-    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    let cart = getCartData();
     if (!cart[index]) return;
     let item = cart[index];
     let newVariant = products.find(p => p.name === item.name && p.type === item.type && p.color === newColor);
@@ -141,13 +138,12 @@ function updateCartItemColor(index, newColor) {
         cart[index].image = newVariant.img;
         cart[index].cartItemId = newCartItemId;
     }
-    localStorage.setItem('pace_cart', JSON.stringify(cart));
-    renderCartPage();
+    saveCartData(cart);
 }
 
 // UPDATE SIZE FUNCTION
 function updateCartItemSize(index, newSize) {
-    let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+    let cart = getCartData();
     if (!cart[index]) return;
     let item = cart[index];
     let newCartItemId = item.productId + "-" + newSize + "-" + item.color;
@@ -160,8 +156,7 @@ function updateCartItemSize(index, newSize) {
         cart[index].size = newSize;
         cart[index].cartItemId = newCartItemId;
     }
-    localStorage.setItem('pace_cart', JSON.stringify(cart));
-    renderCartPage();
+    saveCartData(cart);
 }
 
 // REMOVE ITEM FROM CART FUNCTION
@@ -170,11 +165,10 @@ function removeFromCart(index) {
     const confirmBtn = document.getElementById('btn-confirm-remove');
     if (modal) modal.showModal();
     confirmBtn.onclick = function () {
-        let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+        let cart = getCartData();
         cart.splice(index, 1);
-        localStorage.setItem('pace_cart', JSON.stringify(cart));
+        saveCartData(cart);
         modal.close();
-        renderCartPage();
     };
 }
 
@@ -188,7 +182,7 @@ function renderWishlistPage() {
     const emptyState = document.getElementById('wishlist-empty');
     if (!container) return;
 
-    let wishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+    let wishlist = getWishlistData();
     document.getElementById('cart-item-count').innerText = `(${wishlist.length})`;
     const isEmpty = wishlist.length === 0;
 
@@ -200,28 +194,33 @@ function renderWishlistPage() {
         return;
     }
 
-    container.innerHTML = wishlist.map(p => `
-        <div class="product-card wishlist-card">
-            <button class="product-image" onclick="window.location.href='product-detail.html?id=${p.id}'">
-                ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
-                <img src="${p.img}" class="primary-img">
-                <img src="${p.hover}" class="hover-img"> 
-            </button>
-            <div class="product-name">
-                <h5>${p.name}</h5>
-                <p>1 color</p>
+    container.innerHTML = wishlist.map(savedItem => {
+
+        let p = products.find(prod => prod.id === savedItem.id) || savedItem;
+
+        return `
+            <div class="product-card wishlist-card">
+                <button class="product-image" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                    ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
+                    <img src="${p.img}" class="primary-img">
+                    <img src="${p.hover}" class="hover-img"> 
+                </button>
+                <div class="product-name">
+                    <h5>${p.name}</h5>
+                    <p>1 color</p>
+                </div>
+                <div class="product-price">
+                    <p><i>${p.type}</i></p>
+                    <p>₱ ${p.price}</p>
+                </div>
+                <div class="product-btn">
+                    <div class="wishlist"><button onclick="addToWishlist('${p.id}')"><i class="fi fi-ss-heart"></i></button></div>
+                    <div class="add" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>ADD TO CART</button></div>
+                    <div class="buy"><button>BUY NOW</button></div>
+                </div>
             </div>
-            <div class="product-price">
-                <p><i>${p.type}</i></p>
-                <p>₱ ${p.price}</p>
-            </div>
-            <div class="product-btn">
-                <div class="wishlist"><button onclick="addToWishlist('${p.id}')"><i class="fi fi-ss-heart"></i></button></div>
-                <div class="add" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>ADD TO CART</button></div>
-                <div class="buy"><button>BUY NOW</button></div>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // INITIALIZE ON PAGE LOAD
@@ -231,7 +230,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const checkoutBtn = document.querySelector('.checkout-btn');
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', (e) => {
-            let cart = JSON.parse(localStorage.getItem('pace_cart')) || [];
+            let cart = getCartData();
             if (!cart.some(item => item.selected !== false)) {
                 e.preventDefault();
                 alert("Please select at least one product to proceed to checkout.");

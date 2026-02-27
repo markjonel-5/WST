@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="feedback.css">
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+
+    <div class="account-page-container reveal">
+        <div class="breadcrumb-section" style="max-width: var(--max-wide);">
+            <a href="homepage.html">Home</a> /<span class="current-page">My Feedback</span>
+        </div>
+
+        <div class="account-dashboard-wrapper">
+            <aside class="account-sidebar">
+                <div class="account-sidebar-profile">
+                    <div class="account-img-container">
+                        <div class="account-profile-initials" id="sidebar-initials"></div>
+                        <img id="sidebar-img" src="" style="display:none;" alt="Profile Picture">
+                    </div>
+                    <h3 id="sidebar-name">User Name</h3>
+                </div>
+                <nav class="account-sidebar-nav">
+                    <a href="account.html"><i class="fi fi-rr-settings"></i> Account Settings</a>
+                    <a href="address.html"><i class="fi fi-rr-map-marker"></i> Saved Addresses</a>
+                    <a href="payment-method.html"><i class="fi fi-rr-credit-card"></i> Payment Methods</a>
+                    <a href="#"><i class="fi fi-rr-box"></i> Order History</a>
+                    <a href="#"><i class="fi fi-rr-bell"></i> Notifications</a>
+                    <a href="feedback.html" class="active"><i class="fi fi-rr-star"></i> My Feedback</a>
+                    <a href="chat-support.html"><i class="fi fi-rr-headset"></i> Chat Support</a>
+                    <button onclick="logoutUser()" class="account-sidebar-logout"><i
+                            class="fi fi-rs-sign-out-alt"></i>Logout</button>
+                </nav>
+            </aside>
+
+            <main class="account-content">
+                <h2>My Feedback</h2>
+                <p class="account-subtitle">Help us improve your PACE experience.</p>
+
+                <div class="account-info-card">
+                    <div class="card-header-row" style="margin-bottom: 10px;">
+                        <h3>Leave a Review</h3>
+                    </div>
+
+                    <div class="star-rating" id="star-rating-container">
+                        <i class="fi fi-rr-star" data-value="1"></i>
+                        <i class="fi fi-rr-star" data-value="2"></i>
+                        <i class="fi fi-rr-star" data-value="3"></i>
+                        <i class="fi fi-rr-star" data-value="4"></i>
+                        <i class="fi fi-rr-star" data-value="5"></i>
+                    </div>
+                    <p id="rating-text" class="account-helper-text" style="margin-bottom: 15px; font-size: 16px;">Select
+                        a rating</p>
+
+                    <textarea id="feedback-text" class="account-input-field"
+                        placeholder="Tell us about your experience..."
+                        style="width: 100%; height: 120px; resize: none; margin-bottom: 5px;" required></textarea>
+
+                    <p id="feedback-text-error" class="account-error-text error-hidden" style="margin-bottom: 15px;">
+                        Please tell us about your experience.</p>
+
+                    <button class="account-save-btn" style="width: 100%;" onclick="submitFeedback()">SUBMIT
+                        FEEDBACK</button>
+                </div>
+
+                <div class="account-info-card">
+                    <div class="card-header-row" style="margin-bottom: 20px;">
+                        <h3>Feedback History</h3>
+                    </div>
+                    <div id="my-feedbacks-list">
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <dialog id="delete-feedback-modal" class="account-dialog confirm-dialog">
+        <div class="confirm-modal-content">
+            <div class="confirm-icon">
+                <i class="fi fi-rs-trash"></i>
+            </div>
+            <h3>Delete Feedback?</h3>
+            <p>Are you sure you want to delete this feedback?</p>
+            <div class="confirm-actions">
+                <button type="button" class="btn-cancel" onclick="closeDeleteFeedbackModal()">CANCEL</button>
+                <button type="button" class="btn-confirm" onclick="executeDeleteFeedback()">DELETE</button>
+            </div>
+        </div>
+    </dialog>
+
+    <div id="footer-container"></div>
+
+    <script src="global.js"></script>
+    <script src="account.js"></script>
+    <script src="feedback.js"></script>
+</body>
+
+</html>

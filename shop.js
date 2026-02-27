@@ -53,7 +53,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
     let limitToUse = fixedLimit ? fixedLimit : currentLimit;
     displayProducts = storedList.slice(0, limitToUse);
 
-    let currentWishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+    let currentWishlist = getWishlistData();
 
     container.innerHTML = displayProducts.map(p => {
         let isSaved = currentWishlist.some(item => item.id === p.id);

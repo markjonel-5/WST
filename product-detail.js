@@ -116,16 +116,20 @@ function loadProductDetails(p) {
     // PRODUCT DETAIL WISHLIST CONNECTION
     const wishBtn = document.querySelector('.pd-wish');
     if (wishBtn) {
-        let wishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
-        let isSaved = wishlist.some(item => item.id === p.id);
+        let currentWishlist = getWishlistData(); 
+        let isSaved = currentWishlist.some(item => item.id === p.id);
         let heartIcon = wishBtn.querySelector('i');
+        
         heartIcon.className = isSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
 
         wishBtn.onclick = function (event) {
             event.preventDefault();
+            
             addToWishlist(p.id);
-            let updatedWishlist = JSON.parse(localStorage.getItem('pace_wishlist')) || [];
+            
+            let updatedWishlist = getWishlistData();
             let nowSaved = updatedWishlist.some(item => item.id === p.id);
+            
             heartIcon.className = nowSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
         };
     }
