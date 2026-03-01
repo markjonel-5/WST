@@ -113,23 +113,32 @@ function loadProductDetails(p) {
         };
     }
 
+    // PRODUCT DETAIL BUY NOW CONNECTION
+    const buyNowBtn = document.querySelector('.pd-buy');
+    if (buyNowBtn) {
+        buyNowBtn.onclick = function (event) {
+            event.preventDefault();
+            buyNow(p);
+        };
+    }
+
     // PRODUCT DETAIL WISHLIST CONNECTION
     const wishBtn = document.querySelector('.pd-wish');
     if (wishBtn) {
-        let currentWishlist = getWishlistData(); 
+        let currentWishlist = getWishlistData();
         let isSaved = currentWishlist.some(item => item.id === p.id);
         let heartIcon = wishBtn.querySelector('i');
-        
+
         heartIcon.className = isSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
 
         wishBtn.onclick = function (event) {
             event.preventDefault();
-            
+
             addToWishlist(p.id);
-            
+
             let updatedWishlist = getWishlistData();
             let nowSaved = updatedWishlist.some(item => item.id === p.id);
-            
+
             heartIcon.className = nowSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
         };
     }
@@ -196,4 +205,40 @@ function closeSG() {
     if (nav) nav.style.right = '0px';
     panel.classList.remove('open');
     setTimeout(() => overlay.style.display = 'none', 300);
+}
+
+// PRODUCT DETAIL BUY NOW FUNCTION
+function buyNow(product) {
+    const errorMsg = document.getElementById('size-error-message');
+    const sizeGrid = document.getElementById('size-grid');
+
+    if (typeof currentSelectedSize !== 'undefined' && !currentSelectedSize) {
+        if (errorMsg) errorMsg.classList.remove('error-hidden');
+        if (sizeGrid) sizeGrid.classList.add('size-grid-error');
+        return; 
+    }
+
+    try {
+        const selectedSize = typeof currentSelectedSize !== 'undefined' && currentSelectedSize ? currentSelectedSize : 'Default';
+        const uniqueCartId = product.id + "-" + selectedSize + "-" + product.color;
+        
+        const buyNowItem = {
+            productId: product.id,
+            cartItemId: uniqueCartId,
+            name: product.name,
+            type: product.type,
+            price: product.price,
+            size: selectedSize,
+            color: product.color,
+            image: product.img,
+            quantity: 1,
+            selected: true 
+        };
+        
+        sessionStorage.setItem('pace_buy_now_item', JSON.stringify(buyNowItem));
+        window.location.href = 'checkout.html';
+
+    } catch (error) {
+        console.error("Buy Now Error:", error);
+    }
 }

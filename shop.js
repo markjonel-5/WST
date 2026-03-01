@@ -76,8 +76,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
                 </div>
                 <div class="product-btn">
                     <div class="wishlist"><button onclick="addToWishlist('${p.id}')"><i class="fi ${heartClass}"></i></button></div>
-                    <div class="add" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>ADD TO CART</button></div>
-                    <div class="buy"><button>BUY NOW</button></div>
+                    <div class="view" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>SEE DETAILS</button></div>
                 </div>
             </div>
         `;

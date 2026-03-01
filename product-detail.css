@@ -226,22 +226,23 @@
 .pd-buy {
     flex: 1;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     transition: 0.3s;
     border-radius: 5px;
+    letter-spacing: 1px;
 }
 
 .pd-cart {
     background: white;
-    border: 2px solid var(--brand-color);
+    border: 3px solid var(--brand-color);
     color: var(--brand-color);
 }
 
 .pd-cart:hover {
     background: var(--darkgray-text);
     color: white;
-    border: 2px solid var(--darkgray-text);
+    border: 3px solid var(--darkgray-text);
 }
 
 .pd-buy {

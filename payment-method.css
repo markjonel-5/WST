@@ -1,34 +1,3 @@
-/* PAYMENT METHOD HEADER AND BUTTON */
-.pm-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
-.add-pm-btn {
-    background-color: var(--brand-color);
-    color: #fff;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-}
-
-.add-pm-btn i {
-    padding-top: 4px;
-}
-
-.add-pm-btn:hover {
-    background-color: var(--darkgray-text);
-}
-
 /* PAYMENT METHOD CARD START */
 #payment-list-container {
     display: grid;

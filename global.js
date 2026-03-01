@@ -8,7 +8,7 @@ if (!favicon) {
     favicon.type = 'image/png';
     document.head.appendChild(favicon);
 }
-favicon.href = "Brand Image/pace favicon.png"; 
+favicon.href = "Brand Image/pace favicon.png";
 
 // PRODUCT INFORMATION
 const products = [
@@ -62,7 +62,7 @@ let lastScroll = 0;
 window.addEventListener('scroll', () => {
     const nav = document.querySelector('.navbar-section');
     if (!nav) return;
-    
+
     const currentScroll = window.scrollY;
     if (currentScroll > lastScroll) nav.style.transform = "translateY(-100%)";
     else nav.style.transform = "translateY(0)";
@@ -160,7 +160,7 @@ function renderUserMenu() {
     if (currentUser) {
         const initials = (currentUser.firstName.charAt(0) + (currentUser.lastName ? currentUser.lastName.charAt(0) : '')).toUpperCase();
 
-        let profileImageHTML = currentUser.profilePic 
+        let profileImageHTML = currentUser.profilePic
             ? `<img src="${currentUser.profilePic}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">`
             : `<div class="profile-initials">${initials}</div>`;
 
@@ -240,7 +240,7 @@ function saveCartData(cart) {
 
         currentUser.cart = cart;
         localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
-        
+
         let users = JSON.parse(localStorage.getItem('pace_users')) || [];
         let userIndex = users.findIndex(u => u.email === currentUser.email);
         if (userIndex > -1) {
@@ -250,7 +250,7 @@ function saveCartData(cart) {
     } else {
         localStorage.setItem('pace_guest_cart', JSON.stringify(cart));
     }
-    
+
     renderCartPreview();
     if (typeof renderCartPage === 'function') renderCartPage();
 }
@@ -271,7 +271,7 @@ function saveWishlistData(wishlist) {
     if (currentUser) {
         currentUser.wishlist = wishlist;
         localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
-        
+
         let users = JSON.parse(localStorage.getItem('pace_users')) || [];
         let userIndex = users.findIndex(u => u.email === currentUser.email);
         if (userIndex > -1) {
@@ -281,7 +281,7 @@ function saveWishlistData(wishlist) {
     } else {
         localStorage.setItem('pace_guest_wishlist', JSON.stringify(wishlist));
     }
-    
+
     renderWishlistPreview();
     if (typeof renderWishlistPage === 'function') renderWishlistPage();
 }
@@ -435,7 +435,7 @@ function addToCart(product) {
                 selected: true
             });
         }
-        
+
         saveCartData(cart);
 
         if (errorMsg) errorMsg.classList.add('error-hidden');
@@ -573,7 +573,7 @@ function addToWishlist(productId) {
         const product = products.find(p => p.id === productId);
         if (product) wishlist.push(product);
     }
-    
+
     saveWishlistData(wishlist);
 
     if (document.getElementById('product-container') && typeof renderProducts === 'function') {
@@ -589,17 +589,17 @@ function addToWishlist(productId) {
     if (pdWishBtn) {
         const urlParams = new URLSearchParams(window.location.search);
         let currentPgId = urlParams.get('id');
-        
+
         if (!currentPgId && urlParams.get('name')) {
             let targetProduct = products.find(p => p.name === urlParams.get('name'));
             if (targetProduct) currentPgId = targetProduct.id;
         }
-        
+
         if (currentPgId === String(productId)) {
             let updatedList = getWishlistData();
             let isSaved = updatedList.some(item => item.id === currentPgId);
             let heartIcon = pdWishBtn.querySelector('i');
-            
+
             if (heartIcon) {
                 heartIcon.className = isSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
                 heartIcon.style.color = isSaved ? 'var(--brand-color)' : '';
@@ -672,20 +672,20 @@ function buildGlobalChat() {
         </button>
     `;
     document.body.appendChild(chatContainer);
-    loadChatHistory(); 
+    loadChatHistory();
 }
 
 function toggleChat() {
     const chatWindow = document.getElementById('chat-popup-window');
     const openIcon = document.getElementById('chat-open-icon');
     const closeIcon = document.getElementById('chat-close-icon');
-    
+
     if (chatWindow.classList.contains('chat-hidden')) {
 
         chatWindow.classList.remove('chat-hidden');
         if (openIcon) openIcon.style.display = 'none';
         if (closeIcon) closeIcon.style.display = 'block';
-        
+
         const box = document.getElementById('chat-messages-box');
         box.scrollTop = box.scrollHeight;
     } else {
@@ -695,10 +695,10 @@ function toggleChat() {
     }
 }
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const chatWindow = document.getElementById('chat-popup-window');
     const chatBtn = document.getElementById('floating-chat-btn');
-    
+
     if (chatWindow && !chatWindow.classList.contains('chat-hidden')) {
         if (!chatWindow.contains(event.target) && !chatBtn.contains(event.target)) {
             toggleChat();
@@ -709,14 +709,14 @@ document.addEventListener('click', function(event) {
 function sendFAQMessage(question) {
     appendMessageUI('user-msg', question);
     saveChatToDatabase('user', question);
-    
+
     if (typeof renderPageChat === 'function') renderPageChat();
 
     setTimeout(() => {
         const answer = chatFAQs[question];
         appendMessageUI('bot-msg', answer);
         saveChatToDatabase('bot', answer);
-        
+
         if (typeof renderPageChat === 'function') renderPageChat();
     }, 1000);
 }
@@ -729,14 +729,14 @@ function sendChatMessage() {
         appendMessageUI('user-msg', text);
         saveChatToDatabase('user', text);
         input.value = '';
-        
+
         if (typeof renderPageChat === 'function') renderPageChat();
 
         setTimeout(() => {
             const reply = "Thanks for reaching out! A PACE representative will be with you shortly.";
             appendMessageUI('bot-msg', reply);
             saveChatToDatabase('bot', reply);
-            
+
             if (typeof renderPageChat === 'function') renderPageChat();
         }, 1000);
     }
@@ -748,8 +748,8 @@ function handleChatEnter(event) {
 
 function appendMessageUI(className, text) {
     const messageBox = document.getElementById('chat-messages-box');
-    
-    if (!messageBox) return; 
+
+    if (!messageBox) return;
 
     const msg = document.createElement('div');
     msg.className = `chat-msg ${className}`;
@@ -760,12 +760,12 @@ function appendMessageUI(className, text) {
 
 function saveChatToDatabase(sender, text) {
     let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
-    if (!currentUser) return; 
+    if (!currentUser) return;
 
     if (!currentUser.chatHistory) currentUser.chatHistory = [];
-    
+
     const now = new Date();
-    const timeString = now.toLocaleDateString() + ' at ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const timeString = now.toLocaleDateString() + ' at ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     currentUser.chatHistory.push({ sender: sender, text: text, time: timeString });
 
@@ -781,8 +781,8 @@ function saveChatToDatabase(sender, text) {
 function loadChatHistory() {
     const messageBox = document.getElementById('chat-messages-box');
     let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
-    
-    messageBox.innerHTML = ''; 
+
+    messageBox.innerHTML = '';
 
     if (currentUser && currentUser.chatHistory && currentUser.chatHistory.length > 0) {
         currentUser.chatHistory.forEach(msg => {
@@ -791,7 +791,7 @@ function loadChatHistory() {
         });
     } else {
         appendMessageUI('bot-msg', 'Hi there! Need help finding your perfect pair of shoes? 👟');
-        if(currentUser) saveChatToDatabase('bot', 'Hi there! Need help finding your perfect pair of shoes? 👟');
+        if (currentUser) saveChatToDatabase('bot', 'Hi there! Need help finding your perfect pair of shoes? 👟');
     }
 }
 // GLOBAL FLOATING CHAT WIDGET FUNCTION END 
@@ -820,7 +820,7 @@ function buildSearchPanel() {
     document.body.appendChild(searchWrapper);
 }
 
-window.toggleSearchPanel = function() {
+window.toggleSearchPanel = function () {
     const panel = document.getElementById('global-search-panel');
     if (panel && panel.classList.contains('open')) {
         closeSearchPanel();
@@ -837,16 +837,16 @@ function openSearchPanel() {
     if (!overlay || !panel) return;
 
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    
+
     document.body.style.paddingRight = `${scrollbarWidth}px`;
     if (nav) nav.style.paddingRight = `${scrollbarWidth}px`;
-    
-    document.body.style.overflow = 'hidden'; 
+
+    document.body.style.overflow = 'hidden';
 
     overlay.classList.add('open');
     panel.classList.add('open');
-    
-    renderSearchPanelProducts(null); 
+
+    renderSearchPanelProducts(null);
     if (input) setTimeout(() => input.focus(), 100);
 }
 
@@ -859,20 +859,20 @@ function closeSearchPanel() {
     if (!overlay || !panel) return;
 
     document.body.style.overflow = '';
-    
+
     document.body.style.paddingRight = '0px';
     if (nav) nav.style.paddingRight = '0px';
 
     overlay.classList.remove('open');
     panel.classList.remove('open');
-    
+
     setTimeout(() => {
-        if (input) input.value = ''; 
+        if (input) input.value = '';
         if (clearBtn) clearBtn.style.display = 'none';
     }, 300);
 }
 
-window.clearSearchInput = function() {
+window.clearSearchInput = function () {
     const input = document.getElementById('panel-search-input');
     const clearBtn = document.getElementById('clear-search-btn');
     if (input) {
@@ -880,25 +880,25 @@ window.clearSearchInput = function() {
         input.focus();
     }
     if (clearBtn) clearBtn.style.display = 'none';
-    renderSearchPanelProducts(null); 
+    renderSearchPanelProducts(null);
 };
 
-window.handleSearchPanelInput = function() {
+window.handleSearchPanelInput = function () {
     const input = document.getElementById('panel-search-input');
     const clearBtn = document.getElementById('clear-search-btn');
     if (!input) return;
-    
+
     const query = input.value.trim();
     if (clearBtn) clearBtn.style.display = query.length > 0 ? 'block' : 'none';
 
     renderSearchPanelProducts(query);
 };
 
-window.executeSearchLink = function(searchText) {
+window.executeSearchLink = function (searchText) {
     const input = document.getElementById('panel-search-input');
     const clearBtn = document.getElementById('clear-search-btn');
     if (input) input.value = searchText;
-    if (clearBtn) clearBtn.style.display = 'block'; 
+    if (clearBtn) clearBtn.style.display = 'block';
     renderSearchPanelProducts(searchText);
 };
 
@@ -933,13 +933,13 @@ function renderSearchPanelProducts(query) {
             </div>
             <div class="search-results-header"><h3>Suggested Products</h3></div>
         `;
-        const permanentSuggestions = ['Pace 680', 'Pace 740', 'Pace 327', 'Pace Boa'];
+        const permanentSuggestions = ['Pace 680', 'Pace 740', 'Pace Ice', 'Pace Tekela'];
         productsToShow = permanentSuggestions
             .map(shoeName => uniqueProducts.find(p => p.name === shoeName))
     } else {
         const lowerCaseQuery = query.toLowerCase();
-        productsToShow = uniqueProducts.filter(p => 
-            p.name.toLowerCase().includes(lowerCaseQuery) || 
+        productsToShow = uniqueProducts.filter(p =>
+            p.name.toLowerCase().includes(lowerCaseQuery) ||
             p.type.toLowerCase().includes(lowerCaseQuery)
         );
 
@@ -954,8 +954,10 @@ function renderSearchPanelProducts(query) {
         resultsHTML += `<div class="search-results-header"><h3>Found for "${query}"</h3></div>`;
     }
 
+    productsToShow.sort((a, b) => a.name.localeCompare(b.name));
+
     resultsHTML += `<div class="product-section" style="padding-top: 0; background: transparent;">`;
-    
+
     resultsHTML += productsToShow.map(p => {
         let isSaved = currentWishlist.some(item => item.id === p.id);
         let heartClass = isSaved ? "fi-ss-heart" : "fi-rs-heart";
@@ -977,15 +979,14 @@ function renderSearchPanelProducts(query) {
                 </div>
                 <div class="product-btn">
                     <div class="wishlist"><button onclick="event.stopPropagation(); addToWishlist('${p.id}')"><i class="fi ${heartClass}"></i></button></div>
-                    <div class="add" onclick="event.stopPropagation(); window.location.href='product-detail.html?id=${p.id}'"><button>ADD TO CART</button></div>
-                    <div class="buy"><button onclick="event.stopPropagation(); window.location.href='checkout.html'">BUY NOW</button></div>
+                    <div class="view" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>SEE DETAILS</button></div>
                 </div>
             </div>
         `;
     }).join('');
-    
-    resultsHTML += `</div>`; 
-    resultsBox.innerHTML = resultsHTML; 
+
+    resultsHTML += `</div>`;
+    resultsBox.innerHTML = resultsHTML;
 }
 // GLOBAL SEARCH PANEL FUNCTIONS END
 

@@ -176,6 +176,10 @@ function closeDeleteModal() {
     document.getElementById('delete-confirm-modal').close();
 }
 
+function closeEmptySelectionModal() {
+    document.getElementById('empty-selection-modal').close();
+}
+
 // WISHLIST PAGE FUNCTIONS AND DESIGN
 function renderWishlistPage() {
     const container = document.getElementById('wishlist-container');
@@ -215,8 +219,7 @@ function renderWishlistPage() {
                 </div>
                 <div class="product-btn">
                     <div class="wishlist"><button onclick="addToWishlist('${p.id}')"><i class="fi fi-ss-heart"></i></button></div>
-                    <div class="add" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>ADD TO CART</button></div>
-                    <div class="buy"><button>BUY NOW</button></div>
+                    <div class="view" onclick="window.location.href='product-detail.html?id=${p.id}'"><button>SEE DETAILS</button></div>
                 </div>
             </div>
         `;
@@ -231,11 +234,16 @@ window.addEventListener('DOMContentLoaded', () => {
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', (e) => {
             let cart = getCartData();
+
             if (!cart.some(item => item.selected !== false)) {
                 e.preventDefault();
-                alert("Please select at least one product to proceed to checkout.");
+                const emptyModal = document.getElementById('empty-selection-modal');
+                if (emptyModal) {
+                    emptyModal.showModal();
+                }
             } else {
-                alert("Proceeding to checkout with selected items!");
+                sessionStorage.removeItem('pace_buy_now_item');
+                window.location.href = 'checkout.html';
             }
         });
     }

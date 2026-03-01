@@ -68,10 +68,11 @@
 /* CART ITEM (LEFT) */
 .cart-item-card {
     display: flex;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
     background: #fff;
     min-height: 250px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     margin-bottom: 10px;
 }
 
@@ -202,7 +203,8 @@
     background: #fff;
     padding: 30px 30px 10px;
     border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaeaea;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     position: sticky;
 }
 
@@ -251,10 +253,10 @@
     background: var(--brand-color);
     color: var(--bg-color);
     border: none;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 20px;
+    margin: 10px 0 20px 0;
     transition: 0.3s;
     border-radius: 6px;
 }
@@ -268,7 +270,7 @@
     border-top: 1px solid #eaeaea;
     background: #fff;
     padding: 25px 5px 10px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .policy-item {
@@ -312,7 +314,8 @@
 
 /* DELETE MODAL START */
 
-#delete-confirm-modal {
+#delete-confirm-modal,
+#empty-selection-modal {
     border: none;
     padding: 24px 24px 20px;
     border-radius: 12px;
@@ -323,12 +326,14 @@
     background-color: var(--bg-color);
 }
 
-#delete-confirm-modal::backdrop {
+#delete-confirm-modal::backdrop,
+#empty-selection-modal::backdrop {
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(1px);
 }
 
-#delete-confirm-modal[open] {
+#delete-confirm-modal[open],
+#empty-selection-modal[open] {
     animation: popIn 0.3s ease forwards;
 }
 
@@ -415,7 +420,8 @@
     background: #fff;
     padding: 15px 20px;
     border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaeaea;
     display: flex;
     align-items: center;
     gap: 12px;

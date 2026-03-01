@@ -49,7 +49,7 @@
                     <span id="summary-subtotal"></span>
                 </div>
                 <div class="summary-row">
-                    <a>Estimated Delivery</a>
+                    <a>Estimated Shipping</a>
                     <span id="summary-delivery"></span>
                 </div>
                 <hr class="summary-divider">
@@ -57,7 +57,7 @@
                     <a>Total</a>
                     <span id="summary-total"></span>
                 </div>
-                <button class="checkout-btn">Checkout</button>
+                <button class="checkout-btn">CHECKOUT</button>
 
                 <div class="cart-policies-section">
                     <div class="policy-item">
@@ -85,7 +85,7 @@
                         <i class="fi fi-rs-headset"></i>
                         <div class="policy-text">
                             <h4>Need Help?</h4>
-                            <p><a href="#">Contact Customer Support</a></p>
+                            <p><a href="chat-support.html">Contact PACE Support</a></p>
                         </div>
                     </div>
                 </div>
@@ -107,6 +107,19 @@
             <div class="delete-actions">
                 <button onclick="closeDeleteModal()" class="btn-cancel">CANCEL</button>
                 <button id="btn-confirm-remove" class="btn-remove">REMOVE</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="empty-selection-modal">
+        <div class="delete-modal-content">
+            <div class="delete-header">
+                <i class="fi fi-rs-exclamation"></i>
+                <h4>No Items Selected</h4>
+            </div>
+            <p class="delete-text">Please select at least one product to proceed to checkout.</p>
+            <div class="delete-actions">
+                <button onclick="closeEmptySelectionModal()" class="btn-remove">OK</button>
             </div>
         </div>
     </dialog>

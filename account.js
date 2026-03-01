@@ -223,18 +223,18 @@ function updateSidebarProfile(user) {
     document.getElementById('sidebar-name').innerText = `${user.firstName} ${user.lastName || ''}`;
     const initialsEl = document.getElementById('sidebar-initials');
     const imgEl = document.getElementById('sidebar-img');
-    const deleteBtn = document.getElementById('delete-photo-btn'); // Selects the new button
+    const deleteBtn = document.getElementById('delete-photo-btn');
 
     if (user.profilePic) {
         imgEl.src = user.profilePic;
         imgEl.style.display = 'block';
         initialsEl.style.display = 'none';
-        if (deleteBtn) deleteBtn.style.display = 'flex'; // Shows trash can
+        if (deleteBtn) deleteBtn.style.display = 'flex';
     } else {
         initialsEl.innerText = (user.firstName.charAt(0) + (user.lastName ? user.lastName.charAt(0) : '')).toUpperCase();
         initialsEl.style.display = 'flex';
         imgEl.style.display = 'none';
-        if (deleteBtn) deleteBtn.style.display = 'none'; // Hides trash can
+        if (deleteBtn) deleteBtn.style.display = 'none';
     }
 }
 /* SIDEBAR PROFILE HELPER END */

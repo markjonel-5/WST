@@ -58,6 +58,19 @@
     background: #f9f9f9;
 }
 
+.page-transcript-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.page-transcript-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.page-transcript-box::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 10px;
+}
+
 .page-chat-input-area {
     padding: 15px;
     background: #fff;

@@ -37,13 +37,13 @@ function sendPageMessage() {
     
     input.value = '';
     renderPageChat();
-    if (typeof loadChatHistory === 'function') loadChatHistory(); // Sync floating widget
+    if (typeof loadChatHistory === 'function') loadChatHistory();
 
     setTimeout(() => {
         if (typeof saveChatToDatabase === 'function') {
             saveChatToDatabase('bot', "Thanks for reaching out! A PACE representative will be with you shortly.");
             renderPageChat();
-            if (typeof loadChatHistory === 'function') loadChatHistory(); // Sync floating widget
+            if (typeof loadChatHistory === 'function') loadChatHistory();
         }
     }, 1000);
 }
