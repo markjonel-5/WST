@@ -245,24 +245,27 @@ function loadCheckoutData(user) {
     paymentContainer.innerHTML = paymentHTML;
 }
 
+
+
 // PLACE ORDER FUNCTION
 function placeOrder() {
     let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
     let hasError = false;
 
     const addressBox = document.getElementById('checkout-address-box');
-    if (addressBox) {
-        addressBox.classList.remove('box-error');
-    }
+    if (addressBox) addressBox.classList.remove('box-error');
 
     const deliveryRadio = document.querySelector('input[name="checkout-delivery-speed"]:checked');
     const isPickUp = deliveryRadio && deliveryRadio.getAttribute('data-name') === 'PickUp';
     
+    let selectedAddressId = null;
     if (!isPickUp) {
-        const selectedAddress = document.querySelector('input[name="checkout-address"]:checked');
-        if (!selectedAddress) {
+        const selectedAddressInput = document.querySelector('input[name="checkout-address"]:checked');
+        if (!selectedAddressInput) {
             if (addressBox) addressBox.classList.add('box-error');
             hasError = true;
+        } else {
+            selectedAddressId = selectedAddressInput.value;
         }
     }
 
@@ -271,9 +274,81 @@ function placeOrder() {
         return;
     }
 
-    alert("Order placed successfully! Thank you for shopping with PACE.");
+    // Gather Order Data
+    const buyNowItem = JSON.parse(sessionStorage.getItem('pace_buy_now_item'));
+    let purchasedItems = [];
     
-    const buyNowItem = sessionStorage.getItem('pace_buy_now_item');
+    if (buyNowItem) {
+        purchasedItems = [buyNowItem];
+    } else {
+        purchasedItems = (currentUser.cart || []).filter(item => item.selected !== false);
+    }
+
+    // Calculate Subtotal and Total
+    let subtotal = 0;
+    purchasedItems.forEach(item => {
+        let qty = item.quantity || 1;
+        let cleanPrice = parseFloat(item.price.replace(/,/g, ''));
+        subtotal += (cleanPrice * qty);
+    });
+    const deliveryFee = deliveryRadio ? parseFloat(deliveryRadio.value) : 0;
+    const finalTotal = subtotal + deliveryFee;
+
+    // Get Payment Method
+    const paymentRadio = document.querySelector('input[name="checkout-payment"]:checked');
+    let paymentMethod = 'COD';
+
+    if (paymentRadio) {
+        if (paymentRadio.value === 'COD') {
+            paymentMethod = 'COD';
+        } else {
+
+            const selectedPm = (currentUser.payments || []).find(p => p.id.toString() === paymentRadio.value);
+            if (selectedPm) {
+                paymentMethod = selectedPm.type;
+            }
+        }
+    }
+
+    if (isPickUp && paymentMethod === 'COD') {
+        paymentMethod = 'Over-the-counter';
+    }
+
+    let deliveryTypeName = 'Standard Delivery';
+    if (isPickUp) {
+        deliveryTypeName = 'In-Store Pick Up';
+    } else if (deliveryFee > 0) {
+        deliveryTypeName = 'Express Delivery';
+    }
+
+    const orderId = 'PACE-' + Math.floor(100000 + Math.random() * 900000); 
+    const orderDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const newOrder = {
+        id: orderId,
+        date: orderDate,
+        items: purchasedItems,
+        subtotal: subtotal,
+        deliveryFee: deliveryFee,
+        total: finalTotal,
+        status: 'Processing',
+        deliveryType: deliveryTypeName,
+        addressId: selectedAddressId,
+        payment: paymentMethod
+    };
+
+    if (!currentUser.orderHistory) currentUser.orderHistory = [];
+    if (!currentUser.notifications) currentUser.notifications = [];
+
+    currentUser.orderHistory.push(newOrder);
+
+    currentUser.notifications.unshift({
+        id: 'NOTIF-' + Date.now(),
+        title: 'Order Confirmed!',
+        message: `Your order ${orderId} has been successfully placed and is now processing.`,
+        date: orderDate,
+        read: false
+    });
 
     if (buyNowItem) {
         sessionStorage.removeItem('pace_buy_now_item');
@@ -282,11 +357,16 @@ function placeOrder() {
     }
     
     let users = JSON.parse(localStorage.getItem('pace_users'));
-    let userIndex = users.findIndex(u => u.email === currentUser.email);
-    users[userIndex].cart = currentUser.cart;
+    if (users) {
+        let userIndex = users.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+            users[userIndex] = currentUser;
+            localStorage.setItem('pace_users', JSON.stringify(users));
+        }
+    }
     
-    localStorage.setItem('pace_users', JSON.stringify(users));
     localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
     
-    window.location.href = 'homepage.html'; 
+    window.location.href = `success-order.html?orderId=${orderId}`; 
+
 }

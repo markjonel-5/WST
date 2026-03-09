@@ -102,7 +102,6 @@ function executeClearChat() {
     try {
         if (typeof loadChatHistory === 'function') loadChatHistory();
     } catch (error) {
-        console.log("Floating widget is hidden on this page, skipping widget sync.");
     }
 
     closeDeleteChatModal();

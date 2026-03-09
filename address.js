@@ -1,6 +1,9 @@
 /* SAVED ADDRESSES FUNCTION START */
 window.addEventListener('DOMContentLoaded', () => {
-    loadAddressData();
+    
+    if (document.getElementById('address-list-container')) {
+        loadAddressData();
+    }
 
     const addressForm = document.getElementById('form-new-address');
     if (addressForm) {
@@ -31,7 +34,6 @@ window.addEventListener('DOMContentLoaded', () => {
             if (addressForm) {
                 addressForm.reset();
             }
-            
             const phoneWrapper = document.querySelector('.phone-input-wrapper');
             const phoneError = document.getElementById('addr-phone-error');
             if (phoneWrapper) phoneWrapper.classList.remove('input-error');
@@ -54,6 +56,8 @@ function loadAddressData() {
 
     const addressContainer = document.getElementById('address-list-container');
     const emptyState = document.getElementById('empty-address-state');
+
+    if (!addressContainer || !emptyState) return;
 
     const addresses = currentUser.addresses || [];
 

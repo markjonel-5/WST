@@ -179,8 +179,8 @@ function renderUserMenu() {
                     <a href="account.html"><i class="fi fi-rr-settings"></i> Account Settings</a>
                     <a href="address.html"><i class="fi fi-rr-map-marker"></i> Saved Addresses</a>
                     <a href="payment-method.html"><i class="fi fi-rr-credit-card"></i> Payment Methods</a>
-                    <a href="#"><i class="fi fi-rr-box"></i> Order History</a>
-                    <a href="#"><i class="fi fi-rr-bell"></i> Notifications</a>
+                    <a href="order-history.html"><i class="fi fi-rr-box"></i> Order History</a>
+                    <a href="notification.html"><i class="fi fi-rr-bell"></i> Notifications</a>
                     <a href="feedback.html"><i class="fi fi-rr-star"></i> My Feedback</a>
                     <a href="chat-support.html"><i class="fi fi-rr-headset"></i> Chat Support</a>
                 </div>
@@ -206,7 +206,7 @@ function renderUserMenu() {
 function logoutUser() {
     localStorage.removeItem('pace_current_user');
     window.scrollTo(0, 0);
-    window.location.href = window.location.pathname;
+    window.location.href = 'homepage.html';
 }
 
 function toggleUserPopup() {

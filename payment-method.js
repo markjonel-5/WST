@@ -1,11 +1,14 @@
 /* PAYMENT METHODS FUNCTION START */
 window.addEventListener('DOMContentLoaded', () => {
-    loadPaymentData();
-    setupDynamicFormToggle();
-    setupInputFormatting();
+    
+    if (document.getElementById('payment-list-container')) {
+        loadPaymentData();
+    }
 
     const paymentForm = document.getElementById('form-new-payment');
     if (paymentForm) {
+        setupDynamicFormToggle();
+        setupInputFormatting();
         paymentForm.addEventListener('submit', handleSavePayment);
     }
 
@@ -127,6 +130,9 @@ function loadPaymentData() {
 
     const pmContainer = document.getElementById('payment-list-container');
     const emptyState = document.getElementById('empty-payment-state');
+
+    if (!pmContainer || !emptyState) return;
+
     const payments = currentUser.payments || [];
 
     if (payments.length === 0) {
