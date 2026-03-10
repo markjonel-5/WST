@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="global.css">
     <link rel="stylesheet" href="product-detail.css">
+    <link rel="stylesheet" href="order-history.css">
 </head>
 
 <body>
@@ -85,44 +86,9 @@
 
                 <div class="accordion-item">
                     <button class="accordion-header">Reviews <span class="icon">+</span></button>
-
                     <div class="accordion-content">
-                        <div class="ac-text">
-                            <div class="review-summary">
-                                <div class="review-overall">
-                                    <div class="review-score">4.7</div>
-                                    <div class="review-stars">★★★★★</div>
-                                    <div class="review-count">Based on 90 reviews</div>
-                                </div>
-                                <div class="review-bars">
-                                    <div class="review-bar-row"><span class="bar-label">5 ★</span>
-                                        <div class="bar-track">
-                                            <div class="bar-fill" style="width: 85%;"></div>
-                                        </div><span class="bar-count">77</span>
-                                    </div>
-                                    <div class="review-bar-row"><span class="bar-label">4 ★</span>
-                                        <div class="bar-track">
-                                            <div class="bar-fill" style="width: 7%;"></div>
-                                        </div><span class="bar-count">6</span>
-                                    </div>
-                                    <div class="review-bar-row"><span class="bar-label">3 ★</span>
-                                        <div class="bar-track">
-                                            <div class="bar-fill" style="width: 4%;"></div>
-                                        </div><span class="bar-count">3</span>
-                                    </div>
-                                    <div class="review-bar-row"><span class="bar-label">2 ★</span>
-                                        <div class="bar-track">
-                                            <div class="bar-fill" style="width: 4%;"></div>
-                                        </div><span class="bar-count">3</span>
-                                    </div>
-                                    <div class="review-bar-row"><span class="bar-label">1 ★</span>
-                                        <div class="bar-track">
-                                            <div class="bar-fill" style="width: 1%;"></div>
-                                        </div><span class="bar-count">1</span>
-                                    </div>
-                                </div>
+                        <div class="ac-text" id="pd-review-preview">
                             </div>
-                        </div>
                     </div>
                 </div>
 
@@ -379,6 +345,24 @@
             <a href="homepage.html" class="modal-btn btn-outline">CONTINUE SHOPPING</a>
             <a href="cart.html" class="modal-btn btn-solid">VIEW CART</a>
         </div>
+    </dialog>
+
+    <dialog id="all-reviews-modal" class="reviews-dialog account-dialog">
+        <div class="reviews-dialog-header">
+            <h3 style="margin: 0; font-size: 18px;">Product Reviews</h3>
+            <button type="button" class="dialog-close" onclick="closeAllReviewsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #888;">&times;</button>
+        </div>
+        
+        <div id="review-filter-tabs" class="reviews-tabs-container">
+            </div>
+
+        <div id="all-reviews-list-container" class="reviews-list-scroll">
+            </div>
+    </dialog>
+
+    <dialog id="media-fullscreen-modal" class="fullscreen-media-dialog account-dialog">
+        <div id="fullscreen-media-container" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+            </div>
     </dialog>
 
     <div id="footer-container"></div>

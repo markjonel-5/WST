@@ -30,7 +30,7 @@
                 </div>
                 <nav class="account-sidebar-nav">
                     <a href="account.html"><i class="fi fi-rr-settings"></i> Account Settings</a>
-                    <a href="address.html"><i class="fi fi-rr-map-marker"></i> Saved Addresses</a>
+                    <a href="address.html"><i class="fi fi-rr-map-marker"></i> Address Book</a>
                     <a href="payment-method.html"><i class="fi fi-rr-credit-card"></i> Payment Methods</a>
                     <a href="order-history.html" class="active"><i class="fi fi-rr-box"></i> Order History</a>
                     <a href="notification.html"><i class="fi fi-rr-bell"></i> Notifications</a>
@@ -129,6 +129,58 @@
                 <button type="button" class="btn-confirm" onclick="executeReceiveOrder()">CONFIRM</button>
             </div>
         </div>
+    </dialog>
+
+    <dialog id="write-review-modal" class="account-dialog">
+        <div class="dialog-header">
+            <h3>Write a Review</h3>
+            <button type="button" class="dialog-close" onclick="closeAccountModal('write-review-modal')">&times;</button>
+        </div>
+        <div style="padding: 0 20px;">
+            
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <img id="review-product-img" src="" alt="Product" style="width: 65px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #eee;">
+                <p id="review-product-name" style="font-weight: 600; font-size: 16px; margin: 0;"></p>
+            </div>
+            
+            <div class="star-rating" id="review-star-container" style="margin-bottom: 5px; font-size: 24px; cursor: pointer;">
+                <i class="fi fi-rr-star" data-value="1" style="color: #ccc;"></i>
+                <i class="fi fi-rr-star" data-value="2" style="color: #ccc;"></i>
+                <i class="fi fi-rr-star" data-value="3" style="color: #ccc;"></i>
+                <i class="fi fi-rr-star" data-value="4" style="color: #ccc;"></i>
+                <i class="fi fi-rr-star" data-value="5" style="color: #ccc;"></i>
+            </div>
+            <p id="review-rating-text" style="font-size: 14px; margin-bottom: 15px; color: var(--brand-color); transition: 0.3s;">Select a rating</p>
+
+            <textarea id="review-text" class="account-input-field" placeholder="Tell us about your experience..." style="font-size: 14px; width: 100%; height: 80px; resize: none; margin-bottom: 5px;"></textarea>
+            <p id="review-text-error" style="color: #d9534f; font-size: 13px; margin-top: 0; margin-bottom: 10px; display: none;">Please tell us about your experience.</p>
+
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 14px; display: block; margin-bottom: 10px; color: var(--gray-text);">Add photo (3 max) and video (1 max)</label>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div class="media-upload-box">
+                        <i class="fi fi-rr-camera" style="font-size: 20px; padding-top: 4px;"></i>
+                        <input type="file" id="upload-photos" class="media-upload-input" accept="image/*" multiple>
+                    </div>
+                    
+                    <div class="media-upload-box">
+                        <i class="fi fi-rr-video-camera-alt" style="font-size: 20px; padding-top: 5px;"></i>
+                        <input type="file" id="upload-video" class="media-upload-input" accept="video/*">
+                    </div>
+                </div>
+                
+                <p id="media-error-msg" style="color: #d9534f; font-size: 12px; margin: 0; display: none;"></p>
+                <div id="media-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+            </div>
+
+            <button class="account-save-btn" style="width: 100%;" onclick="submitProductReview()">SUBMIT REVIEW</button>
+        </div>
+    </dialog>
+
+    <dialog id="media-fullscreen-modal" class="fullscreen-media-dialog account-dialog">
+        <div id="fullscreen-media-container" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+            </div>
     </dialog>
 
     <div id="footer-container"></div>

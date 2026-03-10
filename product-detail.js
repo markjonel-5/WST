@@ -142,6 +142,7 @@ function loadProductDetails(p) {
             heartIcon.className = nowSaved ? 'fi fi-ss-heart' : 'fi fi-rs-heart';
         };
     }
+    renderProductReviewSummary(p.name);
 }
 
 // SWITCH COLOR IN PRODUCT DETAIL PAGE
@@ -242,3 +243,215 @@ function buyNow(product) {
         console.error("Buy Now Error:", error);
     }
 }
+
+// PRODUCT REVIEWS LOGIC
+let activeProductReviews = [];
+
+function renderProductReviewSummary(productName) {
+    const acTexts = document.querySelectorAll('.accordion-content .ac-text');
+    if (acTexts.length < 3) return; 
+    const reviewBox = acTexts[2]; 
+
+    let globalFeedbacks = JSON.parse(localStorage.getItem('pace_global_feedbacks')) || [];
+    activeProductReviews = globalFeedbacks.filter(fb => fb.productName === productName);
+    let totalReviews = activeProductReviews.length;
+
+    if (totalReviews === 0) {
+        reviewBox.innerHTML = `
+            <div class="review-summary">
+                <div class="review-overall">
+                    <div class="review-score">0.0</div>
+                    <div class="review-stars" style="color: #ccc;">★★★★★</div>
+                    <div class="review-count">There are no reviews yet</div>
+                </div>
+                <div class="review-bars">
+                    ${[5,4,3,2,1].map(i => `<div class="review-bar-row"><span class="bar-label">${i} ★</span><div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div><span class="bar-count">0</span></div>`).join('')}
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    let sum = 0;
+    let starCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    
+    activeProductReviews.forEach(fb => {
+        sum += fb.rating;
+        starCounts[fb.rating] = (starCounts[fb.rating] || 0) + 1;
+    });
+
+    let average = (sum / totalReviews).toFixed(1);
+    let starsHTML = '';
+    for(let i=1; i<=5; i++) starsHTML += i <= Math.round(average) ? '★' : '☆';
+
+    let barsHTML = '';
+    for(let i=5; i>=1; i--) {
+        let percentage = (starCounts[i] / totalReviews) * 100;
+        barsHTML += `<div class="review-bar-row"><span class="bar-label">${i} ★</span><div class="bar-track"><div class="bar-fill" style="width: ${percentage}%;"></div></div><span class="bar-count">${starCounts[i]}</span></div>`;
+    }
+
+    let previewReviews = activeProductReviews.slice(0, 2);
+    let commentsHTML = previewReviews.map(fb => generateReviewCard(fb)).join('');
+
+    reviewBox.innerHTML = `
+        <div class="review-summary">
+            <div class="review-overall">
+                <div class="review-score">${average}</div>
+                <div class="review-stars" style="color: var(--brand-color);">${starsHTML}</div>
+                <div class="review-count">Based on ${totalReviews} review${totalReviews > 1 ? 's' : ''}</div>
+            </div>
+            <div class="review-bars">${barsHTML}</div>
+        </div>
+        <div class="customer-reviews-list">${commentsHTML}</div>
+        <button class="see-all-reviews-btn" onclick="openAllReviewsModal()">See All ${totalReviews} Reviews</button>
+    `;
+}
+
+function generateReviewCard(fb) {
+    let fbStars = '';
+    for(let i=1; i<=5; i++) fbStars += i <= fb.rating ? '★' : '☆';
+    
+    let mediaHTML = '';
+    if ((fb.photos && fb.photos.length) || fb.video) {
+        mediaHTML += `<div class="review-card-media">`;
+        if (fb.video) {
+
+            mediaHTML += `<video src="${fb.video}" class="review-media-item" onclick="openMediaPreview('${fb.video}', 'video')" muted></video>`;
+        }
+        if (fb.photos) {
+            fb.photos.forEach(photo => {
+
+                mediaHTML += `<img src="${photo}" class="review-media-item" onclick="openMediaPreview('${photo}', 'image')">`;
+            });
+        }
+        mediaHTML += `</div>`;
+    }
+
+    return `
+        <div class="review-card">
+            <div class="review-card-header">
+                <div>
+                    <span class="review-card-name">${fb.userName}</span>
+                    <div class="review-card-stars">${fbStars}</div>
+                </div>
+                <span class="review-card-date">${fb.date}</span>
+            </div>
+            <p class="review-card-text">"${fb.comment}"</p>
+            ${mediaHTML}
+        </div>
+    `;
+}
+
+// ALL REVIEWS MODAL LOGIC
+let currentReviewFilter = 'All';
+
+window.openAllReviewsModal = function() {
+    renderModalReviews();
+    const modal = document.getElementById('all-reviews-modal');
+    const nav = document.querySelector('.navbar-section');
+    
+    if (modal) {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        if (nav) nav.style.right = `${scrollbarWidth}px`; 
+        modal.showModal();
+    }
+};
+
+window.closeAllReviewsModal = function() {
+    const modal = document.getElementById('all-reviews-modal');
+    const nav = document.querySelector('.navbar-section');
+    
+    if (modal) {
+        modal.close();
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '0px';
+        if (nav) nav.style.right = '0px';
+    }
+};
+
+function renderModalReviews() {
+    const listContainer = document.getElementById('all-reviews-list-container');
+    const tabsContainer = document.getElementById('review-filter-tabs');
+    
+    let starCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    activeProductReviews.forEach(fb => starCounts[fb.rating]++);
+    
+    tabsContainer.innerHTML = `
+        <button onclick="filterReviews('All')" class="review-filter-tab ${currentReviewFilter === 'All' ? 'active' : ''}">All</button>
+        ${[5,4,3,2,1].map(i => `
+            <button onclick="filterReviews(${i})" class="review-filter-tab ${currentReviewFilter === i ? 'active' : ''}">${i} Star (${starCounts[i]})</button>
+        `).join('')}
+    `;
+
+    let displayedReviews = currentReviewFilter === 'All' 
+        ? activeProductReviews 
+        : activeProductReviews.filter(fb => fb.rating === currentReviewFilter);
+
+    if (displayedReviews.length === 0) {
+        listContainer.innerHTML = `
+            <div class="review-empty-state">
+                <i class="fi fi-rr-comment-alt review-empty-icon"></i>
+                <p style="margin: 0;">No reviews found for this rating.</p>
+            </div>
+        `;
+    } else {
+        listContainer.innerHTML = displayedReviews.map(fb => generateReviewCard(fb)).join('');
+    }
+}
+
+window.filterReviews = function(filterValue) {
+    currentReviewFilter = filterValue;
+    renderModalReviews();
+};
+
+// MEDIA FULLSCREEN PREVIEW LOGIC
+window.openMediaPreview = function(src, type) {
+    const modal = document.getElementById('media-fullscreen-modal');
+    const container = document.getElementById('fullscreen-media-container');
+    const nav = document.querySelector('.navbar-section');
+    
+    if (!modal || !container) return;
+
+    if (type === 'image') {
+        container.innerHTML = `<img src="${src}" class="fullscreen-content" onclick="event.stopPropagation()">`;
+    } else {
+        container.innerHTML = `<video src="${src}" class="fullscreen-content" controls autoplay onclick="event.stopPropagation()"></video>`;
+    }
+    
+    if (document.body.style.overflow !== 'hidden') {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        if (nav) nav.style.right = `${scrollbarWidth}px`;
+    }
+    
+    modal.showModal();
+
+    modal.onclick = function() {
+        closeMediaPreview();
+    };
+
+    modal.oncancel = function(e) {
+        e.preventDefault(); 
+        closeMediaPreview();
+    };
+};
+
+window.closeMediaPreview = function() {
+    const modal = document.getElementById('media-fullscreen-modal');
+    const container = document.getElementById('fullscreen-media-container');
+    const nav = document.querySelector('.navbar-section');
+    
+    if (modal && container) {
+        container.innerHTML = '';
+        modal.close();
+        
+        if (document.querySelectorAll('dialog[open]').length === 0) {
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '0px';
+            if (nav) nav.style.right = '0px';
+        }
+    }
+};

@@ -177,7 +177,7 @@ function renderUserMenu() {
                 </div>
                 <div class="account-links">
                     <a href="account.html"><i class="fi fi-rr-settings"></i> Account Settings</a>
-                    <a href="address.html"><i class="fi fi-rr-map-marker"></i> Saved Addresses</a>
+                    <a href="address.html"><i class="fi fi-rr-map-marker"></i> Address Book</a>
                     <a href="payment-method.html"><i class="fi fi-rr-credit-card"></i> Payment Methods</a>
                     <a href="order-history.html"><i class="fi fi-rr-box"></i> Order History</a>
                     <a href="notification.html"><i class="fi fi-rr-bell"></i> Notifications</a>

@@ -17,7 +17,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
 /* GLOBAL UI FUNCTIONS START */
 function setupGlobalDialogs() {
     document.querySelectorAll('dialog').forEach(modal => {
@@ -84,13 +83,30 @@ window.openOrderDetails = function (orderId) {
             <div class="tracker-step ${trackerConfig[displayStatus].s3}"><div class="tracker-icon"><i class="fi fi-rr-box-check"></i></div><span class="tracker-label">Completed</span></div>
            </div>`;
 
-    const itemsHTML = order.items.map(item => `
-        <div class="drop-item-card">
-            <img src="${item.image}" alt="${item.name}" class="drop-item-img">
-            <div class="drop-item-info"><h4>${item.name}</h4><p>Color: ${item.color} | Size: ${item.size} | Qty: ${item.quantity || 1}</p></div>
-            <div class="drop-item-price">₱ ${formatCurrency(item.price.replace(/,/g, '') * (item.quantity || 1))}</div>
-        </div>
-    `).join('');
+    const itemsHTML = order.items.map((item, index) => {
+        // Check if status is completed and if the item is already reviewed
+        let reviewActionHTML = '';
+        if (displayStatus === 'Completed') {
+            if (item.reviewed) {
+                reviewActionHTML = `<span style="display: inline-block; margin-top: 8px; font-size: 13px; color: #1b8f50; font-weight: 600;"><i class="fi fi-rs-check-circle" style="margin-right: 5px; vertical-align: middle;"></i>Reviewed</span>`;
+            } else {
+                // Pass order ID, item index, name, and image to the modal
+                reviewActionHTML = `<button onclick="openWriteReviewModal('${order.id}', ${index}, '${item.name.replace(/'/g, "\\'")}', '${item.image}')" style="margin-top: 8px; padding: 6px 12px; background: white; color: var(--brand-color); border: 1px solid var(--brand-color); border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.2s;">Write Review</button>`;
+            }
+        }
+
+        return `
+            <div class="drop-item-card">
+                <img src="${item.image}" alt="${item.name}" class="drop-item-img">
+                <div class="drop-item-info">
+                    <h4>${item.name}</h4>
+                    <p>Color: ${item.color} | Size: ${item.size} | Qty: ${item.quantity || 1}</p>
+                    ${reviewActionHTML}
+                </div>
+                <div class="drop-item-price">₱ ${formatCurrency(item.price.replace(/,/g, '') * (item.quantity || 1))}</div>
+            </div>
+        `;
+    }).join('');
 
     document.getElementById('order-modal-content').innerHTML = `
         ${trackerHTML}
@@ -156,7 +172,7 @@ window.executeCancelOrder = () => updateOrderStatus('Cancelled', 'Order Cancelle
 /* CORE ORDER LOGIC END */
 
 
-/* ORDER HISTORY PAGE SPECIFIC START */
+/* ORDER HISTORY PAGE SPECIFIC */
 function setupOrderTabs() {
     const tabs = document.querySelectorAll('.order-tab');
     tabs.forEach(tab => {
@@ -230,3 +246,276 @@ function renderOrderHistory(filterStatus) {
     }
 }
 /* ORDER HISTORY PAGE SPECIFIC END */
+
+/* WRITE REVIEW MODAL LOGIC */
+let currentReviewOrderId = '';
+let currentReviewItemIndex = -1;
+let currentReviewProduct = '';
+let currentReviewRating = 0;
+let reviewPhotosBase64 = [];
+let reviewVideoBase64 = null;
+
+window.openWriteReviewModal = function(orderId, itemIndex, productName, productImg) {
+    currentReviewOrderId = orderId;
+    currentReviewItemIndex = itemIndex;
+    currentReviewProduct = productName;
+    currentReviewRating = 0;
+    reviewPhotosBase64 = [];
+    reviewVideoBase64 = null;
+    
+    document.getElementById('review-product-name').innerText = productName;
+    document.getElementById('review-product-img').src = productImg;
+    
+    document.getElementById('review-rating-text').innerText = "Select a rating";
+    document.getElementById('review-rating-text').style.color = "var(--gray-text)";
+    document.getElementById('review-text').value = '';
+    document.getElementById('review-text').style.borderColor = "var(--border-color, #e0e0e0)";
+    document.getElementById('review-text-error').style.display = 'none';
+    
+    document.getElementById('upload-photos').value = '';
+    document.getElementById('upload-video').value = '';
+    document.getElementById('media-preview-container').innerHTML = '';
+    document.getElementById('media-error-msg').style.display = 'none';
+    
+    document.querySelectorAll('#review-star-container i').forEach(s => {
+        s.className = 'fi fi-rr-star';
+        s.style.color = 'var(--brand-color)';
+    });
+    
+    setupReviewStars();
+    openAccountModal('write-review-modal');
+};
+
+function setupReviewStars() {
+    const stars = document.querySelectorAll('#review-star-container i');
+    const texts = ["", "Poor", "Fair", "Good", "Very Good", "Excellent!"];
+    const ratingText = document.getElementById('review-rating-text');
+    
+    stars.forEach(star => {
+        star.onclick = function() {
+            currentReviewRating = parseInt(this.getAttribute('data-value'));
+            ratingText.innerText = texts[currentReviewRating];
+            ratingText.style.color = "var(--brand-color)";
+            
+            stars.forEach(s => {
+                if (parseInt(s.getAttribute('data-value')) <= currentReviewRating) {
+                    s.className = 'fi fi-sr-star active';
+                    s.style.color = '#f39c12';
+                } else {
+                    s.className = 'fi fi-rr-star';
+                    s.style.color = '#ccc';
+                }
+            });
+        };
+    });
+}
+
+// MEDIA UPLOAD LOGIC
+document.getElementById('upload-photos').addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    const errorMsg = document.getElementById('media-error-msg');
+    
+    if (reviewPhotosBase64.length + files.length > 3) {
+        errorMsg.innerText = "Maximum of 3 photos allowed.";
+        errorMsg.style.display = 'block';
+        return;
+    }
+    
+    files.forEach(file => {
+        if (file.size > 1 * 1024 * 1024) { // 1MB Limit for photo
+            errorMsg.innerText = "Photo is too large (Max 1MB).";
+            errorMsg.style.display = 'block';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            reviewPhotosBase64.push(event.target.result);
+            renderMediaPreviews();
+            errorMsg.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+document.getElementById('upload-video').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const errorMsg = document.getElementById('media-error-msg');
+    if (!file) return;
+
+    if (reviewVideoBase64 !== null) {
+        errorMsg.innerText = "Maximum of 1 video allowed.";
+        errorMsg.style.display = 'block';
+        this.value = '';
+        return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) { // 2MB Limit for video
+        errorMsg.innerText = "Video is too large (Max 2MB).";
+        errorMsg.style.display = 'block';
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        reviewVideoBase64 = event.target.result;
+        renderMediaPreviews();
+        errorMsg.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+});
+
+function renderMediaPreviews() {
+    const container = document.getElementById('media-preview-container');
+    let html = '';
+    
+    reviewPhotosBase64.forEach((src, index) => {
+        html += `
+            <div style="position: relative; margin-top: 8px; margin-right: 8px;">
+                <button class="media-delete-btn" onclick="removePhoto(${index})" title="Remove Photo">&times;</button>
+                <div class="media-preview-box" onclick="openMediaPreview('${src}', 'image')">
+                    <img src="${src}" class="media-preview-content">
+                </div>
+            </div>
+        `;
+    });
+    
+    if (reviewVideoBase64) {
+        html += `
+            <div style="position: relative; margin-top: 8px; margin-right: 8px;">
+                <button class="media-delete-btn" onclick="removeVideo()" title="Remove Video">&times;</button>
+                <div class="media-preview-box" onclick="openMediaPreview('${reviewVideoBase64}', 'video')">
+                    <video src="${reviewVideoBase64}" class="media-preview-content" muted></video>
+                    <div class="media-play-overlay">
+                        <i class="fi fi-sr-play"></i>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+}
+
+window.removePhoto = function(index) {
+    reviewPhotosBase64.splice(index, 1);
+    document.getElementById('upload-photos').value = '';
+    renderMediaPreviews();
+};
+
+window.removeVideo = function() {
+    reviewVideoBase64 = null;
+    document.getElementById('upload-video').value = '';
+    renderMediaPreviews();
+};
+
+// REVIEW MEDIA FULLSCREEN PREVIEW LOGIC
+window.openMediaPreview = function(src, type) {
+    const modal = document.getElementById('media-fullscreen-modal');
+    const container = document.getElementById('fullscreen-media-container');
+    const nav = document.querySelector('.navbar-section');
+    
+    if (!modal || !container) return;
+
+    if (type === 'image') {
+        container.innerHTML = `<img src="${src}" class="fullscreen-content" onclick="event.stopPropagation()">`;
+    } else {
+        container.innerHTML = `<video src="${src}" class="fullscreen-content" controls autoplay onclick="event.stopPropagation()"></video>`;
+    }
+    
+    if (document.body.style.overflow !== 'hidden') {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        if (nav) nav.style.right = `${scrollbarWidth}px`;
+    }
+    
+    modal.showModal();
+
+    modal.onclick = function() {
+        closeMediaPreview();
+    };
+
+    modal.oncancel = function(e) {
+        e.preventDefault(); 
+        closeMediaPreview();
+    };
+};
+
+window.closeMediaPreview = function() {
+    const modal = document.getElementById('media-fullscreen-modal');
+    const container = document.getElementById('fullscreen-media-container');
+    const nav = document.querySelector('.navbar-section');
+    
+    if (modal && container) {
+        container.innerHTML = '';
+        modal.close();
+        
+        if (document.querySelectorAll('dialog[open]').length === 0) {
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '0px';
+            if (nav) nav.style.right = '0px';
+        }
+    }
+};
+
+window.submitProductReview = function() {
+    const textInput = document.getElementById('review-text');
+    const text = textInput.value.trim();
+    let hasError = false;
+
+    if (currentReviewRating === 0) {
+        document.getElementById('review-rating-text').innerText = "Please select a rating";
+        document.getElementById('review-rating-text').style.color = "#d9534f";
+        hasError = true;
+    }
+    if (text === '') {
+        textInput.style.borderColor = "#d9534f";
+        document.getElementById('review-text-error').style.display = 'block';
+        hasError = true;
+    }
+    if (hasError) return;
+
+    let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
+    
+    const newFeedback = {
+        id: "FB-" + Date.now(),
+        userEmail: currentUser.email,
+        userName: `${currentUser.firstName} ${currentUser.lastName || ''}`.trim(),
+        productName: currentReviewProduct,
+        rating: currentReviewRating,
+        comment: text,
+        photos: reviewPhotosBase64,
+        video: reviewVideoBase64,
+        date: new Date().toLocaleDateString()
+    };
+
+    if (!currentUser.feedbacks) currentUser.feedbacks = [];
+    currentUser.feedbacks.unshift(newFeedback);
+
+    let targetOrder = currentUser.orderHistory.find(o => o.id === currentReviewOrderId);
+    if (targetOrder && targetOrder.items[currentReviewItemIndex]) {
+        targetOrder.items[currentReviewItemIndex].reviewed = true;
+    }
+
+    localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
+
+    let users = JSON.parse(localStorage.getItem('pace_users')) || [];
+    let userIndex = users.findIndex(u => u.email === currentUser.email);
+    if (userIndex > -1) {
+        users[userIndex].feedbacks = currentUser.feedbacks;
+        let dbOrder = users[userIndex].orderHistory.find(o => o.id === currentReviewOrderId);
+        if (dbOrder && dbOrder.items[currentReviewItemIndex]) {
+            dbOrder.items[currentReviewItemIndex].reviewed = true;
+        }
+        localStorage.setItem('pace_users', JSON.stringify(users));
+    }
+
+    let globalFeedbacks = JSON.parse(localStorage.getItem('pace_global_feedbacks')) || [];
+    globalFeedbacks.unshift(newFeedback);
+    localStorage.setItem('pace_global_feedbacks', JSON.stringify(globalFeedbacks));
+
+    closeAccountModal('write-review-modal');
+    openOrderDetails(currentReviewOrderId); 
+};
