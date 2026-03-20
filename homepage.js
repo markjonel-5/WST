@@ -116,7 +116,7 @@ if (teamContainer) {
     const teamData = [
         { name: "Perez, Mark Jonel S.", role: "BACKEND DEVELOPER", img: "Team Image/Perez, M.jpeg" },
         { name: "Francia, Gad Daniel Kellyn C.", role: "FRONTEND DEVELOPER", img: "Team Image/Francia, G.jpg" },
-        { name: "Crisostomo, Jomari", role: "FRONTEND DEVELOPER", img: "Team Image/Crisostomo, J.jfif" },
+        { name: "Crisostomo, Jomari", role: "FRONTEND DEVELOPER", img: "Team Image/jomari.png" },
         { name: "Javier, Mikel Kyan", role: "FRONTEND DEVELOPER", img: "Team Image/Javier, M.jfif" },
         { name: "Sumala, John Aldrin S.", role: "BACKEND DEVELOPER", img: "Team Image/Sumala, J.A.jpg" }
     ];

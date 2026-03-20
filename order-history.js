@@ -15,6 +15,16 @@ window.addEventListener('DOMContentLoaded', () => {
         setupOrderTabs();
         renderOrderHistory('All');
     }
+
+    const reviewTextInput = document.getElementById('review-text');
+    if (reviewTextInput) {
+        reviewTextInput.addEventListener('input', function() {
+
+            this.style.borderColor = "var(--border-color, #e0e0e0)";
+            const errorMsg = document.getElementById('review-text-error');
+            if (errorMsg) errorMsg.style.display = 'none';
+        });
+    }
 });
 
 /* GLOBAL UI FUNCTIONS START */
@@ -468,6 +478,10 @@ window.submitProductReview = function() {
     if (currentReviewRating === 0) {
         document.getElementById('review-rating-text').innerText = "Please select a rating";
         document.getElementById('review-rating-text').style.color = "#d9534f";
+
+        document.querySelectorAll('#review-star-container i').forEach(star => {
+            star.style.color = "#d9534f"; 
+        });
         hasError = true;
     }
     if (text === '') {
@@ -491,20 +505,15 @@ window.submitProductReview = function() {
         date: new Date().toLocaleDateString()
     };
 
-    if (!currentUser.feedbacks) currentUser.feedbacks = [];
-    currentUser.feedbacks.unshift(newFeedback);
-
     let targetOrder = currentUser.orderHistory.find(o => o.id === currentReviewOrderId);
     if (targetOrder && targetOrder.items[currentReviewItemIndex]) {
         targetOrder.items[currentReviewItemIndex].reviewed = true;
     }
-
     localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
 
     let users = JSON.parse(localStorage.getItem('pace_users')) || [];
     let userIndex = users.findIndex(u => u.email === currentUser.email);
     if (userIndex > -1) {
-        users[userIndex].feedbacks = currentUser.feedbacks;
         let dbOrder = users[userIndex].orderHistory.find(o => o.id === currentReviewOrderId);
         if (dbOrder && dbOrder.items[currentReviewItemIndex]) {
             dbOrder.items[currentReviewItemIndex].reviewed = true;

@@ -181,7 +181,6 @@ function renderUserMenu() {
                     <a href="payment-method.html"><i class="fi fi-rr-credit-card"></i> Payment Methods</a>
                     <a href="order-history.html"><i class="fi fi-rr-box"></i> Order History</a>
                     <a href="notification.html"><i class="fi fi-rr-bell"></i> Notifications</a>
-                    <a href="feedback.html"><i class="fi fi-rr-star"></i> My Feedback</a>
                     <a href="chat-support.html"><i class="fi fi-rr-headset"></i> Chat Support</a>
                 </div>
                 <div class="card-logout">
