@@ -8,8 +8,10 @@ window.onload = function () {
     if (!document.getElementById('pd-name')) return;
     if (typeof products !== 'undefined') {
         let product;
-        if (targetId) product = products.find(p => p.id === targetId);
-        else if (targetName) product = products.find(p => p.name === targetName);
+        let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || products;
+
+        if (targetId) product = currentProducts.find(p => p.id === targetId);
+        else if (targetName) product = currentProducts.find(p => p.name === targetName);
 
         if (product) loadProductDetails(product);
         else document.getElementById('pd-name').innerText = "Product Not Found";
@@ -32,7 +34,8 @@ function loadProductDetails(p) {
 
     const colorContainer = document.querySelector('.color-option');
     if (colorContainer) {
-        const relatedVariants = products.filter(item => item.name === p.name);
+        let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || products;
+        const relatedVariants = currentProducts.filter(item => item.name === p.name);
         colorContainer.innerHTML = relatedVariants.map(variant => `
             <button type="button" class="color-box ${variant.id === p.id ? 'selected' : ''}" 
                     onclick="switchColor('${variant.id}')" title="${variant.color}">
@@ -96,30 +99,60 @@ function loadProductDetails(p) {
     else if (p.type === 'WOMEN') sizes = ['5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'];
     else if (p.type === 'KIDS') sizes = ['1Y', '1.5Y', '2Y', '2.5Y', '3Y', '3.5Y', '4Y', '4.5Y', '5Y', '5.5Y', '6Y', '6.5Y'];
 
-    sizeContainer.innerHTML = sizes.map(size => {
-        let label = (p.type === 'MEN') ? 'M ' + size : (p.type === 'WOMEN') ? 'W ' + size : size;
-        return `<button class="size-btn" onclick="selectSize(this, '${label}')">${label}</button>`;
-    }).join('');
+    if (sizeContainer) {
+        sizeContainer.innerHTML = sizes.map(size => {
+            let label = (p.type === 'MEN') ? 'M ' + size : (p.type === 'WOMEN') ? 'W ' + size : size;
+            return `<button class="size-btn" onclick="selectSize(this, '${label}')">${label}</button>`;
+        }).join('');
+    }
 
-    // CHECK IF NEW ARRIVAL
-    document.getElementById('pd-new-badge').style.display = p.isNew ? 'block' : 'none';
+    // CHECK BADGE STATUS (OUT OF STOCK OR NEW ARRIVAL)
+    const badgeEl = document.getElementById('pd-new-badge');
+    if (badgeEl) {
+        if (parseInt(p.stock) === 0) {
+            badgeEl.innerText = "OUT OF STOCK";
+            badgeEl.style.backgroundColor = "#d9534f";
+            badgeEl.style.display = "block";
+        } else if (p.isNew) {
+            badgeEl.innerText = "NEW";
+            badgeEl.style.backgroundColor = "var(--brand-color)";
+            badgeEl.style.display = "block";
+        } else {
+            badgeEl.style.display = "none";
+        }
+    }
 
     // PRODUCT DETAIL ADD TO CART CONNECTION
     const addToCartBtn = document.querySelector('.pd-cart');
-    if (addToCartBtn) {
-        addToCartBtn.onclick = function (event) {
-            event.preventDefault();
-            addToCart(p);
-        };
-    }
-
-    // PRODUCT DETAIL BUY NOW CONNECTION
     const buyNowBtn = document.querySelector('.pd-buy');
-    if (buyNowBtn) {
-        buyNowBtn.onclick = function (event) {
-            event.preventDefault();
-            buyNow(p);
-        };
+
+    if (parseInt(p.stock) === 0) {
+        if (addToCartBtn) {
+            addToCartBtn.innerHTML = "OUT OF STOCK";
+            addToCartBtn.style.backgroundColor = "#ccc";
+            addToCartBtn.style.borderColor = "#ccc";
+            addToCartBtn.style.color = "#666";
+            addToCartBtn.style.cursor = "not-allowed";
+            addToCartBtn.onclick = function (event) { event.preventDefault(); };
+        }
+        if (buyNowBtn) {
+            buyNowBtn.style.display = "none";
+        }
+    } else {
+
+        if (addToCartBtn) {
+            addToCartBtn.onclick = function (event) {
+                event.preventDefault();
+                addToCart(p);
+            };
+        }
+
+        if (buyNowBtn) {
+            buyNowBtn.onclick = function (event) {
+                event.preventDefault();
+                buyNow(p);
+            };
+        }
     }
 
     // PRODUCT DETAIL WISHLIST CONNECTION
@@ -147,7 +180,8 @@ function loadProductDetails(p) {
 
 // SWITCH COLOR IN PRODUCT DETAIL PAGE
 function switchColor(variantId) {
-    const newVariant = products.find(p => p.id === variantId);
+    let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || products;
+    const newVariant = currentProducts.find(p => p.id === variantId);
     if (!newVariant) return;
     window.history.pushState(null, '', '?id=' + variantId);
     loadProductDetails(newVariant);
@@ -216,13 +250,13 @@ function buyNow(product) {
     if (typeof currentSelectedSize !== 'undefined' && !currentSelectedSize) {
         if (errorMsg) errorMsg.classList.remove('error-hidden');
         if (sizeGrid) sizeGrid.classList.add('size-grid-error');
-        return; 
+        return;
     }
 
     try {
         const selectedSize = typeof currentSelectedSize !== 'undefined' && currentSelectedSize ? currentSelectedSize : 'Default';
         const uniqueCartId = product.id + "-" + selectedSize + "-" + product.color;
-        
+
         const buyNowItem = {
             productId: product.id,
             cartItemId: uniqueCartId,
@@ -233,9 +267,9 @@ function buyNow(product) {
             color: product.color,
             image: product.img,
             quantity: 1,
-            selected: true 
+            selected: true
         };
-        
+
         sessionStorage.setItem('pace_buy_now_item', JSON.stringify(buyNowItem));
         window.location.href = 'checkout.html';
 
@@ -249,8 +283,8 @@ let activeProductReviews = [];
 
 function renderProductReviewSummary(productName) {
     const acTexts = document.querySelectorAll('.accordion-content .ac-text');
-    if (acTexts.length < 3) return; 
-    const reviewBox = acTexts[2]; 
+    if (acTexts.length < 3) return;
+    const reviewBox = acTexts[2];
 
     let globalFeedbacks = JSON.parse(localStorage.getItem('pace_global_feedbacks')) || [];
     activeProductReviews = globalFeedbacks.filter(fb => fb.productName === productName);
@@ -265,7 +299,7 @@ function renderProductReviewSummary(productName) {
                     <div class="review-count">There are no reviews yet</div>
                 </div>
                 <div class="review-bars">
-                    ${[5,4,3,2,1].map(i => `<div class="review-bar-row"><span class="bar-label">${i} ★</span><div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div><span class="bar-count">0</span></div>`).join('')}
+                    ${[5, 4, 3, 2, 1].map(i => `<div class="review-bar-row"><span class="bar-label">${i} ★</span><div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div><span class="bar-count">0</span></div>`).join('')}
                 </div>
             </div>
         `;
@@ -274,7 +308,7 @@ function renderProductReviewSummary(productName) {
 
     let sum = 0;
     let starCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    
+
     activeProductReviews.forEach(fb => {
         sum += fb.rating;
         starCounts[fb.rating] = (starCounts[fb.rating] || 0) + 1;
@@ -282,10 +316,10 @@ function renderProductReviewSummary(productName) {
 
     let average = (sum / totalReviews).toFixed(1);
     let starsHTML = '';
-    for(let i=1; i<=5; i++) starsHTML += i <= Math.round(average) ? '★' : '☆';
+    for (let i = 1; i <= 5; i++) starsHTML += i <= Math.round(average) ? '★' : '☆';
 
     let barsHTML = '';
-    for(let i=5; i>=1; i--) {
+    for (let i = 5; i >= 1; i--) {
         let percentage = (starCounts[i] / totalReviews) * 100;
         barsHTML += `<div class="review-bar-row"><span class="bar-label">${i} ★</span><div class="bar-track"><div class="bar-fill" style="width: ${percentage}%;"></div></div><span class="bar-count">${starCounts[i]}</span></div>`;
     }
@@ -309,8 +343,8 @@ function renderProductReviewSummary(productName) {
 
 function generateReviewCard(fb) {
     let fbStars = '';
-    for(let i=1; i<=5; i++) fbStars += i <= fb.rating ? '★' : '☆';
-    
+    for (let i = 1; i <= 5; i++) fbStars += i <= fb.rating ? '★' : '☆';
+
     let mediaHTML = '';
     if ((fb.photos && fb.photos.length) || fb.video) {
         mediaHTML += `<div class="review-card-media">`;
@@ -345,24 +379,24 @@ function generateReviewCard(fb) {
 // ALL REVIEWS MODAL LOGIC
 let currentReviewFilter = 'All';
 
-window.openAllReviewsModal = function() {
+window.openAllReviewsModal = function () {
     renderModalReviews();
     const modal = document.getElementById('all-reviews-modal');
     const nav = document.querySelector('.navbar-section');
-    
+
     if (modal) {
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         document.body.style.overflow = 'hidden';
         document.body.style.paddingRight = `${scrollbarWidth}px`;
-        if (nav) nav.style.right = `${scrollbarWidth}px`; 
+        if (nav) nav.style.right = `${scrollbarWidth}px`;
         modal.showModal();
     }
 };
 
-window.closeAllReviewsModal = function() {
+window.closeAllReviewsModal = function () {
     const modal = document.getElementById('all-reviews-modal');
     const nav = document.querySelector('.navbar-section');
-    
+
     if (modal) {
         modal.close();
         document.body.style.overflow = '';
@@ -374,19 +408,19 @@ window.closeAllReviewsModal = function() {
 function renderModalReviews() {
     const listContainer = document.getElementById('all-reviews-list-container');
     const tabsContainer = document.getElementById('review-filter-tabs');
-    
+
     let starCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
     activeProductReviews.forEach(fb => starCounts[fb.rating]++);
-    
+
     tabsContainer.innerHTML = `
         <button onclick="filterReviews('All')" class="review-filter-tab ${currentReviewFilter === 'All' ? 'active' : ''}">All</button>
-        ${[5,4,3,2,1].map(i => `
+        ${[5, 4, 3, 2, 1].map(i => `
             <button onclick="filterReviews(${i})" class="review-filter-tab ${currentReviewFilter === i ? 'active' : ''}">${i} Star (${starCounts[i]})</button>
         `).join('')}
     `;
 
-    let displayedReviews = currentReviewFilter === 'All' 
-        ? activeProductReviews 
+    let displayedReviews = currentReviewFilter === 'All'
+        ? activeProductReviews
         : activeProductReviews.filter(fb => fb.rating === currentReviewFilter);
 
     if (displayedReviews.length === 0) {
@@ -401,17 +435,17 @@ function renderModalReviews() {
     }
 }
 
-window.filterReviews = function(filterValue) {
+window.filterReviews = function (filterValue) {
     currentReviewFilter = filterValue;
     renderModalReviews();
 };
 
 // MEDIA FULLSCREEN PREVIEW LOGIC
-window.openMediaPreview = function(src, type) {
+window.openMediaPreview = function (src, type) {
     const modal = document.getElementById('media-fullscreen-modal');
     const container = document.getElementById('fullscreen-media-container');
     const nav = document.querySelector('.navbar-section');
-    
+
     if (!modal || !container) return;
 
     if (type === 'image') {
@@ -419,35 +453,35 @@ window.openMediaPreview = function(src, type) {
     } else {
         container.innerHTML = `<video src="${src}" class="fullscreen-content" controls autoplay onclick="event.stopPropagation()"></video>`;
     }
-    
+
     if (document.body.style.overflow !== 'hidden') {
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         document.body.style.overflow = 'hidden';
         document.body.style.paddingRight = `${scrollbarWidth}px`;
         if (nav) nav.style.right = `${scrollbarWidth}px`;
     }
-    
+
     modal.showModal();
 
-    modal.onclick = function() {
+    modal.onclick = function () {
         closeMediaPreview();
     };
 
-    modal.oncancel = function(e) {
-        e.preventDefault(); 
+    modal.oncancel = function (e) {
+        e.preventDefault();
         closeMediaPreview();
     };
 };
 
-window.closeMediaPreview = function() {
+window.closeMediaPreview = function () {
     const modal = document.getElementById('media-fullscreen-modal');
     const container = document.getElementById('fullscreen-media-container');
     const nav = document.querySelector('.navbar-section');
-    
+
     if (modal && container) {
         container.innerHTML = '';
         modal.close();
-        
+
         if (document.querySelectorAll('dialog[open]').length === 0) {
             document.body.style.overflow = '';
             document.body.style.paddingRight = '0px';

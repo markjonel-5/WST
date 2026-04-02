@@ -30,16 +30,17 @@ function renderCartPage() {
         else allSelected = false;
 
         let formattedUnitPrice = cleanPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        let sizes = (item.type === 'MEN') ? ['8','8.5','9','9.5','10','10.5','11','11.5','12','12.5','13','13.5'] :
-                    (item.type === 'WOMEN') ? ['5','5.5','6','6.5','7','7.5','8','8.5','9','9.5','10','10.5'] :
-                    ['1Y','1.5Y','2Y','2.5Y','3Y','3.5Y','4Y','4.5Y','5Y','5.5Y','6Y','6.5Y'];
+        let sizes = (item.type === 'MEN') ? ['8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '12.5', '13', '13.5'] :
+            (item.type === 'WOMEN') ? ['5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'] :
+                ['1Y', '1.5Y', '2Y', '2.5Y', '3Y', '3.5Y', '4Y', '4.5Y', '5Y', '5.5Y', '6Y', '6.5Y'];
 
         let sizeOptionsHTML = sizes.map(size => {
             let label = (item.type === 'MEN') ? 'M ' + size : (item.type === 'WOMEN') ? 'W ' + size : size;
             return `<option value="${label}" ${item.size === label ? 'selected' : ''}>${label}</option>`;
         }).join('');
 
-        let colorOptionsHTML = products.filter(p => p.name === item.name && p.type === item.type).map(v => {
+        let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || products;
+        let colorOptionsHTML = currentProducts.filter(p => p.name === item.name && p.type === item.type).map(v => {
             return `<option value="${v.color}" ${item.color === v.color ? 'selected' : ''}>${v.color}</option>`;
         }).join('');
 
@@ -114,7 +115,7 @@ function updateQuantity(index, change) {
     if (!cart[index]) return;
     if (!cart[index].quantity) cart[index].quantity = 1;
     cart[index].quantity += change;
-    if(cart[index].quantity < 1) cart[index].quantity = 1;
+    if (cart[index].quantity < 1) cart[index].quantity = 1;
     saveCartData(cart);
 }
 
@@ -123,7 +124,8 @@ function updateCartItemColor(index, newColor) {
     let cart = getCartData();
     if (!cart[index]) return;
     let item = cart[index];
-    let newVariant = products.find(p => p.name === item.name && p.type === item.type && p.color === newColor);
+    let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || products;
+    let newVariant = currentProducts.find(p => p.name === item.name && p.type === item.type && p.color === newColor);
     if (!newVariant) return;
 
     let newCartItemId = newVariant.id + "-" + item.size + "-" + newColor;
@@ -198,9 +200,11 @@ function renderWishlistPage() {
         return;
     }
 
+    let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || products;
+
     container.innerHTML = wishlist.map(savedItem => {
 
-        let p = products.find(prod => prod.id === savedItem.id) || savedItem;
+        let p = currentProducts.find(prod => prod.id === savedItem.id) || savedItem;
 
         return `
             <div class="product-card wishlist-card">
@@ -228,14 +232,34 @@ function renderWishlistPage() {
 
 // INITIALIZE ON PAGE LOAD
 window.addEventListener('DOMContentLoaded', () => {
+
+    let cart = getCartData();
+    let globalProducts = JSON.parse(localStorage.getItem('pace_products')) || [];
+    let removedItems = [];
+
+    let validCart = cart.filter(item => {
+        let liveProduct = globalProducts.find(p => String(p.id) === String(item.productId));
+
+        if (!liveProduct || parseInt(liveProduct.stock) === 0) {
+            removedItems.push(item.name);
+            return false;
+        }
+        return true;
+    });
+
+    if (removedItems.length > 0) {
+        saveCartData(validCart);
+    } else {
+        renderCartPage();
+    }
+
     renderWishlistPage();
-    renderCartPage();
+
     const checkoutBtn = document.querySelector('.checkout-btn');
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', (e) => {
-            let cart = getCartData();
-
-            if (!cart.some(item => item.selected !== false)) {
+            let currentCart = getCartData();
+            if (!currentCart.some(item => item.selected !== false)) {
                 e.preventDefault();
                 const emptyModal = document.getElementById('empty-selection-modal');
                 if (emptyModal) {
@@ -245,10 +269,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 const currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
                 if (!currentUser) {
                     window.location.href = 'login.html';
-                    return; // Stop here, send them straight to login!
+                    return;
                 }
-
-                // If logged in, proceed normally
                 sessionStorage.removeItem('pace_buy_now_item');
                 window.location.href = 'checkout.html';
             }

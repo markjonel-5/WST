@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const reviewTextInput = document.getElementById('review-text');
     if (reviewTextInput) {
-        reviewTextInput.addEventListener('input', function() {
+        reviewTextInput.addEventListener('input', function () {
 
             this.style.borderColor = "var(--border-color, #e0e0e0)";
             const errorMsg = document.getElementById('review-text-error');
@@ -164,6 +164,16 @@ window.updateOrderStatus = function (newStatus, title, messageTemplate) {
         localStorage.setItem('pace_users', JSON.stringify(users));
     }
 
+    // --- BAGONG CODE: ADMIN SYNC ---
+    // Kapag nag-update ang user ng status, i-update din ang pace_orders para makita ng admin
+    let allOrders = JSON.parse(localStorage.getItem('pace_orders')) || [];
+    let adminOrderIndex = allOrders.findIndex(o => o.id === window.globalActiveOrderId);
+    if (adminOrderIndex > -1) {
+        allOrders[adminOrderIndex].status = newStatus;
+        localStorage.setItem('pace_orders', JSON.stringify(allOrders));
+    }
+    // --------------------------------
+
     localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
 
     closeAccountModal(newStatus === 'Completed' ? 'receive-confirm-modal' : 'cancel-confirm-modal');
@@ -265,33 +275,33 @@ let currentReviewRating = 0;
 let reviewPhotosBase64 = [];
 let reviewVideoBase64 = null;
 
-window.openWriteReviewModal = function(orderId, itemIndex, productName, productImg) {
+window.openWriteReviewModal = function (orderId, itemIndex, productName, productImg) {
     currentReviewOrderId = orderId;
     currentReviewItemIndex = itemIndex;
     currentReviewProduct = productName;
     currentReviewRating = 0;
     reviewPhotosBase64 = [];
     reviewVideoBase64 = null;
-    
+
     document.getElementById('review-product-name').innerText = productName;
     document.getElementById('review-product-img').src = productImg;
-    
+
     document.getElementById('review-rating-text').innerText = "Select a rating";
     document.getElementById('review-rating-text').style.color = "var(--gray-text)";
     document.getElementById('review-text').value = '';
     document.getElementById('review-text').style.borderColor = "var(--border-color, #e0e0e0)";
     document.getElementById('review-text-error').style.display = 'none';
-    
+
     document.getElementById('upload-photos').value = '';
     document.getElementById('upload-video').value = '';
     document.getElementById('media-preview-container').innerHTML = '';
     document.getElementById('media-error-msg').style.display = 'none';
-    
+
     document.querySelectorAll('#review-star-container i').forEach(s => {
         s.className = 'fi fi-rr-star';
         s.style.color = 'var(--brand-color)';
     });
-    
+
     setupReviewStars();
     openAccountModal('write-review-modal');
 };
@@ -300,13 +310,13 @@ function setupReviewStars() {
     const stars = document.querySelectorAll('#review-star-container i');
     const texts = ["", "Poor", "Fair", "Good", "Very Good", "Excellent!"];
     const ratingText = document.getElementById('review-rating-text');
-    
+
     stars.forEach(star => {
-        star.onclick = function() {
+        star.onclick = function () {
             currentReviewRating = parseInt(this.getAttribute('data-value'));
             ratingText.innerText = texts[currentReviewRating];
             ratingText.style.color = "var(--brand-color)";
-            
+
             stars.forEach(s => {
                 if (parseInt(s.getAttribute('data-value')) <= currentReviewRating) {
                     s.className = 'fi fi-sr-star active';
@@ -321,25 +331,25 @@ function setupReviewStars() {
 }
 
 // MEDIA UPLOAD LOGIC
-document.getElementById('upload-photos').addEventListener('change', function(e) {
+document.getElementById('upload-photos').addEventListener('change', function (e) {
     const files = Array.from(e.target.files);
     const errorMsg = document.getElementById('media-error-msg');
-    
+
     if (reviewPhotosBase64.length + files.length > 3) {
         errorMsg.innerText = "Maximum of 3 photos allowed.";
         errorMsg.style.display = 'block';
         return;
     }
-    
+
     files.forEach(file => {
         if (file.size > 1 * 1024 * 1024) { // 1MB Limit for photo
             errorMsg.innerText = "Photo is too large (Max 1MB).";
             errorMsg.style.display = 'block';
             return;
         }
-        
+
         const reader = new FileReader();
-        reader.onload = function(event) {
+        reader.onload = function (event) {
             reviewPhotosBase64.push(event.target.result);
             renderMediaPreviews();
             errorMsg.style.display = 'none';
@@ -348,7 +358,7 @@ document.getElementById('upload-photos').addEventListener('change', function(e) 
     });
 });
 
-document.getElementById('upload-video').addEventListener('change', function(e) {
+document.getElementById('upload-video').addEventListener('change', function (e) {
     const file = e.target.files[0];
     const errorMsg = document.getElementById('media-error-msg');
     if (!file) return;
@@ -368,7 +378,7 @@ document.getElementById('upload-video').addEventListener('change', function(e) {
     }
 
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         reviewVideoBase64 = event.target.result;
         renderMediaPreviews();
         errorMsg.style.display = 'none';
@@ -379,7 +389,7 @@ document.getElementById('upload-video').addEventListener('change', function(e) {
 function renderMediaPreviews() {
     const container = document.getElementById('media-preview-container');
     let html = '';
-    
+
     reviewPhotosBase64.forEach((src, index) => {
         html += `
             <div style="position: relative; margin-top: 8px; margin-right: 8px;">
@@ -390,7 +400,7 @@ function renderMediaPreviews() {
             </div>
         `;
     });
-    
+
     if (reviewVideoBase64) {
         html += `
             <div style="position: relative; margin-top: 8px; margin-right: 8px;">
@@ -404,28 +414,28 @@ function renderMediaPreviews() {
             </div>
         `;
     }
-    
+
     container.innerHTML = html;
 }
 
-window.removePhoto = function(index) {
+window.removePhoto = function (index) {
     reviewPhotosBase64.splice(index, 1);
     document.getElementById('upload-photos').value = '';
     renderMediaPreviews();
 };
 
-window.removeVideo = function() {
+window.removeVideo = function () {
     reviewVideoBase64 = null;
     document.getElementById('upload-video').value = '';
     renderMediaPreviews();
 };
 
 // REVIEW MEDIA FULLSCREEN PREVIEW LOGIC
-window.openMediaPreview = function(src, type) {
+window.openMediaPreview = function (src, type) {
     const modal = document.getElementById('media-fullscreen-modal');
     const container = document.getElementById('fullscreen-media-container');
     const nav = document.querySelector('.navbar-section');
-    
+
     if (!modal || !container) return;
 
     if (type === 'image') {
@@ -433,35 +443,35 @@ window.openMediaPreview = function(src, type) {
     } else {
         container.innerHTML = `<video src="${src}" class="fullscreen-content" controls autoplay onclick="event.stopPropagation()"></video>`;
     }
-    
+
     if (document.body.style.overflow !== 'hidden') {
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         document.body.style.overflow = 'hidden';
         document.body.style.paddingRight = `${scrollbarWidth}px`;
         if (nav) nav.style.right = `${scrollbarWidth}px`;
     }
-    
+
     modal.showModal();
 
-    modal.onclick = function() {
+    modal.onclick = function () {
         closeMediaPreview();
     };
 
-    modal.oncancel = function(e) {
-        e.preventDefault(); 
+    modal.oncancel = function (e) {
+        e.preventDefault();
         closeMediaPreview();
     };
 };
 
-window.closeMediaPreview = function() {
+window.closeMediaPreview = function () {
     const modal = document.getElementById('media-fullscreen-modal');
     const container = document.getElementById('fullscreen-media-container');
     const nav = document.querySelector('.navbar-section');
-    
+
     if (modal && container) {
         container.innerHTML = '';
         modal.close();
-        
+
         if (document.querySelectorAll('dialog[open]').length === 0) {
             document.body.style.overflow = '';
             document.body.style.paddingRight = '0px';
@@ -470,7 +480,7 @@ window.closeMediaPreview = function() {
     }
 };
 
-window.submitProductReview = function() {
+window.submitProductReview = function () {
     const textInput = document.getElementById('review-text');
     const text = textInput.value.trim();
     let hasError = false;
@@ -480,7 +490,7 @@ window.submitProductReview = function() {
         document.getElementById('review-rating-text').style.color = "#d9534f";
 
         document.querySelectorAll('#review-star-container i').forEach(star => {
-            star.style.color = "#d9534f"; 
+            star.style.color = "#d9534f";
         });
         hasError = true;
     }
@@ -492,7 +502,7 @@ window.submitProductReview = function() {
     if (hasError) return;
 
     let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
-    
+
     const newFeedback = {
         id: "FB-" + Date.now(),
         userEmail: currentUser.email,
@@ -526,5 +536,5 @@ window.submitProductReview = function() {
     localStorage.setItem('pace_global_feedbacks', JSON.stringify(globalFeedbacks));
 
     closeAccountModal('write-review-modal');
-    openOrderDetails(currentReviewOrderId); 
+    openOrderDetails(currentReviewOrderId);
 };

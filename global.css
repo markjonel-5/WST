@@ -47,7 +47,7 @@ body {
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 900;
-    background-color: var(--bg-color);
+    background-color: #FFFFFF;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
     display: flex;
@@ -486,8 +486,6 @@ body {
 
 /* BREADCRUMB WITH HEADER SECTION END */
 
-
-
 /* ACCOUNT POPUP MENU START */
 .user-popup-container {
     position: relative;
@@ -512,7 +510,7 @@ body {
     position: absolute;
     right: 0;
     top: calc(100% + 25px);
-    background-color: var(--bg-color);
+    background-color: #FFFFFF;
     width: max-content;
     min-width: 280px;
     white-space: nowrap;

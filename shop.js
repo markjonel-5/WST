@@ -12,11 +12,13 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
         activeCategory = category;
         currentLimit = 12;
 
-        let tempProducts = products;
+        let productList = JSON.parse(localStorage.getItem('pace_products')) || products;
+
+        let tempProducts = productList;
         if (category === 'NEW') {
-            tempProducts = products.filter(p => p.isNew === true);
+            tempProducts = productList.filter(p => p.isNew === true);
         } else if (category !== 'ALL') {
-            tempProducts = products.filter(p => p.type === category);
+            tempProducts = productList.filter(p => p.type === category);
         }
 
         let uniqueProducts = [];
@@ -32,6 +34,14 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
             }
         }
         tempProducts = uniqueProducts;
+
+        tempProducts.sort((a, b) => {
+            let aStock = parseInt(a.stock) || 0;
+            let bStock = parseInt(b.stock) || 0;
+            if (aStock === 0 && bStock > 0) return 1;
+            if (bStock === 0 && aStock > 0) return -1;
+            return 0;
+        });
 
         if (randomize) {
             const isBack = performance.getEntriesByType("navigation")[0]?.type === "back_forward";
@@ -59,10 +69,17 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
         let isSaved = currentWishlist.some(item => item.id === p.id);
         let heartClass = isSaved ? "fi-ss-heart" : "fi-rs-heart";
 
+        let badgeHTML = '';
+        if (parseInt(p.stock) === 0) {
+            badgeHTML = '<span class="new-badge" style="background-color: #d9534f;">OUT OF STOCK</span>';
+        } else if (p.isNew) {
+            badgeHTML = '<span class="new-badge">NEW</span>';
+        }
+
         return `
             <div class="product-card">
                 <button class="product-image">
-                    ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
+                    ${badgeHTML}
                     <img src="${p.img}" class="primary-img">
                     <img src="${p.hover}" class="hover-img" onclick="window.location.href='product-detail.html?id=${p.id}'"> 
                 </button>

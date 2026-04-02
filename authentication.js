@@ -126,7 +126,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (!isValid) return;
 
-            const newUser = { firstName: fname, lastName: lname, email: email, username: username, password: password };
+            const newUser = {
+                id: 'USER-' + Date.now(),
+                firstName: fname,
+                lastName: lname,
+                email: email,
+                username: username,
+                password: password,
+                role: 'user',
+                cart: [],
+                wishlist: [],
+                chatHistory: []
+            };
             users.push(newUser);
             localStorage.setItem('pace_users', JSON.stringify(users));
 
@@ -155,7 +166,12 @@ window.addEventListener('DOMContentLoaded', () => {
                 showError('login-password', 'Incorrect password.');
             } else {
                 localStorage.setItem('pace_current_user', JSON.stringify(validUser));
-                window.location.href = "homepage.html";
+
+                if (validUser.role === 'admin') {
+                    window.location.href = "admin-dashboard.html";
+                } else {
+                    window.location.href = "homepage.html";
+                }
             }
         });
     }

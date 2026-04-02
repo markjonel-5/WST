@@ -14,9 +14,9 @@ window.addEventListener('DOMContentLoaded', () => {
         addressModal.addEventListener('close', () => {
             const updatedUser = JSON.parse(localStorage.getItem('pace_current_user'));
             loadCheckoutData(updatedUser);
-            
+
             const defaultDelivery = document.querySelector('input[name="checkout-delivery-speed"]:checked');
-            if(defaultDelivery) defaultDelivery.dispatchEvent(new Event('change'));
+            if (defaultDelivery) defaultDelivery.dispatchEvent(new Event('change'));
         });
     }
 
@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
             loadCheckoutData(updatedUser);
 
             const defaultDelivery = document.querySelector('input[name="checkout-delivery-speed"]:checked');
-            if(defaultDelivery) defaultDelivery.dispatchEvent(new Event('change'));
+            if (defaultDelivery) defaultDelivery.dispatchEvent(new Event('change'));
         });
     }
 });
@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function setupDeliveryToggle() {
     const deliveryOptions = document.querySelectorAll('input[name="checkout-delivery-speed"]');
     const addressBox = document.getElementById('checkout-address-box');
-    
+
     deliveryOptions.forEach(radio => {
         radio.addEventListener('change', (e) => {
 
@@ -64,7 +64,7 @@ function setupDeliveryToggle() {
                 }
                 if (codTitle) codTitle.innerText = 'Pay in Store';
                 if (codSubtitle) codSubtitle.innerText = 'Over-the-counter';
-                
+
             } else {
                 if (addressBox) {
                     addressBox.style.opacity = '1';
@@ -80,7 +80,7 @@ function setupDeliveryToggle() {
     });
 
     const defaultDelivery = document.querySelector('input[name="checkout-delivery-speed"]:checked');
-    if(defaultDelivery) defaultDelivery.dispatchEvent(new Event('change'));
+    if (defaultDelivery) defaultDelivery.dispatchEvent(new Event('change'));
 }
 
 // COMPUTES THE SUMMARY TOTAL
@@ -105,7 +105,7 @@ function updateOrderSummary() {
 
     const deliveryRadio = document.querySelector('input[name="checkout-delivery-speed"]:checked');
     const deliveryFee = deliveryRadio ? parseFloat(deliveryRadio.value) : 0;
-    
+
     const finalTotal = subtotal + deliveryFee;
 
     const deliveryText = document.getElementById('checkout-delivery');
@@ -154,7 +154,7 @@ function loadCheckoutData(user) {
 
     const reviewContainer = document.getElementById('checkout-sidebar-review');
     let reviewHTML = '';
-    
+
     selectedItems.forEach(item => {
         let qty = item.quantity || 1;
         let cleanPrice = parseFloat(item.price.replace(/,/g, ''));
@@ -177,7 +177,7 @@ function loadCheckoutData(user) {
         `;
     });
     reviewContainer.innerHTML = reviewHTML;
-    
+
     updateOrderSummary();
 
     const addressContainer = document.getElementById('checkout-address-content');
@@ -188,7 +188,7 @@ function loadCheckoutData(user) {
     } else {
         let addressHTML = '<div class="checkout-selection-list">';
         validAddresses.forEach((addr, index) => {
-            const isChecked = index === validAddresses.length - 1 ? 'checked' : ''; 
+            const isChecked = index === validAddresses.length - 1 ? 'checked' : '';
             addressHTML += `
                 <label class="checkout-option-label">
                     <input type="radio" name="checkout-address" value="${addr.id}" ${isChecked}>
@@ -206,9 +206,9 @@ function loadCheckoutData(user) {
 
     const paymentContainer = document.getElementById('checkout-payment-content');
     const validPayments = (user.payments || []).filter(p => p && p.type && p.type !== 'undefined');
-    
+
     let paymentHTML = '<div class="checkout-selection-list">';
-    
+
     validPayments.forEach((pm, index) => {
         const isChecked = index === validPayments.length - 1 ? 'checked' : '';
         let displayDetails = pm.type === 'Card' ? `•••• •••• •••• ${pm.data.number.slice(-4)}` : (pm.type === 'GCash' ? pm.data.phone : pm.data.email);
@@ -228,7 +228,7 @@ function loadCheckoutData(user) {
         `;
     });
 
-    const isCODChecked = validPayments.length === 0 ? 'checked' : ''; 
+    const isCODChecked = validPayments.length === 0 ? 'checked' : '';
     paymentHTML += `
         <label class="checkout-option-label">
             <input type="radio" name="checkout-payment" value="COD" ${isCODChecked}>
@@ -245,8 +245,6 @@ function loadCheckoutData(user) {
     paymentContainer.innerHTML = paymentHTML;
 }
 
-
-
 // PLACE ORDER FUNCTION
 function placeOrder() {
     let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
@@ -257,7 +255,7 @@ function placeOrder() {
 
     const deliveryRadio = document.querySelector('input[name="checkout-delivery-speed"]:checked');
     const isPickUp = deliveryRadio && deliveryRadio.getAttribute('data-name') === 'PickUp';
-    
+
     let selectedAddressId = null;
     if (!isPickUp) {
         const selectedAddressInput = document.querySelector('input[name="checkout-address"]:checked');
@@ -274,14 +272,40 @@ function placeOrder() {
         return;
     }
 
-    // Gather Order Data
     const buyNowItem = JSON.parse(sessionStorage.getItem('pace_buy_now_item'));
     let purchasedItems = [];
-    
+
     if (buyNowItem) {
         purchasedItems = [buyNowItem];
     } else {
         purchasedItems = (currentUser.cart || []).filter(item => item.selected !== false);
+    }
+
+    let globalProductsValidation = JSON.parse(localStorage.getItem('pace_products')) || [];
+    let outOfStockErrors = [];
+
+    purchasedItems.forEach(item => {
+        let liveProduct = globalProductsValidation.find(p => String(p.id) === String(item.productId));
+        if (!liveProduct || parseInt(liveProduct.stock) === 0) {
+            outOfStockErrors.push(item.name);
+        }
+    });
+
+    if (outOfStockErrors.length > 0) {
+        currentUser.cart = (currentUser.cart || []).filter(cartItem => {
+            let liveProduct = globalProductsValidation.find(p => String(p.id) === String(cartItem.productId));
+            return liveProduct && parseInt(liveProduct.stock) > 0;
+        });
+
+        localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
+        let users = JSON.parse(localStorage.getItem('pace_users')) || [];
+        let userIndex = users.findIndex(u => u.email === currentUser.email);
+        if (userIndex > -1) {
+            users[userIndex].cart = currentUser.cart;
+            localStorage.setItem('pace_users', JSON.stringify(users));
+        }
+
+        return;
     }
 
     // Calculate Subtotal and Total
@@ -321,7 +345,7 @@ function placeOrder() {
         deliveryTypeName = 'Express Delivery';
     }
 
-    const orderId = 'PACE-' + Math.floor(100000 + Math.random() * 900000); 
+    const orderId = 'PACE-' + Math.floor(100000 + Math.random() * 900000);
     const orderDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     const newOrder = {
@@ -331,7 +355,7 @@ function placeOrder() {
         subtotal: subtotal,
         deliveryFee: deliveryFee,
         total: finalTotal,
-        status: 'Processing',
+        status: 'To Ship',
         deliveryType: deliveryTypeName,
         addressId: selectedAddressId,
         payment: paymentMethod
@@ -341,6 +365,45 @@ function placeOrder() {
     if (!currentUser.notifications) currentUser.notifications = [];
 
     currentUser.orderHistory.push(newOrder);
+
+    // ===============================================
+    // 2. SAVE A COPY TO THE ADMIN DASHBOARD DATABASE
+    // ===============================================
+    let allOrders = JSON.parse(localStorage.getItem('pace_orders')) || [];
+
+    // NEW: Capture the exact shipping address for the Admin View Details panel
+    let fullShippingAddress = null;
+    if (selectedAddressId) {
+        fullShippingAddress = (currentUser.addresses || []).find(a => a.id.toString() === selectedAddressId);
+    }
+
+    const adminOrderInfo = {
+        id: orderId,
+        customerEmail: currentUser.email,
+        customerName: `${currentUser.firstName} ${currentUser.lastName || ''}`.trim(),
+        date: orderDate,
+        status: 'To Ship',
+        totalAmount: finalTotal,
+        items: purchasedItems,
+        paymentMethod: paymentMethod,
+        shippingAddress: fullShippingAddress // Saved for the Admin UI
+    };
+    allOrders.push(adminOrderInfo);
+    localStorage.setItem('pace_orders', JSON.stringify(allOrders));
+    // ===============================================
+
+    // --- BAGONG CODE: PRODUCT STOCK REDUCTION ---
+    let globalProducts = JSON.parse(localStorage.getItem('pace_products')) || [];
+    purchasedItems.forEach(item => {
+        let pIndex = globalProducts.findIndex(p => p.id === item.productId);
+        if (pIndex > -1) {
+            // Ibawas ang quantity sa stock, siguruhing hindi bababa sa 0
+            globalProducts[pIndex].stock -= (item.quantity || 1);
+            if (globalProducts[pIndex].stock < 0) globalProducts[pIndex].stock = 0;
+        }
+    });
+    localStorage.setItem('pace_products', JSON.stringify(globalProducts));
+    // --------------------------------------------
 
     currentUser.notifications.unshift({
         id: 'NOTIF-' + Date.now(),
@@ -355,7 +418,7 @@ function placeOrder() {
     } else {
         currentUser.cart = currentUser.cart.filter(item => item.selected === false);
     }
-    
+
     let users = JSON.parse(localStorage.getItem('pace_users'));
     if (users) {
         let userIndex = users.findIndex(u => u.email === currentUser.email);
@@ -364,9 +427,9 @@ function placeOrder() {
             localStorage.setItem('pace_users', JSON.stringify(users));
         }
     }
-    
+
     localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
-    
-    window.location.href = `success-order.html?orderId=${orderId}`; 
+
+    window.location.href = `success-order.html?orderId=${orderId}`;
 
 }
