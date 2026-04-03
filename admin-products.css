@@ -47,7 +47,8 @@
 
 /* 3. ADMIN SELECT STYLE */
 .admin-select {
-    padding: 10px 35px 10px 12px; /* Ang 35px sa right ay para hindi pumatong ang text sa icon */
+    padding: 10px 35px 10px 12px;
+    /* Ang 35px sa right ay para hindi pumatong ang text sa icon */
     border-radius: 6px;
     border: 1px solid #eaeaea;
     background: #f5f5f5;
@@ -94,17 +95,6 @@
     background-color: var(--darkgray-text);
 }
 
-/* =========================================
-   PRODUCTS TABLE SPECIFICS
-   ========================================= */
-.product-list-table th:nth-child(1) { width: 20%; } /* Product Name + Img */
-.product-list-table th:nth-child(2) { width: 14%; } /* ID */
-.product-list-table th:nth-child(3) { width: 14%; } /* Category */
-.product-list-table th:nth-child(4) { width: 14%; } /* Price */
-.product-list-table th:nth-child(5) { width: 14%; } /* Stock */
-.product-list-table th:nth-child(6) { width: 14%; } /* Status */
-.product-list-table th:nth-child(7) { width: 10%; text-align: right; padding-right: 30px;} /* Actions */
-
 .table-product-cell {
     display: flex;
     align-items: center;
@@ -142,9 +132,21 @@
     font-weight: 700;
     text-transform: uppercase;
 }
-.status-active { background: #e8f5e9; color: #1b8f50; }
-.status-low { background: #fef5e7; color: #f39c12; }
-.status-out { background: #fdedec; color: #e74c3c; }
+
+.status-active {
+    background: #e8f5e9;
+    color: #1b8f50;
+}
+
+.status-low {
+    background: #fef5e7;
+    color: #f39c12;
+}
+
+.status-out {
+    background: #fdedec;
+    color: #e74c3c;
+}
 
 /* ACTION BUTTONS */
 .action-btn {
@@ -156,8 +158,14 @@
     transition: 0.2s;
     margin-left: 10px;
 }
-.action-btn.edit:hover { color: #3498db; }
-.action-btn.delete:hover { color: #e74c3c; }
+
+.action-btn.edit:hover {
+    color: #3498db;
+}
+
+.action-btn.delete:hover {
+    color: #e74c3c;
+}
 
 /* =========================================
    ADMIN FORM MODAL
@@ -264,7 +272,10 @@
     font-weight: 600;
     cursor: pointer;
 }
-.btn-save:hover { opacity: 0.9; }
+
+.btn-save:hover {
+    opacity: 0.9;
+}
 
 /* =========================================
    ACCOUNT-STYLE MODALS & FORMS (FIXED)
@@ -276,10 +287,12 @@
     padding: 30px;
     width: 90%;
     max-width: 600px;
-    box-sizing: border-box; /* FIX: Pinipigilan ang paglampas ng content */
+    box-sizing: border-box;
+    /* FIX: Pinipigilan ang paglampas ng content */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     margin: auto;
-    overflow-x: hidden; /* FIX: Tatanggalin ang horizontal scrollbar */
+    overflow-x: hidden;
+    /* FIX: Tatanggalin ang horizontal scrollbar */
 }
 
 .account-dialog::backdrop {
@@ -287,11 +300,20 @@
     backdrop-filter: blur(1px);
 }
 
-.account-dialog[open] { animation: popIn 0.3s ease forwards; }
+.account-dialog[open] {
+    animation: popIn 0.3s ease forwards;
+}
 
 @keyframes popIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .dialog-header {
@@ -318,7 +340,9 @@
     padding: 0;
 }
 
-.dialog-close:hover { color: var(--brand-color); }
+.dialog-close:hover {
+    color: var(--brand-color);
+}
 
 .dialog-form {
     display: flex;
@@ -361,10 +385,12 @@
     font-family: inherit;
     color: var(--darkgray-text);
     width: 100%;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
-.account-input-field:focus { border-color: var(--brand-color); }
+.account-input-field:focus {
+    border-color: var(--brand-color);
+}
 
 .account-save-btn {
     padding: 15px;
@@ -380,7 +406,9 @@
     box-sizing: border-box;
 }
 
-.account-save-btn:hover { background-color: var(--darkgray-text); }
+.account-save-btn:hover {
+    background-color: var(--darkgray-text);
+}
 
 /* =========================================
    CONFIRMATION (DELETE) MODAL STYLES
@@ -404,7 +432,9 @@
     line-height: 1;
 }
 
-.confirm-icon i { font-size: 50px; }
+.confirm-icon i {
+    font-size: 50px;
+}
 
 .confirm-modal-content h3 {
     font-size: 20px;
@@ -463,7 +493,7 @@
    ========================================= */
 .table-scroll-container {
     flex: 1;
-    overflow-y: hidden; 
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
@@ -471,7 +501,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 8px 20px 0 ;
+    padding: 15px 20px 7px;
     border-top: 1px solid #eaeaea;
     gap: 8px;
 }

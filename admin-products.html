@@ -36,9 +36,9 @@
                         <a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard</a>
                         <a href="admin-orders.html"><i class="fi fi-rr-shopping-cart"></i> Orders</a>
                         <a href="admin-products.html"><i class="fi fi-rr-box-alt"></i> Products</a>
-                        <a href="#"><i class="fi fi-rr-users"></i> Users</a>
-                        <a href="#"><i class="fi fi-rr-envelope"></i> Messages</a>
-                        <a href="#"><i class="fi fi-rr-document"></i> Reports</a>
+                        <a href="admin-users.html"><i class="fi fi-rr-users"></i> Users</a>
+                        <a href="admin-messages.html"><i class="fi fi-rr-envelope"></i> Messages</a>
+                        <a href="admin-reports.html"><i class="fi fi-rr-document"></i> Reports</a>
                     </div>
                     <div class="admin-card-logout">
                         <button onclick="logoutUser()" class="admin-logout-btn"><i class="fi fi-rs-sign-out-alt"></i>
@@ -49,7 +49,7 @@
         </div>
     </header>
 
-    <div class="admin-page-container">
+    <div class="admin-page-container reveal">
         <div class="admin-dashboard-wrapper">
 
             <aside class="admin-sidebar">
@@ -65,9 +65,9 @@
                     <a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard</a>
                     <a href="admin-orders.html"><i class="fi fi-rr-shopping-cart"></i> Orders</a>
                     <a href="admin-products.html" class="active"><i class="fi fi-rr-box-alt"></i> Products</a>
-                    <a href="#"><i class="fi fi-rr-users"></i> Users</a>
-                    <a href="#"><i class="fi fi-rr-envelope"></i> Messages</a>
-                    <a href="#"><i class="fi fi-rr-document"></i> Reports</a>
+                    <a href="admin-users.html"><i class="fi fi-rr-users"></i> Users</a>
+                    <a href="admin-messages.html"><i class="fi fi-rr-envelope"></i> Messages</a>
+                    <a href="admin-reports.html"><i class="fi fi-rr-document"></i> Reports</a>
                     <a href="#" onclick="logoutUser()" class="logout-link"><i class="fi fi-rs-sign-out-alt"></i>
                         Logout</a>
                 </nav>
@@ -76,7 +76,7 @@
             <main class="admin-content">
                 <div class="content-header">
                     <h2>Inventory Management</h2>
-                    <p>Add, edit, delete, and monitor your product stocks.</p>
+                    <p>Control product listings, category variations, and stock availability.</p>
                 </div>
 
                 <div class="dashboard-stats-box" style="grid-template-columns: repeat(4, 1fr);">
@@ -149,13 +149,13 @@
                             <table class="dashboard-table product-list-table">
                                 <thead>
                                     <tr>
-                                        <th>Product</th>
-                                        <th>ID</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Stock</th>
-                                        <th>Status</th>
-                                        <th style="text-align: right;">Actions</th>
+                                        <th style="width: 20%;">Product</th>
+                                        <th style="width: 14%;">ID</th>
+                                        <th style="width: 14%;">Category</th>
+                                        <th style="width: 14%;">Price</th>
+                                        <th style="width: 14%;">Stock</th>
+                                        <th style="width: 14%;">Status</th>
+                                        <th style="width: 10%; text-align: right; padding-right: 30px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="products-table-body">

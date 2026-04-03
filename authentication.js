@@ -126,6 +126,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (!isValid) return;
 
+            const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+            const todayDate = new Date().toLocaleDateString('en-US', dateOptions);
+
             const newUser = {
                 id: 'USER-' + Date.now(),
                 firstName: fname,
@@ -134,6 +137,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 username: username,
                 password: password,
                 role: 'user',
+                status: 'Active',
+                registeredDate: todayDate,
                 cart: [],
                 wishlist: [],
                 chatHistory: []
@@ -162,9 +167,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (!validUser) {
                 showError('login-username', 'Username not found.');
-            } else if (validUser.password !== passwordInput) {
+            } 
+            else if (validUser.password !== passwordInput) {
                 showError('login-password', 'Incorrect password.');
-            } else {
+            } 
+            else if (validUser.status === 'Blocked' && validUser.role === 'user') {
+                showError('login-username', 'Account Blocked. Please contact support for assistance.');
+            } 
+            else if (validUser.status === 'Blocked' && validUser.role === 'admin') {
+                showError('login-username', 'Admin Blocked. Please contact support for assistance.');
+            } 
+            else {
                 localStorage.setItem('pace_current_user', JSON.stringify(validUser));
 
                 if (validUser.role === 'admin') {

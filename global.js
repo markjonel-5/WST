@@ -20,11 +20,8 @@ function adminDatabase() {
 
     if (!hasAdmins) {
         const adminAccounts = [
-            { id: 'ADMIN-1', firstName: 'Mark', lastName: 'Admin', email: 'mark@pace.com', username: 'admin', password: 'Admin@123', role: 'admin' },
-            { id: 'ADMIN-2', firstName: 'Jomari', lastName: 'Admin', email: 'jomari@pace.com', username: 'admin_jomari', password: 'AdminPassword2!', role: 'admin' },
-            { id: 'ADMIN-3', firstName: 'Sarah', lastName: 'Admin', email: 'sarah@pace.com', username: 'admin_sarah', password: 'AdminPassword3!', role: 'admin' },
-            { id: 'ADMIN-4', firstName: 'Chris', lastName: 'Admin', email: 'chris@pace.com', username: 'admin_chris', password: 'AdminPassword4!', role: 'admin' },
-            { id: 'ADMIN-5', firstName: 'Head', lastName: 'Admin', email: 'head@pace.com', username: 'admin_head', password: 'AdminPassword5!', role: 'admin' }
+            { id: 'ADMIN-1', firstName: 'Mark', lastName: 'Admin', email: 'mark@pace.com', username: 'admin', password: 'Admin@123', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026', isSuperAdmin: true },
+            { id: 'ADMIN-2', firstName: 'Jomari', lastName: 'Admin', email: 'jomari@pace.com', username: 'admin1', password: 'Admin@1234', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026' },
         ];
         users = [...users, ...adminAccounts];
         localStorage.setItem('pace_users', JSON.stringify(users));
@@ -679,7 +676,6 @@ function addToWishlist(productId) {
 // GLOBAL FLOATING CHAT WIDGET FUNCTION START
 const chatFAQs = {
     "Where is my order?": "You can track your order by navigating to the 'Order History' tab in your Account Settings.",
-    "What is your return policy?": "We offer free returns within 30 days of purchase! Shoes must be unworn.",
     "Do you offer free shipping?": "Yes! All orders automatically qualify for free standard shipping.",
     "What payment methods work?": "We accept Credit/Debit Cards, GCash, and PayPal.",
     "How do I use the size guide?": "Click the 'Size Guide' button on any product page to see exact measurements for Men's, Women's, and Kids' shoes.",
@@ -689,11 +685,13 @@ const chatFAQs = {
 
 function buildGlobalChat() {
 
-    const hiddenPages = ['chat-support.html', 'login.html', 'signup.html', 'checkout.html'];
+    const currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
+
+    const hiddenPages = ['chat-support.html', 'login.html', 'signup.html', 'checkout.html', 'admin-dashboard.html', 'admin-products.html', 'admin-orders.html', 'admin-users.html', 'admin-messages.html', 'admin-reports.html'];
     const currentPath = window.location.pathname;
     const shouldHide = hiddenPages.some(page => currentPath.includes(page));
 
-    if (shouldHide || document.getElementById('global-chat-container')) return;
+    if (!currentUser || shouldHide || document.getElementById('global-chat-container')) return;
 
     const chatContainer = document.createElement('div');
     chatContainer.id = 'global-chat-container';
@@ -712,7 +710,6 @@ function buildGlobalChat() {
             
             <div class="chat-faqs" id="chat-faqs-container">
                 <button class="faq-chip" onclick="sendFAQMessage('Where is my order?')">Where is my order?</button>
-                <button class="faq-chip" onclick="sendFAQMessage('What is your return policy?')">What is your return policy?</button>
                 <button class="faq-chip" onclick="sendFAQMessage('Do you offer free shipping?')">Do you offer free shipping?</button>
                 <button class="faq-chip" onclick="sendFAQMessage('What payment methods work?')">What payment methods work?</button>
                 <button class="faq-chip" onclick="sendFAQMessage('How do I use the size guide?')">How do I use the size guide?</button>
@@ -791,14 +788,6 @@ function sendChatMessage() {
         input.value = '';
 
         if (typeof renderPageChat === 'function') renderPageChat();
-
-        setTimeout(() => {
-            const reply = "Thanks for reaching out! A PACE representative will be with you shortly.";
-            appendMessageUI('bot-msg', reply);
-            saveChatToDatabase('bot', reply);
-
-            if (typeof renderPageChat === 'function') renderPageChat();
-        }, 1000);
     }
 }
 
@@ -827,7 +816,13 @@ function saveChatToDatabase(sender, text) {
     const now = new Date();
     const timeString = now.toLocaleDateString() + ' at ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    currentUser.chatHistory.push({ sender: sender, text: text, time: timeString });
+    currentUser.chatHistory.push({ 
+        sender: sender, 
+        text: text, 
+        time: timeString,
+        timestamp: Date.now(),
+        read: false // Mark as Unread initially
+    });
 
     let users = JSON.parse(localStorage.getItem('pace_users')) || [];
     let userIndex = users.findIndex(u => u.email === currentUser.email);
@@ -845,9 +840,19 @@ function loadChatHistory() {
     messageBox.innerHTML = '';
 
     if (currentUser && currentUser.chatHistory && currentUser.chatHistory.length > 0) {
-        currentUser.chatHistory.forEach(msg => {
+        currentUser.chatHistory.forEach((msg, index) => {
             const className = msg.sender === 'user' ? 'user-msg' : 'bot-msg';
             appendMessageUI(className, msg.text);
+
+            // USER "SEEN" INDICATOR LOGIC
+            // Kung ito ang pinaka-huling message at galing sa user at read na ng admin
+            if (index === currentUser.chatHistory.length - 1 && msg.sender === 'user' && msg.read) {
+                const seenIndicator = document.createElement('div');
+                seenIndicator.style.cssText = "font-size: 10px; color: var(--gray-text); text-align: right; margin-top: -10px; margin-bottom: 10px; padding-right: 10px;";
+                seenIndicator.innerText = "Seen";
+                messageBox.appendChild(seenIndicator);
+                messageBox.scrollTop = messageBox.scrollHeight;
+            }
         });
     } else {
         appendMessageUI('bot-msg', 'Hi there! Need help finding your perfect pair of shoes? 👟');
@@ -1089,4 +1094,3 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-

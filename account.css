@@ -32,6 +32,12 @@
     color: var(--darkgray-text);
 }
 
+.account-sidebar-profile p {
+    font-size: 13px;
+    color: var(--gray-text);
+    word-break: break-all; /* Prevents long emails from breaking the sidebar layout */
+}
+
 .account-img-container {
     position: relative;
     width: 80px;

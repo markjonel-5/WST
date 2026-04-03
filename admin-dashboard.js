@@ -6,12 +6,6 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // KILL FLOATING CHAT WIDGET FOR ADMINS
-    const globalChat = document.getElementById('global-chat-container');
-    const globalChatBtn = document.getElementById('floating-chat-btn');
-    if (globalChat) globalChat.remove();
-    if (globalChatBtn) globalChatBtn.remove();
-
     // Set Name & Initials
     const initials = (currentUser.firstName.charAt(0) + (currentUser.lastName ? currentUser.lastName.charAt(0) : '')).toUpperCase();
     document.getElementById('sidebar-initials').innerText = initials;
@@ -43,8 +37,46 @@ window.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------------------------------
 
     // 3. COMPUTE STATS & CATEGORIES
-    const totalUsers = users.filter(u => u.role === 'user').length;
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+    let totalUsers = 0;
+    let thisMonthUsers = 0;
+    let lastMonthUsers = 0;
+
+    // Tally Users and Registration Trends
+    users.forEach(u => {
+        if (u.role === 'user') {
+            totalUsers++;
+            if (u.registeredDate && u.registeredDate !== 'Unknown') {
+                let regDate = new Date(u.registeredDate);
+                if (!isNaN(regDate)) {
+                    if (regDate.getMonth() === currentMonth && regDate.getFullYear() === currentYear) thisMonthUsers++;
+                    else if (regDate.getMonth() === prevMonth && regDate.getFullYear() === prevYear) lastMonthUsers++;
+                }
+            }
+        }
+    });
+
+    // Tally Product Additions for Trends
+    let thisMonthProducts = 0;
+    let lastMonthProducts = 0;
+    products.forEach(p => {
+        if (p.dateAdded) {
+            let pDate = new Date(p.dateAdded);
+            if (!isNaN(pDate)) {
+                if (pDate.getMonth() === currentMonth && pDate.getFullYear() === currentYear) thisMonthProducts++;
+                else if (pDate.getMonth() === prevMonth && pDate.getFullYear() === prevYear) lastMonthProducts++;
+            }
+        }
+    });
+
     let totalSales = 0;
+    let thisMonthSales = 0;
+    let lastMonthSales = 0;
 
     // Graph Arrays
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -66,6 +98,13 @@ window.addEventListener('DOMContentLoaded', () => {
             const orderDate = new Date(order.date);
             if (!isNaN(orderDate)) {
                 monthlySales[orderDate.getMonth()] += amount;
+
+                // Trend logic for Sales
+                if (orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear) {
+                    thisMonthSales += amount;
+                } else if (orderDate.getMonth() === prevMonth && orderDate.getFullYear() === prevYear) {
+                    lastMonthSales += amount;
+                }
             }
 
             // Math for Categories and Top Products
@@ -85,9 +124,36 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Populate Main Numbers
     document.getElementById('stat-users').innerText = totalUsers;
     document.getElementById('stat-products').innerText = products.length;
     document.getElementById('stat-sales').innerText = '₱ ' + totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 });
+
+    // Helper Function for Trends
+    function getTrendHTML(current, previous) {
+        if (previous === 0 && current === 0) return `<span class="trend-badge trend-neutral"><i class="fi fi-rr-minus-small"></i> 0%</span>`;
+        if (previous === 0 && current > 0) return `<span class="trend-badge trend-positive"><i class="fi fi-rr-arrow-trend-up"></i> +100%</span>`;
+        
+        const percentChange = ((current - previous) / previous) * 100;
+        const rounded = Math.abs(Math.round(percentChange));
+        
+        if (percentChange > 0) {
+            return `<span class="trend-badge trend-positive"><i class="fi fi-rr-arrow-trend-up"></i> +${rounded}%</span>`;
+        } else if (percentChange < 0) {
+            return `<span class="trend-badge trend-negative"><i class="fi fi-rr-arrow-trend-down"></i> -${rounded}%</span>`;
+        } else {
+            return `<span class="trend-badge trend-neutral"><i class="fi fi-rr-minus-small"></i> 0%</span>`;
+        }
+    }
+
+    // Inject Trend Badges into HTML
+    const trendSalesEl = document.getElementById('trend-sales');
+    const trendUsersEl = document.getElementById('trend-users');
+    const trendProductsEl = document.getElementById('trend-products');
+
+    if (trendSalesEl) trendSalesEl.innerHTML = getTrendHTML(thisMonthSales, lastMonthSales);
+    if (trendUsersEl) trendUsersEl.innerHTML = getTrendHTML(thisMonthUsers, lastMonthUsers);
+    if (trendProductsEl) trendProductsEl.innerHTML = getTrendHTML(thisMonthProducts, lastMonthProducts);
 
     // 4. GENERATE MONTHLY BREAKDOWN
     const mbList = document.getElementById('mb-list');
@@ -337,5 +403,102 @@ window.addEventListener('click', function (event) {
     if (!event.target.matches('.admin-popup-btn') && !event.target.closest('.admin-popup-btn')) {
         const popup = document.getElementById("admin-popup-menu");
         if (popup && popup.classList.contains('show')) popup.classList.remove('show');
+    }
+});
+
+// ==========================================
+// GLOBAL ADMIN SEARCH LOGIC
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('.admin-nav-search input');
+    const searchContainer = document.querySelector('.admin-nav-search');
+
+    if (searchInput && searchContainer) {
+        
+        // Create the dropdown element
+        const dropdown = document.createElement('div');
+        dropdown.className = 'global-search-dropdown';
+        searchContainer.appendChild(dropdown);
+
+        // Listen for typing
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (!query) {
+                dropdown.style.display = 'none';
+                return;
+            }
+
+            // Fetch latest data
+            const users = JSON.parse(localStorage.getItem('pace_users')) || [];
+            const products = JSON.parse(localStorage.getItem('pace_products')) || [];
+            const orders = JSON.parse(localStorage.getItem('pace_orders')) || [];
+
+            // Filter the data (Top 3 matches per category)
+            const matchedProducts = products.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.id.toLowerCase().includes(query)
+            ).slice(0, 3);
+
+            const matchedOrders = orders.filter(o => 
+                o.id.toLowerCase().includes(query) || 
+                o.customerName.toLowerCase().includes(query)
+            ).slice(0, 3);
+
+            const matchedUsers = users.filter(u => 
+                `${u.firstName} ${u.lastName || ''}`.toLowerCase().includes(query) || 
+                u.email.toLowerCase().includes(query)
+            ).slice(0, 3);
+
+            // Build Dropdown HTML
+            let html = '';
+
+            if (matchedProducts.length > 0) {
+                html += `<div class="search-category">Products</div>`;
+                matchedProducts.forEach(p => {
+                    html += `
+                        <a href="admin-products.html?search=${encodeURIComponent(p.id)}" class="search-item">
+                            <i class="fi fi-rr-box-alt"></i>
+                            <div><strong>${p.name}</strong> <span>ID: ${p.id}</span></div>
+                        </a>`;
+                });
+            }
+
+            if (matchedOrders.length > 0) {
+                html += `<div class="search-category">Orders</div>`;
+                matchedOrders.forEach(o => {
+                    html += `
+                        <a href="admin-orders.html?search=${encodeURIComponent(o.id)}" class="search-item">
+                            <i class="fi fi-rr-shopping-cart"></i>
+                            <div><strong>Order #${o.id}</strong> <span>Customer: ${o.customerName}</span></div>
+                        </a>`;
+                });
+            }
+
+            if (matchedUsers.length > 0) {
+                html += `<div class="search-category">Users</div>`;
+                matchedUsers.forEach(u => {
+                    html += `
+                        <a href="admin-users.html?search=${encodeURIComponent(u.email)}" class="search-item">
+                            <i class="fi fi-rr-users"></i>
+                            <div><strong>${u.firstName} ${u.lastName || ''}</strong> <span>${u.email}</span></div>
+                        </a>`;
+                });
+            }
+
+            if (html === '') {
+                html = `<div class="search-item empty">No results found for "${query}"</div>`;
+            }
+
+            dropdown.innerHTML = html;
+            dropdown.style.display = 'block';
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchContainer.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
     }
 });

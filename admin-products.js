@@ -28,14 +28,19 @@ window.addEventListener('DOMContentLoaded', () => {
     if (popupName) popupName.innerText = `${currentUser.firstName} ${currentUser.lastName || ''}`.trim();
     if (popupInitials) popupInitials.innerText = initials;
 
-    // INITIALIZE TABLE
-    loadProducts();
-
-    // SEARCH LISTENER
+    // SEARCH LISTENER & DEEP LINKING
     const searchInput = document.getElementById('products-search-input');
     if (searchInput) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchParam = urlParams.get('search');
+        if (searchParam) {
+            searchInput.value = searchParam; // Auto-fill search bar
+        }
         searchInput.addEventListener('input', filterProducts);
     }
+
+    // INITIALIZE TABLE (It will automatically read the search bar value)
+    loadProducts();
 });
 
 // ===============================================
@@ -370,7 +375,8 @@ window.saveProduct = function(event) {
             isNew: isNew,
             img: adminUploadedPhotos[0],    // Primary Image
             hover: adminUploadedPhotos[1], // Hover Image
-            stock: stock
+            stock: stock,
+            dateAdded: new Date().toISOString() // <-- Safely added the date stamp
         };
         products.push(newProduct);
 

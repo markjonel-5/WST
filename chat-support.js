@@ -8,20 +8,31 @@ function renderPageChat() {
     if (!currentUser || !currentUser.chatHistory) return;
 
     let html = '';
-    currentUser.chatHistory.forEach(msg => {
+    // Gumamit tayo ng (msg, index) para ma-check kung nasa dulo na ang message
+    currentUser.chatHistory.forEach((msg, index) => {
         const align = msg.sender === 'user' ? 'flex-end' : 'flex-start';
         const bg = msg.sender === 'user' ? 'var(--brand-color)' : '#eaeaea';
         const color = msg.sender === 'user' ? '#fff' : 'var(--darkgray-text)';
-        const name = msg.sender === 'user' ? 'You' : 'PACE Support';
+        const border = msg.sender === 'user' ? 'border-bottom-right-radius: 2px;' : 'border-bottom-left-radius: 2px;';
 
+        // TINANGGAL NA ANG "YOU" AT "PACE SUPPORT" (Oras na lang ang natira)
         html += `
             <div class="page-msg-wrapper" style="display:flex; flex-direction:column; align-items: ${align};">
-                <span class="page-msg-meta" style="font-size:11px; color:#aaa; margin-bottom:4px;">${name} • ${msg.time}</span>
-                <div class="page-msg-bubble" style="background-color: ${bg}; color: ${color}; padding:10px 15px; border-radius:12px; max-width:75%; font-size:14px; line-height:1.4;">
+                <span class="page-msg-meta" style="font-size:11px; color:#aaa; margin-bottom:4px;">${msg.time}</span>
+                <div class="page-msg-bubble" style="background-color: ${bg}; color: ${color}; ${border} padding:10px 15px; max-width:75%; font-size:14px; line-height:1.4;">
                     ${msg.text}
                 </div>
             </div>
         `;
+
+        // IDINAGDAG: "SEEN" INDICATOR PARA SA CUSTOMER PAGE
+        if (index === currentUser.chatHistory.length - 1 && msg.sender === 'user' && msg.read) {
+            html += `
+                <div style="font-size: 11px; color: var(--gray-text); text-align: right; width: 100%; padding-right: 5px; margin-top: -10px; margin-bottom: 10px;">
+                    Seen
+                </div>
+            `;
+        }
     });
     
     transcriptBox.innerHTML = html;
@@ -38,14 +49,6 @@ function sendPageMessage() {
     input.value = '';
     renderPageChat();
     if (typeof loadChatHistory === 'function') loadChatHistory();
-
-    setTimeout(() => {
-        if (typeof saveChatToDatabase === 'function') {
-            saveChatToDatabase('bot', "Thanks for reaching out! A PACE representative will be with you shortly.");
-            renderPageChat();
-            if (typeof loadChatHistory === 'function') loadChatHistory();
-        }
-    }, 1000);
 }
 
 function handlePageChatEnter(event) {

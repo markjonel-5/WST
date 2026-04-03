@@ -221,6 +221,7 @@ if (phoneInput) {
 /* SIDEBAR PROFILE HELPER START */
 function updateSidebarProfile(user) {
     document.getElementById('sidebar-name').innerText = `${user.firstName} ${user.lastName || ''}`;
+    document.getElementById('sidebar-email').innerText = user.email;
     const initialsEl = document.getElementById('sidebar-initials');
     const imgEl = document.getElementById('sidebar-img');
     const deleteBtn = document.getElementById('delete-photo-btn');

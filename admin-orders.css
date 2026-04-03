@@ -1,9 +1,6 @@
 /* =========================================
    1. PAGE SETUP & LAYOUT
    ========================================= */
-body {
-    overflow: hidden !important;
-}
 
 .admin-content {
     height: calc(100vh - 120px);
@@ -82,36 +79,6 @@ body {
     background-color: #fff;
     z-index: 10;
     box-shadow: 0 1px 0 #eaeaea;
-}
-
-/* TABLE COLUMN WIDTHS (Must exactly equal 100% in total) */
-.dashboard-table th:nth-child(1) {
-    width: 14%;
-}
-
-/* Order ID */
-.dashboard-table th:nth-child(2) {
-    width: 20%;
-}
-
-/* Customer */
-.dashboard-table th:nth-child(3) {
-    width: 16%;
-}
-
-/* Date */
-.dashboard-table th:nth-child(4) {
-    width: 16%;
-}
-
-/* Status */
-.dashboard-table th:nth-child(5) {
-    width: 14%;
-}
-
-/* Total Amount */
-.dashboard-table th:nth-child(6) {
-    width: 20%;
 }
 
 .action-btns {
@@ -226,6 +193,15 @@ body {
     padding: 30px;
     overflow-y: auto;
     flex: 1;
+}
+
+.od-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.od-body::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
 }
 
 .od-section-title {

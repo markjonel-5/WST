@@ -16,17 +16,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let orders = JSON.parse(localStorage.getItem('pace_orders')) || [];
     renderOrderStats(orders);
-    renderTable(orders, 'All');
 
-    // NEW: Search Listener
+    // SEARCH LISTENER & DEEP LINKING
     const ordersSearch = document.getElementById('orders-search-input');
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search') || '';
+
     if (ordersSearch) {
+        if (searchParam) {
+            ordersSearch.value = searchParam; // Auto-fill search bar
+        }
         ordersSearch.addEventListener('input', (e) => {
-            // Gumamit ng latest orders mula sa localstorage para laging updated
             let currentOrders = JSON.parse(localStorage.getItem('pace_orders')) || [];
             renderTable(currentOrders, currentFilterStatus, e.target.value);
         });
     }
+
+    // INITIALIZE TABLE WITH SEARCH PARAM
+    renderTable(orders, 'All', searchParam);
 });
 
 function renderOrderStats(orders) {
@@ -92,8 +99,9 @@ function renderTable(orders, filterStatus, searchQuery = '') {
 
             const matchName = order.customerName.toLowerCase().includes(lowerQuery);
             const matchEmail = displayEmail.toLowerCase().includes(lowerQuery);
+            const matchID = order.id.toLowerCase().includes(lowerQuery);
             
-            return matchName || matchEmail;
+            return matchName || matchEmail || matchID;
         });
     }
 

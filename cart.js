@@ -266,11 +266,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     emptyModal.showModal();
                 }
             } else {
-                const currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
-                if (!currentUser) {
-                    window.location.href = 'login.html';
-                    return;
-                }
                 sessionStorage.removeItem('pace_buy_now_item');
                 window.location.href = 'checkout.html';
             }

@@ -37,9 +37,9 @@
                         <a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard</a>
                         <a href="admin-orders.html"><i class="fi fi-rr-shopping-cart"></i> Orders</a>
                         <a href="admin-products.html"><i class="fi fi-rr-box-alt"></i> Products</a>
-                        <a href="#"><i class="fi fi-rr-users"></i> Users</a>
-                        <a href="#"><i class="fi fi-rr-envelope"></i> Messages</a>
-                        <a href="#"><i class="fi fi-rr-document"></i> Reports</a>
+                        <a href="admin-users.html"><i class="fi fi-rr-users"></i> Users</a>
+                        <a href="admin-messages.html"><i class="fi fi-rr-envelope"></i> Messages</a>
+                        <a href="admin-reports.html"><i class="fi fi-rr-document"></i> Reports</a>
                     </div>
                     <div class="admin-card-logout">
                         <button onclick="logoutUser()" class="admin-logout-btn"><i class="fi fi-rs-sign-out-alt"></i>
@@ -50,7 +50,7 @@
         </div>
     </header>
 
-    <div class="admin-page-container">
+    <div class="admin-page-container reveal">
         <div class="admin-dashboard-wrapper">
 
             <aside class="admin-sidebar">
@@ -66,9 +66,9 @@
                     <a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard</a>
                     <a href="admin-orders.html" class="active"><i class="fi fi-rr-shopping-cart"></i> Orders</a>
                     <a href="admin-products.html"><i class="fi fi-rr-box-alt"></i> Products</a>
-                    <a href="#"><i class="fi fi-rr-users"></i> Users</a>
-                    <a href="#"><i class="fi fi-rr-envelope"></i> Messages</a>
-                    <a href="#"><i class="fi fi-rr-document"></i> Reports</a>
+                    <a href="admin-users.html"><i class="fi fi-rr-users"></i> Users</a>
+                    <a href="admin-messages.html"><i class="fi fi-rr-envelope"></i> Messages</a>
+                    <a href="admin-reports.html"><i class="fi fi-rr-document"></i> Reports</a>
                     <a href="#" onclick="logoutUser()" class="logout-link"><i class="fi fi-rs-sign-out-alt"></i>
                         Logout</a>
                 </nav>
@@ -77,7 +77,7 @@
             <main class="admin-content">
                 <div class="content-header">
                     <h2>Order Management</h2>
-                    <p>Filter, process, and ship customer orders.</p>
+                    <p>Process transactions, update delivery statuses, and manage shipments.</p>
                 </div>
 
                 <div class="dashboard-stats-box" style="grid-template-columns: repeat(4, 1fr);">
@@ -123,7 +123,7 @@
                             <h3>Transaction List</h3>
                             <div class="table-search-box">
                                 <i class="fi fi-rr-search"></i>
-                                <input type="text" id="orders-search-input" placeholder="Search name or email">
+                                <input type="text" id="orders-search-input" placeholder="Search name or order ID">
                             </div>
                         </div>
 
@@ -131,12 +131,12 @@
                             <table class="dashboard-table">
                                 <thead>
                                     <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Total Amount</th>
-                                        <th></th>
+                                        <th style="width: 14%;">Order ID</th>
+                                        <th style="width: 20%;">Customer</th>
+                                        <th style="width: 16%;">Date</th>
+                                        <th style="width: 16%;">Status</th>
+                                        <th style="width: 16%;">Total Amount</th>
+                                        <th style="width: 18%; text-align: right; padding-right: 45px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="orders-table-body">
