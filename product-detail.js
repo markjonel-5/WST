@@ -102,14 +102,28 @@ function loadProductDetails(p) {
     if (sizeContainer) {
         sizeContainer.innerHTML = sizes.map(size => {
             let label = (p.type === 'MEN') ? 'M ' + size : (p.type === 'WOMEN') ? 'W ' + size : size;
-            return `<button class="size-btn" onclick="selectSize(this, '${label}')">${label}</button>`;
+            
+            // Check specific size quantity
+            let qty = 0;
+            if (typeof p.stock === 'object' && p.stock !== null) {
+                qty = p.stock[label] || 0; 
+            } else {
+                qty = window.getTotalStock(p.stock); // Fallback for old data
+            }
+
+            // Disable button if qty is 0 by greying it out and crossing the text
+            if (qty === 0) {
+                return `<button class="size-btn" disabled style="opacity: 0.5; cursor: not-allowed; text-decoration: line-through; background: #f9f9f9;">${label}</button>`;
+            } else {
+                return `<button class="size-btn" onclick="selectSize(this, '${label}')">${label}</button>`;
+            }
         }).join('');
     }
 
     // CHECK BADGE STATUS (OUT OF STOCK OR NEW ARRIVAL)
     const badgeEl = document.getElementById('pd-new-badge');
     if (badgeEl) {
-        if (parseInt(p.stock) === 0) {
+        if (window.getTotalStock(p.stock) === 0) {
             badgeEl.innerText = "OUT OF STOCK";
             badgeEl.style.backgroundColor = "#d9534f";
             badgeEl.style.display = "block";
@@ -126,7 +140,7 @@ function loadProductDetails(p) {
     const addToCartBtn = document.querySelector('.pd-cart');
     const buyNowBtn = document.querySelector('.pd-buy');
 
-    if (parseInt(p.stock) === 0) {
+    if (window.getTotalStock(p.stock) === 0) {
         if (addToCartBtn) {
             addToCartBtn.innerHTML = "OUT OF STOCK";
             addToCartBtn.style.backgroundColor = "#ccc";
@@ -141,6 +155,13 @@ function loadProductDetails(p) {
     } else {
 
         if (addToCartBtn) {
+
+            addToCartBtn.innerHTML = "ADD TO CART";
+            addToCartBtn.style.backgroundColor = "";
+            addToCartBtn.style.borderColor = "";
+            addToCartBtn.style.color = "";
+            addToCartBtn.style.cursor = "pointer";
+
             addToCartBtn.onclick = function (event) {
                 event.preventDefault();
                 addToCart(p);
@@ -148,6 +169,9 @@ function loadProductDetails(p) {
         }
 
         if (buyNowBtn) {
+
+            buyNowBtn.style.display = "";
+
             buyNowBtn.onclick = function (event) {
                 event.preventDefault();
                 buyNow(p);

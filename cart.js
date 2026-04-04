@@ -34,9 +34,23 @@ function renderCartPage() {
             (item.type === 'WOMEN') ? ['5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'] :
                 ['1Y', '1.5Y', '2Y', '2.5Y', '3Y', '3.5Y', '4Y', '4.5Y', '5Y', '5.5Y', '6Y', '6.5Y'];
 
+        let liveProductForDropdown = (JSON.parse(localStorage.getItem('pace_products')) || []).find(p => String(p.id) === String(item.productId));
+        
         let sizeOptionsHTML = sizes.map(size => {
             let label = (item.type === 'MEN') ? 'M ' + size : (item.type === 'WOMEN') ? 'W ' + size : size;
-            return `<option value="${label}" ${item.size === label ? 'selected' : ''}>${label}</option>`;
+            
+            // Check stock specifically for this dropdown option
+            let isOutOfStock = false;
+            if (liveProductForDropdown && typeof liveProductForDropdown.stock === 'object') {
+                if ((liveProductForDropdown.stock[label] || 0) === 0) isOutOfStock = true;
+            }
+
+            // Disable the option and add an Out of Stock label if qty is 0 (and it's not their currently selected size)
+            if (isOutOfStock && item.size !== label) {
+                return `<option style="color: #ccc;" value="${label}" disabled>${label}</option>`;
+            } else {
+                return `<option  value="${label}" ${item.size === label ? 'selected' : ''}>${label}</option>`;
+            }
         }).join('');
 
         let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || products;
@@ -206,10 +220,17 @@ function renderWishlistPage() {
 
         let p = currentProducts.find(prod => prod.id === savedItem.id) || savedItem;
 
+        let badgeHTML = '';
+        if (window.getTotalStock(p.stock) === 0) {
+            badgeHTML = '<span class="new-badge" style="background-color: #d9534f;">OUT OF STOCK</span>';
+        } else if (p.isNew) {
+            badgeHTML = '<span class="new-badge">NEW</span>';
+        }
+
         return `
             <div class="product-card wishlist-card">
                 <button class="product-image" onclick="window.location.href='product-detail.html?id=${p.id}'">
-                    ${p.isNew ? '<span class="new-badge">NEW</span>' : ''}
+                    ${badgeHTML}
                     <img src="${p.img}" class="primary-img">
                     <img src="${p.hover}" class="hover-img"> 
                 </button>
@@ -240,8 +261,16 @@ window.addEventListener('DOMContentLoaded', () => {
     let validCart = cart.filter(item => {
         let liveProduct = globalProducts.find(p => String(p.id) === String(item.productId));
 
-        if (!liveProduct || parseInt(liveProduct.stock) === 0) {
-            removedItems.push(item.name);
+        // Check stock for the SPECIFIC size the user added to the cart
+        let specificSizeStock = 0;
+        if (liveProduct && typeof liveProduct.stock === 'object') {
+            specificSizeStock = liveProduct.stock[item.size] || 0;
+        } else if (liveProduct) {
+            specificSizeStock = window.getTotalStock(liveProduct.stock);
+        }
+
+        if (!liveProduct || specificSizeStock === 0) {
+            removedItems.push(item.name + " (" + item.size + ")");
             return false;
         }
         return true;

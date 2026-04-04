@@ -601,3 +601,47 @@
 .media-delete-btn:hover {
     background: #c9302c;
 }
+
+/* =========================================
+   NEW DYNAMIC SIZE GRID STYLES
+   ========================================= */
+.size-stock-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 5px;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+}
+
+.size-stock-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.size-stock-item label {
+    font-size: 12px !important;
+    color: var(--gray-text) !important;
+    text-transform: none !important;
+    font-weight: 700;
+}
+
+.size-qty-input {
+    padding: 8px !important;
+    text-align: center;
+    font-weight: 600;
+}
+
+.size-qty-input:focus {
+    background: #fff;
+}
+
+/* Fallback responsive rule if modal shrinks on smaller screens */
+@media (max-width: 500px) {
+    .size-stock-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

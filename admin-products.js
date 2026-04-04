@@ -2,16 +2,24 @@
 // 1. GLOBAL VARIABLES
 // ===============================================
 let currentPage = 1;
-const itemsPerPage = 4; // Ilang products bawat page
+const itemsPerPage = 4;
 let currentFilteredProducts = [];
 let currentDeleteId = null;
 let currentStockFilter = 'ALL';
+let tempStockState = {}; // Used to preserve size quantities if admin misclicks category
+
+// SIZE CONFIGURATION DICTIONARY
+const sizeConfig = {
+    'MEN': ['M 8', 'M 8.5', 'M 9', 'M 9.5', 'M 10', 'M 10.5', 'M 11', 'M 11.5', 'M 12', 'M 12.5', 'M 13', 'M 13.5'],
+    'WOMEN': ['W 5', 'W 5.5', 'W 6', 'W 6.5', 'W 7', 'W 7.5', 'W 8', 'W 8.5', 'W 9', 'W 9.5', 'W 10', 'W 10.5'],
+    'KIDS': ['1Y', '1.5Y', '2Y', '2.5Y', '3Y', '3.5Y', '4Y', '4.5Y', '5Y', '5.5Y', '6Y', '6.5Y']
+};
 
 // ===============================================
 // 2. PAGE INITIALIZATION & SECURITY
 // ===============================================
 window.addEventListener('DOMContentLoaded', () => {
-    // SECURITY CHECK (Ensures only admins are here)
+    // SECURITY CHECK
     const currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
     if (!currentUser || currentUser.role !== 'admin') {
         window.location.href = "login.html";
@@ -28,28 +36,48 @@ window.addEventListener('DOMContentLoaded', () => {
     if (popupName) popupName.innerText = `${currentUser.firstName} ${currentUser.lastName || ''}`.trim();
     if (popupInitials) popupInitials.innerText = initials;
 
-    // SEARCH LISTENER & DEEP LINKING
+    // SEARCH LISTENER
     const searchInput = document.getElementById('products-search-input');
     if (searchInput) {
         const urlParams = new URLSearchParams(window.location.search);
         const searchParam = urlParams.get('search');
         if (searchParam) {
-            searchInput.value = searchParam; // Auto-fill search bar
+            searchInput.value = searchParam; 
         }
         searchInput.addEventListener('input', filterProducts);
     }
 
-    // INITIALIZE TABLE (It will automatically read the search bar value)
+    // CATEGORY LISTENER FOR DYNAMIC SIZE GRID
+    const categoryDropdown = document.getElementById('prod-category');
+    if (categoryDropdown) {
+        categoryDropdown.addEventListener('change', function(e) {
+            generateSizeGrid(e.target.value);
+        });
+    }
+
+    // INITIALIZE TABLE
     loadProducts();
 });
 
 // ===============================================
-// 3. STATS & DATA LOADING
+// 3. STATS, DATA LOADING & HELPER FUNCTIONS
 // ===============================================
+function getTotalStock(stockVal) {
+    // Legacy support (if stock is still a single number)
+    if (typeof stockVal === 'number' || typeof stockVal === 'string') {
+        return parseInt(stockVal) || 0;
+    }
+    // New nested object support
+    if (typeof stockVal === 'object' && stockVal !== null) {
+        return Object.values(stockVal).reduce((total, qty) => total + (parseInt(qty) || 0), 0);
+    }
+    return 0;
+}
+
 function loadProducts() {
     let products = JSON.parse(localStorage.getItem('pace_products')) || [];
     renderProductStats(products);
-    filterProducts(); // Calls render table automatically
+    filterProducts();
 }
 
 function renderProductStats(products) {
@@ -59,7 +87,7 @@ function renderProductStats(products) {
     let totalValue = 0;
 
     products.forEach(p => {
-        let stock = parseInt(p.stock) || 0;
+        let stock = getTotalStock(p.stock);
         let price = parseFloat(p.price.replace(/,/g, '')) || 0;
 
         if (stock === 0) outOfStock++;
@@ -77,20 +105,15 @@ function renderProductStats(products) {
 // ===============================================
 // 4. FILTERING, TABLE RENDERING & PAGINATION
 // ===============================================
-
-// NEW FUNCTION: Para sa Clickable Cards (Updated with Active State logic)
 window.filterByStock = function(status, element) {
-    // 1. Remove the 'active' class from all stat boxes
     document.querySelectorAll('.order-stat-box').forEach(box => {
         box.classList.remove('active');
     });
 
-    // 2. Add the 'active' class only to the clicked box
     if (element) {
         element.classList.add('active');
     }
 
-    // 3. Update the filter status and re-render the table
     currentStockFilter = status;
     filterProducts();
 };
@@ -102,14 +125,17 @@ function filterProducts() {
 
     let filtered = products;
 
-    // FIX 1: STOCK STATUS FILTER (Triggered by the cards)
+    // Filter by Stock Status
     if (currentStockFilter === 'LOW') {
-        filtered = filtered.filter(p => parseInt(p.stock) > 0 && parseInt(p.stock) <= 10);
+        filtered = filtered.filter(p => {
+            let s = getTotalStock(p.stock);
+            return s > 0 && s <= 10;
+        });
     } else if (currentStockFilter === 'OUT') {
-        filtered = filtered.filter(p => parseInt(p.stock) === 0);
+        filtered = filtered.filter(p => getTotalStock(p.stock) === 0);
     }
 
-    // FIX 2: Category OR "New Arrival" status
+    // Filter by Category
     if (categoryVal === 'NEW') {
         filtered = filtered.filter(p => p.isNew === true);
     } else if (categoryVal !== 'ALL') {
@@ -124,7 +150,6 @@ function filterProducts() {
         );
     }
 
-    // Update Global Array and reset page to 1
     currentFilteredProducts = filtered;
     currentPage = 1; 
     
@@ -141,13 +166,12 @@ function renderProductsTable() {
         return;
     }
 
-    // --- PAGINATION MATH ---
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const paginatedItems = currentFilteredProducts.slice(start, end);
 
     tableBody.innerHTML = paginatedItems.map(p => {
-        let stock = parseInt(p.stock) || 0;
+        let stock = getTotalStock(p.stock);
         
         let statusClass = 'status-active';
         let statusText = 'Active';
@@ -192,7 +216,6 @@ function renderPagination() {
 
     const totalPages = Math.ceil(currentFilteredProducts.length / itemsPerPage);
 
-    // Wag magpakita ng page numbers kung isang page lang ang kailangan
     if (totalPages <= 1) {
         container.innerHTML = '';
         return;
@@ -213,7 +236,38 @@ window.goToPage = function(page) {
 // ===============================================
 // 5. ADD & EDIT PRODUCT MODAL LOGIC
 // ===============================================
-let adminUploadedPhotos = []; // Array to store the 2 images
+let shoeImage = []; 
+
+// DYNAMIC SIZE GRID GENERATOR
+function generateSizeGrid(category, existingStock = null) {
+    const container = document.getElementById('size-stock-container');
+    const sizes = sizeConfig[category] || [];
+    
+    // Merge existing stock into temporary state to preserve data during misclicks
+    if (existingStock && typeof existingStock === 'object') {
+        tempStockState = { ...tempStockState, ...existingStock };
+    }
+
+    let html = '<div class="size-stock-grid">';
+    sizes.forEach(size => {
+        let qty = tempStockState[size] || 0;
+        html += `
+            <div class="size-stock-item">
+                <label>${size}</label>
+                <input type="number" class="size-qty-input account-input-field" data-size="${size}" value="${qty}" min="0" required>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+
+    // Attach listeners to preserve values instantly as user types
+    container.querySelectorAll('.size-qty-input').forEach(input => {
+        input.addEventListener('input', (e) => {
+            tempStockState[e.target.dataset.size] = parseInt(e.target.value) || 0;
+        });
+    });
+}
 
 window.openProductModal = function(productId = null) {
     const modal = document.getElementById('product-modal');
@@ -221,13 +275,13 @@ window.openProductModal = function(productId = null) {
     const form = document.getElementById('product-form');
     const nav = document.querySelector('.admin-navbar-section');
 
-    form.reset(); // Clear previous inputs
-    adminUploadedPhotos = []; // Clear photo array
+    form.reset(); 
+    shoeImage = []; 
+    tempStockState = {}; // Clear temp stock state
     document.getElementById('admin-media-error').style.display = 'none';
     renderAdminPhotoPreviews(); 
 
     if (productId) {
-        // EDIT MODE
         title.innerText = "Edit Product";
         let products = JSON.parse(localStorage.getItem('pace_products')) || [];
         let p = products.find(item => item.id === productId);
@@ -238,18 +292,21 @@ window.openProductModal = function(productId = null) {
             document.getElementById('prod-category').value = p.type;
             document.getElementById('prod-color').value = p.color;
             document.getElementById('prod-price').value = parseFloat(p.price.replace(/,/g, ''));
-            document.getElementById('prod-stock').value = p.stock;
             document.getElementById('prod-isNew').checked = p.isNew;
             
-            // Load existing images into the array
-            if (p.img) adminUploadedPhotos.push(p.img);
-            if (p.hover) adminUploadedPhotos.push(p.hover);
+            // Build the size grid based on current saved nested stock
+            let savedStock = typeof p.stock === 'object' ? p.stock : {};
+            generateSizeGrid(p.type, savedStock);
+            
+            if (p.img) shoeImage.push(p.img);
+            if (p.hover) shoeImage.push(p.hover);
             renderAdminPhotoPreviews();
         }
     } else {
-        // ADD MODE
         title.innerText = "Add New Product";
         document.getElementById('prod-original-id').value = ""; 
+        document.getElementById('prod-category').value = "MEN"; // Default
+        generateSizeGrid('MEN'); // Generate fresh grid
     }
 
     if (modal) {
@@ -277,15 +334,15 @@ document.getElementById('admin-upload-photos')?.addEventListener('change', funct
     const files = Array.from(e.target.files);
     const errorMsg = document.getElementById('admin-media-error');
     
-    if (adminUploadedPhotos.length + files.length > 2) {
+    if (shoeImage.length + files.length > 2) {
         errorMsg.innerText = "Maximum of 2 photos allowed.";
         errorMsg.style.display = 'block';
-        this.value = ''; // Reset input
+        this.value = ''; 
         return;
     }
     
     files.forEach(file => {
-        if (file.size > 2 * 1024 * 1024) { // 2MB Limit per photo
+        if (file.size > 2 * 1024 * 1024) { 
             errorMsg.innerText = "A photo is too large (Max 2MB).";
             errorMsg.style.display = 'block';
             return;
@@ -293,14 +350,14 @@ document.getElementById('admin-upload-photos')?.addEventListener('change', funct
         
         const reader = new FileReader();
         reader.onload = function(event) {
-            adminUploadedPhotos.push(event.target.result);
+            shoeImage.push(event.target.result);
             renderAdminPhotoPreviews();
             errorMsg.style.display = 'none';
         };
         reader.readAsDataURL(file);
     });
     
-    this.value = ''; // Reset input so same file can be uploaded again if deleted
+    this.value = ''; 
 });
 
 function renderAdminPhotoPreviews() {
@@ -308,8 +365,7 @@ function renderAdminPhotoPreviews() {
     const uploadBox = document.getElementById('admin-upload-box');
     let html = '';
     
-    adminUploadedPhotos.forEach((src, index) => {
-        // First photo is Primary, Second is Hover
+    shoeImage.forEach((src, index) => {
         let tagText = index === 0 ? "Primary" : "Hover";
         html += `
             <div style="position: relative;">
@@ -324,8 +380,7 @@ function renderAdminPhotoPreviews() {
     
     container.innerHTML = html;
 
-    // Hide upload box if 2 photos are already uploaded
-    if (adminUploadedPhotos.length >= 2) {
+    if (shoeImage.length >= 2) {
         uploadBox.style.display = 'none';
     } else {
         uploadBox.style.display = 'flex';
@@ -333,18 +388,17 @@ function renderAdminPhotoPreviews() {
 }
 
 window.removeAdminPhoto = function(index) {
-    adminUploadedPhotos.splice(index, 1);
+    shoeImage.splice(index, 1);
     renderAdminPhotoPreviews();
 };
 
-// --- SAVE PRODUCT WITH PHOTOS ---
+// --- SAVE PRODUCT WITH PHOTOS & NESTED SIZES ---
 window.saveProduct = function(event) {
     event.preventDefault(); 
     
     const errorMsg = document.getElementById('admin-media-error');
     
-    // STRICT VALIDATION: MUST HAVE EXACTLY 2 PHOTOS
-    if (adminUploadedPhotos.length !== 2) {
+    if (shoeImage.length !== 2) {
         errorMsg.innerText = "You must upload exactly 2 photos (Primary and Hover).";
         errorMsg.style.display = 'block';
         return; 
@@ -357,8 +411,13 @@ window.saveProduct = function(event) {
     let type = document.getElementById('prod-category').value;
     let color = document.getElementById('prod-color').value.trim();
     let rawPrice = parseFloat(document.getElementById('prod-price').value);
-    let stock = parseInt(document.getElementById('prod-stock').value);
     let isNew = document.getElementById('prod-isNew').checked;
+
+    // Harvest the new nested stock dictionary
+    let nestedStock = {};
+    document.querySelectorAll('.size-qty-input').forEach(input => {
+        nestedStock[input.dataset.size] = parseInt(input.value) || 0;
+    });
 
     let formattedPrice = rawPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -373,10 +432,10 @@ window.saveProduct = function(event) {
             type: type,
             color: color,
             isNew: isNew,
-            img: adminUploadedPhotos[0],    // Primary Image
-            hover: adminUploadedPhotos[1], // Hover Image
-            stock: stock,
-            dateAdded: new Date().toISOString() // <-- Safely added the date stamp
+            img: shoeImage[0],
+            hover: shoeImage[1],
+            stock: nestedStock, // Saves the dictionary object here
+            dateAdded: new Date().toISOString()
         };
         products.push(newProduct);
 
@@ -391,9 +450,9 @@ window.saveProduct = function(event) {
             products[index].type = type;
             products[index].color = color;
             products[index].price = formattedPrice;
-            products[index].stock = stock;
-            products[index].img = adminUploadedPhotos[0];   // Primary Image
-            products[index].hover = adminUploadedPhotos[1]; // Hover Image
+            products[index].stock = nestedStock; // Updates with the dictionary
+            products[index].img = shoeImage[0];   
+            products[index].hover = shoeImage[1]; 
             products[index].isNew = isNew;
 
             // Sync category across all variants of the same shoe
@@ -416,15 +475,13 @@ window.saveProduct = function(event) {
 // ===============================================
 window.openDeleteModal = function(productId) {
     let products = JSON.parse(localStorage.getItem('pace_products')) || [];
-    
-    // FIX: Gumamit ng String() para siguradong mag-match kahit Number o String ang naka-save
     let p = products.find(item => String(item.id) === String(productId));
     
     const nav = document.querySelector('.admin-navbar-section');
     const modal = document.getElementById('delete-modal');
     
     if (p && modal) {
-        currentDeleteId = String(productId); // I-save bilang String
+        currentDeleteId = String(productId); 
         document.getElementById('delete-prod-name').innerText = p.name;
         
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -433,8 +490,6 @@ window.openDeleteModal = function(productId) {
         if (nav) nav.style.paddingRight = `calc(40px + ${scrollbarWidth}px)`;
 
         modal.showModal();
-    } else {
-        console.error("Product not found or Modal missing. ID:", productId);
     }
 };
 
@@ -454,27 +509,21 @@ window.closeDeleteModal = function() {
 window.executeDelete = function() {
     if (!currentDeleteId) return;
 
-    // 1. Remove from the Main Products Database
     let products = JSON.parse(localStorage.getItem('pace_products')) || [];
     products = products.filter(p => String(p.id) !== String(currentDeleteId));
     localStorage.setItem('pace_products', JSON.stringify(products));
     
-    // 2. CASCADING DELETE: Registered Users
     let users = JSON.parse(localStorage.getItem('pace_users')) || [];
     let currentUser = JSON.parse(localStorage.getItem('pace_current_user'));
     let isCurrentUserUpdated = false;
 
     users = users.map(user => {
-        // Filter out the deleted product from this user's cart
         if (user.cart) {
             user.cart = user.cart.filter(item => String(item.productId) !== String(currentDeleteId));
         }
-        
-        // Filter out the deleted product from this user's wishlist
         if (user.wishlist) {
             user.wishlist = user.wishlist.filter(item => String(item.id) !== String(currentDeleteId));
         }
-
         if (currentUser && currentUser.email === user.email) {
             currentUser = user;
             isCurrentUserUpdated = true;
@@ -487,7 +536,6 @@ window.executeDelete = function() {
         localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
     }
 
-    // 3. CASCADING DELETE: Guest Cart and Wishlist
     let guestCart = JSON.parse(localStorage.getItem('pace_guest_cart')) || [];
     guestCart = guestCart.filter(item => String(item.productId) !== String(currentDeleteId));
     localStorage.setItem('pace_guest_cart', JSON.stringify(guestCart));
@@ -496,7 +544,6 @@ window.executeDelete = function() {
     guestWishlist = guestWishlist.filter(item => String(item.id) !== String(currentDeleteId));
     localStorage.setItem('pace_guest_wishlist', JSON.stringify(guestWishlist));
     
-    // 4. Close modal and refresh UI
     closeDeleteModal();
     loadProducts(); 
 };

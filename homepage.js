@@ -130,3 +130,24 @@ if (teamContainer) {
         </div>
     `).join('');
 }
+
+// CONTACT FORM LOGIC
+document.addEventListener('DOMContentLoaded', () => {
+    const hpContactForm = document.getElementById('contact-form');
+
+    if (hpContactForm) {
+        hpContactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const subjectInput = document.getElementById('contact-subject').value;
+            const message = document.getElementById('contact-message').value;
+
+            const subject = encodeURIComponent(subjectInput);
+            const body = encodeURIComponent(message);
+
+            window.location.href = `mailto:pace@gmail.com?subject=${subject}&body=${body}`;
+
+            setTimeout(() => { this.reset(); }, 1000);
+        });
+    }
+});

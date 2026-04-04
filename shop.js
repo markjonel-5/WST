@@ -36,8 +36,8 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
         tempProducts = uniqueProducts;
 
         tempProducts.sort((a, b) => {
-            let aStock = parseInt(a.stock) || 0;
-            let bStock = parseInt(b.stock) || 0;
+            let aStock = window.getTotalStock(a.stock);
+            let bStock = window.getTotalStock(b.stock);
             if (aStock === 0 && bStock > 0) return 1;
             if (bStock === 0 && aStock > 0) return -1;
             return 0;
@@ -70,7 +70,7 @@ function renderProducts(category, fixedLimit = null, randomize = false) {
         let heartClass = isSaved ? "fi-ss-heart" : "fi-rs-heart";
 
         let badgeHTML = '';
-        if (parseInt(p.stock) === 0) {
+        if (window.getTotalStock(p.stock) === 0) {
             badgeHTML = '<span class="new-badge" style="background-color: #d9534f;">OUT OF STOCK</span>';
         } else if (p.isNew) {
             badgeHTML = '<span class="new-badge">NEW</span>';

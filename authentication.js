@@ -172,10 +172,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 showError('login-password', 'Incorrect password.');
             } 
             else if (validUser.status === 'Blocked' && validUser.role === 'user') {
-                showError('login-username', 'Account Blocked. Please contact support for assistance.');
+                showError('login-username', 'Account Blocked. Please contact us for assistance.');
             } 
             else if (validUser.status === 'Blocked' && validUser.role === 'admin') {
-                showError('login-username', 'Admin Blocked. Please contact support for assistance.');
+                showError('login-username', 'Admin Blocked. Please contact us for assistance.');
             } 
             else {
                 localStorage.setItem('pace_current_user', JSON.stringify(validUser));

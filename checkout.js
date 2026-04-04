@@ -801,8 +801,16 @@ function placeOrder() {
 
     purchasedItems.forEach(item => {
         let liveProduct = globalProductsValidation.find(p => String(p.id) === String(item.productId));
-        if (!liveProduct || parseInt(liveProduct.stock) === 0) {
-            outOfStockErrors.push(item.name);
+        
+        let specificSizeStock = 0;
+        if (liveProduct && typeof liveProduct.stock === 'object') {
+            specificSizeStock = liveProduct.stock[item.size] || 0;
+        } else if (liveProduct) {
+            specificSizeStock = window.getTotalStock(liveProduct.stock);
+        }
+
+        if (!liveProduct || specificSizeStock === 0) {
+            outOfStockErrors.push(item.name + " (" + item.size + ")");
         }
     });
 
@@ -810,7 +818,15 @@ function placeOrder() {
         if (currentUser) {
             currentUser.cart = (currentUser.cart || []).filter(cartItem => {
                 let liveProduct = globalProductsValidation.find(p => String(p.id) === String(cartItem.productId));
-                return liveProduct && parseInt(liveProduct.stock) > 0;
+                
+                let specificSizeStock = 0;
+                if (liveProduct && typeof liveProduct.stock === 'object') {
+                    specificSizeStock = liveProduct.stock[cartItem.size] || 0;
+                } else if (liveProduct) {
+                    specificSizeStock = window.getTotalStock(liveProduct.stock);
+                }
+
+                return liveProduct && specificSizeStock > 0;
             });
 
             localStorage.setItem('pace_current_user', JSON.stringify(currentUser));
@@ -824,7 +840,15 @@ function placeOrder() {
             let guestCart = JSON.parse(localStorage.getItem('pace_guest_cart')) || [];
             guestCart = guestCart.filter(cartItem => {
                 let liveProduct = globalProductsValidation.find(p => String(p.id) === String(cartItem.productId));
-                return liveProduct && parseInt(liveProduct.stock) > 0;
+                
+                let specificSizeStock = 0;
+                if (liveProduct && typeof liveProduct.stock === 'object') {
+                    specificSizeStock = liveProduct.stock[cartItem.size] || 0;
+                } else if (liveProduct) {
+                    specificSizeStock = window.getTotalStock(liveProduct.stock);
+                }
+
+                return liveProduct && specificSizeStock > 0;
             });
             localStorage.setItem('pace_guest_cart', JSON.stringify(guestCart));
         }
@@ -897,10 +921,20 @@ function placeOrder() {
 
     let globalProducts = JSON.parse(localStorage.getItem('pace_products')) || [];
     purchasedItems.forEach(item => {
-        let pIndex = globalProducts.findIndex(p => p.id === item.productId);
+        let pIndex = globalProducts.findIndex(p => String(p.id) === String(item.productId));
         if (pIndex > -1) {
-            globalProducts[pIndex].stock -= (item.quantity || 1);
-            if (globalProducts[pIndex].stock < 0) globalProducts[pIndex].stock = 0;
+            let pStock = globalProducts[pIndex].stock;
+            let qtyToDeduct = item.quantity || 1;
+
+            if (typeof pStock === 'object' && pStock !== null) {
+                if (pStock[item.size] !== undefined) {
+                    pStock[item.size] -= qtyToDeduct;
+                    if (pStock[item.size] < 0) pStock[item.size] = 0;
+                }
+            } else {
+                globalProducts[pIndex].stock -= qtyToDeduct;
+                if (globalProducts[pIndex].stock < 0) globalProducts[pIndex].stock = 0;
+            }
         }
     });
     localStorage.setItem('pace_products', JSON.stringify(globalProducts));

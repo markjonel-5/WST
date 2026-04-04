@@ -447,9 +447,18 @@
 
 /* SIZE GUIDE TABLE CONTENT */
 .sg-scroll-area {
-    padding: 20px 30px 40px;
+    padding: 20px 30px 40px 40px;
     overflow-y: auto;
     flex: 1;
+}
+
+.sg-scroll-area::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sg-scroll-area::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
 }
 
 .sg-section-title {
@@ -756,7 +765,6 @@
 .review-filter-tab.active {
     border-bottom-color: var(--brand-color);
     color: var(--brand-color);
-    font-weight: 600;
 }
 
 /* EMPTY REVIEWS STATE */
@@ -775,8 +783,8 @@
 
 /* ALL REVIEWS MODAL START */
 .reviews-dialog {
-    width: 90%;
-    max-width: 530px;
+    width: 100%;
+    max-width: 540px;
     height: 600px;
     max-height: 90vh;
     padding: 20px;
@@ -823,7 +831,6 @@
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 10px; 
 }
 
 .reviews-list-scroll::-webkit-scrollbar {

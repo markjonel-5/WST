@@ -10,6 +10,15 @@ if (!favicon) {
 }
 favicon.href = "Brand Image/pace favicon.png";
 
+// --- NEW GLOBAL STOCK HELPER ---
+window.getTotalStock = function(stockVal) {
+    if (typeof stockVal === 'number' || typeof stockVal === 'string') return parseInt(stockVal) || 0;
+    if (typeof stockVal === 'object' && stockVal !== null) {
+        return Object.values(stockVal).reduce((total, qty) => total + (parseInt(qty) || 0), 0);
+    }
+    return 0;
+};
+
 function adminDatabase() {
     if (!localStorage.getItem('pace_products')) {
         localStorage.setItem('pace_products', JSON.stringify(products));
@@ -34,49 +43,49 @@ function adminDatabase() {
 
 // PRODUCT INFORMATION
 const products = [
-    { id: 'M1', name: 'Pace 680', price: '4,999.00', type: 'MEN', color: 'Gray', isNew: false, img: 'All Products/Men Products/M PACE 680 (Gray).jpg', hover: 'All Products/Men Products/M PACE 680 (Gray) (2).jpg', stock: 50 },
-    { id: 'M1.1', name: 'Pace 680', price: '4,999.00', type: 'MEN', color: 'Black', isNew: false, img: 'All Products/Men Products/M PACE 680 (Black).jpg', hover: 'All Products/Men Products/M PACE 680 (Black) (2).jpg', stock: 50 },
-    { id: 'M1.2', name: 'Pace 680', price: '4,999.00', type: 'MEN', color: 'White', isNew: false, img: 'All Products/Men Products/M PACE 680 (White).jpg', hover: 'All Products/Men Products/M PACE 680 (White) (2).jpg', stock: 50 },
-    { id: 'M2', name: 'Pace 740', price: '5,499.00', type: 'MEN', color: 'Brown', isNew: true, img: 'All Products/Men Products/M PACE 740 (Brown).jpg', hover: 'All Products/Men Products/M PACE 740 (Brown) (2).jpg', stock: 50 },
-    { id: 'M2.1', name: 'Pace 740', price: '5,499.00', type: 'MEN', color: 'Green', isNew: true, img: 'All Products/Men Products/M PACE 740 (Green).jpg', hover: 'All Products/Men Products/M PACE 740 (Green) (2).jpg', stock: 50 },
-    { id: 'M3', name: 'Pace T500', price: '3,499.00', type: 'MEN', color: 'White', isNew: false, img: 'All Products/Men Products/M PACE T500.jpg', hover: 'All Products/Men Products/M PACE T500 (2).jpg', stock: 50 },
-    { id: 'M4', name: 'Pace Abzorb', price: '4,499.00', type: 'MEN', color: 'Gray', isNew: false, img: 'All Products/Men Products/M PACE Abzorb.jpg', hover: 'All Products/Men Products/M PACE Abzorb (2).jpg', stock: 50 },
-    { id: 'M5', name: 'Pace 2010', price: '5,299.00', type: 'MEN', color: 'Violet', isNew: false, img: 'All Products/Men Products/M PACE 2010.jpg', hover: 'All Products/Men Products/M PACE 2010 (2).jpg', stock: 50 },
-    { id: 'M6', name: 'Pace 204L', price: '6,499.00', type: 'MEN', color: 'Black', isNew: false, img: 'All Products/Men Products/M PACE 204L.jpg', hover: 'All Products/Men Products/M PACE 204L (2).jpg', stock: 50 },
-    { id: 'M7', name: 'Pace 442', price: '4,799.00', type: 'MEN', color: 'White', isNew: true, img: 'All Products/Men Products/M PACE 442.jpg', hover: 'All Products/Men Products/M PACE 442 (2).jpg', stock: 50 },
-    { id: 'M8', name: 'Pace 991', price: '3,999.00', type: 'MEN', color: 'Brown', isNew: false, img: 'All Products/Men Products/M PACE 991.jpg', hover: 'All Products/Men Products/M PACE 991 (2).jpg', stock: 50 },
-    { id: 'M9', name: 'Pace 471', price: '4,299.00', type: 'MEN', color: 'Cream', isNew: false, img: 'All Products/Men Products/M PACE 471.jpg', hover: 'All Products/Men Products/M PACE 471 (2).jpg', stock: 50 },
-    { id: 'M10', name: 'Pace 1080', price: '4,699.00', type: 'MEN', color: 'Violet', isNew: false, img: 'All Products/Men Products/M PACE 1080.jpg', hover: 'All Products/Men Products/M PACE 1080 (2).jpg', stock: 50 },
-    { id: 'M11', name: 'Pace P400', price: '6,299.00', type: 'MEN', color: 'Red', isNew: false, img: 'All Products/Men Products/M PACE P400.jpg', hover: 'All Products/Men Products/M PACE P400 (2).jpg', stock: 50 },
-    { id: 'M12', name: 'Pace Runner', price: '5,999.00', type: 'MEN', color: 'Orange', isNew: true, img: 'All Products/Men Products/M PACE Runner.jpg', hover: 'All Products/Men Products/M PACE Runner (2).jpg', stock: 50 },
+    { id: 'M1', name: 'Pace 680', price: '4,999.00', type: 'MEN', color: 'Gray', isNew: false, img: 'All Products/Men Products/M PACE 680 (Gray).jpg', hover: 'All Products/Men Products/M PACE 680 (Gray) (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M1.1', name: 'Pace 680', price: '4,999.00', type: 'MEN', color: 'Black', isNew: false, img: 'All Products/Men Products/M PACE 680 (Black).jpg', hover: 'All Products/Men Products/M PACE 680 (Black) (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M1.2', name: 'Pace 680', price: '4,999.00', type: 'MEN', color: 'White', isNew: false, img: 'All Products/Men Products/M PACE 680 (White).jpg', hover: 'All Products/Men Products/M PACE 680 (White) (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M2', name: 'Pace 740', price: '5,499.00', type: 'MEN', color: 'Brown', isNew: true, img: 'All Products/Men Products/M PACE 740 (Brown).jpg', hover: 'All Products/Men Products/M PACE 740 (Brown) (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M2.1', name: 'Pace 740', price: '5,499.00', type: 'MEN', color: 'Green', isNew: true, img: 'All Products/Men Products/M PACE 740 (Green).jpg', hover: 'All Products/Men Products/M PACE 740 (Green) (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M3', name: 'Pace T500', price: '3,499.00', type: 'MEN', color: 'White', isNew: false, img: 'All Products/Men Products/M PACE T500.jpg', hover: 'All Products/Men Products/M PACE T500 (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M4', name: 'Pace Abzorb', price: '4,499.00', type: 'MEN', color: 'Gray', isNew: false, img: 'All Products/Men Products/M PACE Abzorb.jpg', hover: 'All Products/Men Products/M PACE Abzorb (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M5', name: 'Pace 2010', price: '5,299.00', type: 'MEN', color: 'Violet', isNew: false, img: 'All Products/Men Products/M PACE 2010.jpg', hover: 'All Products/Men Products/M PACE 2010 (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M6', name: 'Pace 204L', price: '6,499.00', type: 'MEN', color: 'Black', isNew: false, img: 'All Products/Men Products/M PACE 204L.jpg', hover: 'All Products/Men Products/M PACE 204L (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M7', name: 'Pace 442', price: '4,799.00', type: 'MEN', color: 'White', isNew: true, img: 'All Products/Men Products/M PACE 442.jpg', hover: 'All Products/Men Products/M PACE 442 (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M8', name: 'Pace 991', price: '3,999.00', type: 'MEN', color: 'Brown', isNew: false, img: 'All Products/Men Products/M PACE 991.jpg', hover: 'All Products/Men Products/M PACE 991 (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M9', name: 'Pace 471', price: '4,299.00', type: 'MEN', color: 'Cream', isNew: false, img: 'All Products/Men Products/M PACE 471.jpg', hover: 'All Products/Men Products/M PACE 471 (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M10', name: 'Pace 1080', price: '4,699.00', type: 'MEN', color: 'Violet', isNew: false, img: 'All Products/Men Products/M PACE 1080.jpg', hover: 'All Products/Men Products/M PACE 1080 (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M11', name: 'Pace P400', price: '6,299.00', type: 'MEN', color: 'Red', isNew: false, img: 'All Products/Men Products/M PACE P400.jpg', hover: 'All Products/Men Products/M PACE P400 (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
+    { id: 'M12', name: 'Pace Runner', price: '5,999.00', type: 'MEN', color: 'Orange', isNew: true, img: 'All Products/Men Products/M PACE Runner.jpg', hover: 'All Products/Men Products/M PACE Runner (2).jpg', stock: { "M 8": 5, "M 8.5": 5, "M 9": 5, "M 9.5": 5, "M 10": 5, "M 10.5": 5, "M 11": 5, "M 11.5": 5, "M 12": 5, "M 12.5": 5, "M 13": 5, "M 13.5": 5 } },
 
-    { id: 'W1', name: 'Pace Fuel Cell', price: '3,999.00', type: 'WOMEN', color: 'Green', isNew: false, img: 'All Products/Women Products/W PACE FuelCell.jpg', hover: 'All Products/Women Products/W PACE FuelCell (2).jpg', stock: 50 },
-    { id: 'W2', name: 'Pace 327', price: '3,499.00', type: 'WOMEN', color: 'Violet', isNew: false, img: 'All Products/Women Products/W PACE 327 (Violet).png', hover: 'All Products/Women Products/W PACE 327 (Violet) (2).jpg', stock: 50 },
-    { id: 'W2.1', name: 'Pace 327', price: '3,499.00', type: 'WOMEN', color: 'Cream', isNew: false, img: 'All Products/Women Products/W PACE 327 (Cream).jpg', hover: 'All Products/Women Products/W PACE 327 (Cream) (2).jpg', stock: 50 },
-    { id: 'W3', name: 'Pace Ice', price: '4,199.00', type: 'WOMEN', color: 'White', isNew: false, img: 'All Products/Women Products/W PACE Ice.jpg', hover: 'All Products/Women Products/W PACE Ice (2).jpg', stock: 50 },
-    { id: 'W4', name: 'Pace Reese', price: '4,499.00', type: 'WOMEN', color: 'Orange', isNew: false, img: 'All Products/Women Products/W PACE Reese.jpg', hover: 'All Products/Women Products/W PACE Reese (2).jpg', stock: 50 },
-    { id: 'W5', name: 'Pace Gator', price: '4,999.00', type: 'WOMEN', color: 'Maroon', isNew: true, img: 'All Products/Women Products/W PACE Gator.jpg', hover: 'All Products/Women Products/W PACE Gator (2).jpg', stock: 50 },
-    { id: 'W6', name: 'Pace Pattern', price: '4,799.00', type: 'WOMEN', color: 'Cream', isNew: false, img: 'All Products/Women Products/W PACE Pattern.jpg', hover: 'All Products/Women Products/W PACE Pattern (2).jpg', stock: 50 },
-    { id: 'W7', name: 'Pace Jamie', price: '3,799.00', type: 'WOMEN', color: 'White', isNew: false, img: 'All Products/Women Products/W PACE Jamie.jpg', hover: 'All Products/Women Products/W PACE Jamie (2).jpg', stock: 50 },
-    { id: 'W8', name: 'Pace Trainer', price: '4,499.00', type: 'WOMEN', color: 'Violet', isNew: true, img: 'All Products/Women Products/W PACE Trainer.jpg', hover: 'All Products/Women Products/W PACE Trainer (2).jpg', stock: 50 },
-    { id: 'W9', name: 'Pace 690', price: '3,999.00', type: 'WOMEN', color: 'Pink', isNew: false, img: 'All Products/Women Products/W PACE 690.jpg', hover: 'All Products/Women Products/W PACE 690 (2).jpg', stock: 50 },
-    { id: 'W10', name: 'Pace Hierro', price: '3,799.00', type: 'WOMEN', color: 'Pink', isNew: false, img: 'All Products/Women Products/W PACE Hierro.jpg', hover: 'All Products/Women Products/W PACE Hierro (2).jpg', stock: 50 },
-    { id: 'W11', name: 'Pace Minimus', price: '4,499.00', type: 'WOMEN', color: 'Black', isNew: false, img: 'All Products/Women Products/W PACE Minimus.jpg', hover: 'All Products/Women Products/W PACE Minimus (2).jpg', stock: 50 },
-    { id: 'W12', name: 'Pace Rally', price: '4,999.00', type: 'WOMEN', color: 'Violet', isNew: true, img: 'All Products/Women Products/W PACE Rally.jpg', hover: 'All Products/Women Products/W PACE Rally (2).jpg', stock: 50 },
+    { id: 'W1', name: 'Pace Fuel Cell', price: '3,999.00', type: 'WOMEN', color: 'Green', isNew: false, img: 'All Products/Women Products/W PACE FuelCell.jpg', hover: 'All Products/Women Products/W PACE FuelCell (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W2', name: 'Pace 327', price: '3,499.00', type: 'WOMEN', color: 'Violet', isNew: false, img: 'All Products/Women Products/W PACE 327 (Violet).png', hover: 'All Products/Women Products/W PACE 327 (Violet) (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W2.1', name: 'Pace 327', price: '3,499.00', type: 'WOMEN', color: 'Cream', isNew: false, img: 'All Products/Women Products/W PACE 327 (Cream).jpg', hover: 'All Products/Women Products/W PACE 327 (Cream) (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W3', name: 'Pace Ice', price: '4,199.00', type: 'WOMEN', color: 'White', isNew: false, img: 'All Products/Women Products/W PACE Ice.jpg', hover: 'All Products/Women Products/W PACE Ice (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W4', name: 'Pace Reese', price: '4,499.00', type: 'WOMEN', color: 'Orange', isNew: false, img: 'All Products/Women Products/W PACE Reese.jpg', hover: 'All Products/Women Products/W PACE Reese (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W5', name: 'Pace Gator', price: '4,999.00', type: 'WOMEN', color: 'Maroon', isNew: true, img: 'All Products/Women Products/W PACE Gator.jpg', hover: 'All Products/Women Products/W PACE Gator (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W6', name: 'Pace Pattern', price: '4,799.00', type: 'WOMEN', color: 'Cream', isNew: false, img: 'All Products/Women Products/W PACE Pattern.jpg', hover: 'All Products/Women Products/W PACE Pattern (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W7', name: 'Pace Jamie', price: '3,799.00', type: 'WOMEN', color: 'White', isNew: false, img: 'All Products/Women Products/W PACE Jamie.jpg', hover: 'All Products/Women Products/W PACE Jamie (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W8', name: 'Pace Trainer', price: '4,499.00', type: 'WOMEN', color: 'Violet', isNew: true, img: 'All Products/Women Products/W PACE Trainer.jpg', hover: 'All Products/Women Products/W PACE Trainer (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W9', name: 'Pace 690', price: '3,999.00', type: 'WOMEN', color: 'Pink', isNew: false, img: 'All Products/Women Products/W PACE 690.jpg', hover: 'All Products/Women Products/W PACE 690 (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W10', name: 'Pace Hierro', price: '3,799.00', type: 'WOMEN', color: 'Pink', isNew: false, img: 'All Products/Women Products/W PACE Hierro.jpg', hover: 'All Products/Women Products/W PACE Hierro (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W11', name: 'Pace Minimus', price: '4,499.00', type: 'WOMEN', color: 'Black', isNew: false, img: 'All Products/Women Products/W PACE Minimus.jpg', hover: 'All Products/Women Products/W PACE Minimus (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
+    { id: 'W12', name: 'Pace Rally', price: '4,999.00', type: 'WOMEN', color: 'Violet', isNew: true, img: 'All Products/Women Products/W PACE Rally.jpg', hover: 'All Products/Women Products/W PACE Rally (2).jpg', stock: { "W 5": 5, "W 5.5": 5, "W 6": 5, "W 6.5": 5, "W 7": 5, "W 7.5": 5, "W 8": 5, "W 8.5": 5, "W 9": 5, "W 9.5": 5, "W 10": 5, "W 10.5": 5 } },
 
-    { id: 'K1', name: 'Pace Lace', price: '2,999.00', type: 'KIDS', color: 'White', isNew: false, img: 'All Products/Kids Products/K PACE Lace.jpg', hover: 'All Products/Kids Products/K PACE Lace (2).jpg', stock: 50 },
-    { id: 'K2', name: 'Pace Super', price: '2,499.00', type: 'KIDS', color: 'Violet', isNew: true, img: 'All Products/Kids Products/K PACE Super.jpg', hover: 'All Products/Kids Products/K PACE Super (2).jpg', stock: 50 },
-    { id: 'K3', name: 'Pace 1000', price: '2,799.00', type: 'KIDS', color: 'Pink', isNew: false, img: 'All Products/Kids Products/K PACE 1000.jpg', hover: 'All Products/Kids Products/K PACE 1000 (2).jpg', stock: 50 },
-    { id: 'K4', name: 'Pace Boa', price: '2,299.00', type: 'KIDS', color: 'Black', isNew: false, img: 'All Products/Kids Products/K PACE Boa.jpg', hover: 'All Products/Kids Products/K PACE Boa (2).jpg', stock: 50 },
-    { id: 'K5', name: 'Pace Coco', price: '3,299.00', type: 'KIDS', color: 'Violet', isNew: false, img: 'All Products/Kids Products/K PACE Coco.jpg', hover: 'All Products/Kids Products/K PACE Coco (2).jpg', stock: 50 },
-    { id: 'K6', name: 'Pace Arishi', price: '2,499.00', type: 'KIDS', color: 'Pink', isNew: false, img: 'All Products/Kids Products/K PACE Arishi (Pink).jpg', hover: 'All Products/Kids Products/K PACE Arishi (Pink) (2).jpg', stock: 50 },
-    { id: 'K6.1', name: 'Pace Arishi', price: '2,499.00', type: 'KIDS', color: 'Blue', isNew: false, img: 'All Products/Kids Products/K PACE Arishi (Blue).jpg', hover: 'All Products/Kids Products/K PACE Arishi (Blue) (2).jpg', stock: 50 },
-    { id: 'K7', name: 'Pace Tekela', price: '3,999.00', type: 'KIDS', color: 'Violet', isNew: true, img: 'All Products/Kids Products/K PACE Tekela.jpg', hover: 'All Products/Kids Products/K PACE Tekela (2).jpg', stock: 50 },
-    { id: 'K8', name: 'Pace Coze', price: '2,999.00', type: 'KIDS', color: 'Gray', isNew: false, img: 'All Products/Kids Products/K PACE Coze.jpg', hover: 'All Products/Kids Products/K PACE Coze (2).jpg', stock: 50 },
-    { id: 'K9', name: 'Pace Fresh', price: '3,499.00', type: 'KIDS', color: 'Black', isNew: false, img: 'All Products/Kids Products/K PACE Fresh.jpg', hover: 'All Products/Kids Products/K PACE Fresh (2).jpg', stock: 50 },
-    { id: 'K10', name: 'Pace Eco', price: '2,799.00', type: 'KIDS', color: 'Gray', isNew: false, img: 'All Products/Kids Products/K PACE Eco.jpg', hover: 'All Products/Kids Products/K PACE Eco (2).jpg', stock: 50 },
-    { id: 'K11', name: 'Pace Hook', price: '2,699.00', type: 'KIDS', color: 'Violet', isNew: false, img: 'All Products/Kids Products/K PACE Hook.jpg', hover: 'All Products/Kids Products/K PACE Hook (2).jpg', stock: 50 },
-    { id: 'K12', name: 'Pace Neon', price: '2,999.00', type: 'KIDS', color: 'Neon', isNew: false, img: 'All Products/Kids Products/K PACE Neon.jpg', hover: 'All Products/Kids Products/K PACE Neon (2).jpg', stock: 50 }
+    { id: 'K1', name: 'Pace Lace', price: '2,999.00', type: 'KIDS', color: 'White', isNew: false, img: 'All Products/Kids Products/K PACE Lace.jpg', hover: 'All Products/Kids Products/K PACE Lace (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K2', name: 'Pace Super', price: '2,499.00', type: 'KIDS', color: 'Violet', isNew: true, img: 'All Products/Kids Products/K PACE Super.jpg', hover: 'All Products/Kids Products/K PACE Super (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K3', name: 'Pace 1000', price: '2,799.00', type: 'KIDS', color: 'Pink', isNew: false, img: 'All Products/Kids Products/K PACE 1000.jpg', hover: 'All Products/Kids Products/K PACE 1000 (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K4', name: 'Pace Boa', price: '2,299.00', type: 'KIDS', color: 'Black', isNew: false, img: 'All Products/Kids Products/K PACE Boa.jpg', hover: 'All Products/Kids Products/K PACE Boa (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K5', name: 'Pace Coco', price: '3,299.00', type: 'KIDS', color: 'Violet', isNew: false, img: 'All Products/Kids Products/K PACE Coco.jpg', hover: 'All Products/Kids Products/K PACE Coco (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K6', name: 'Pace Arishi', price: '2,499.00', type: 'KIDS', color: 'Pink', isNew: false, img: 'All Products/Kids Products/K PACE Arishi (Pink).jpg', hover: 'All Products/Kids Products/K PACE Arishi (Pink) (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K6.1', name: 'Pace Arishi', price: '2,499.00', type: 'KIDS', color: 'Blue', isNew: false, img: 'All Products/Kids Products/K PACE Arishi (Blue).jpg', hover: 'All Products/Kids Products/K PACE Arishi (Blue) (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K7', name: 'Pace Tekela', price: '3,999.00', type: 'KIDS', color: 'Violet', isNew: true, img: 'All Products/Kids Products/K PACE Tekela.jpg', hover: 'All Products/Kids Products/K PACE Tekela (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K8', name: 'Pace Coze', price: '2,999.00', type: 'KIDS', color: 'Gray', isNew: false, img: 'All Products/Kids Products/K PACE Coze.jpg', hover: 'All Products/Kids Products/K PACE Coze (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K9', name: 'Pace Fresh', price: '3,499.00', type: 'KIDS', color: 'Black', isNew: false, img: 'All Products/Kids Products/K PACE Fresh.jpg', hover: 'All Products/Kids Products/K PACE Fresh (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K10', name: 'Pace Eco', price: '2,799.00', type: 'KIDS', color: 'Gray', isNew: false, img: 'All Products/Kids Products/K PACE Eco.jpg', hover: 'All Products/Kids Products/K PACE Eco (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K11', name: 'Pace Hook', price: '2,699.00', type: 'KIDS', color: 'Violet', isNew: false, img: 'All Products/Kids Products/K PACE Hook.jpg', hover: 'All Products/Kids Products/K PACE Hook (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } },
+    { id: 'K12', name: 'Pace Neon', price: '2,999.00', type: 'KIDS', color: 'Neon', isNew: false, img: 'All Products/Kids Products/K PACE Neon.jpg', hover: 'All Products/Kids Products/K PACE Neon (2).jpg', stock: { "1Y": 5, "1.5Y": 5, "2Y": 5, "2.5Y": 5, "3Y": 5, "3.5Y": 5, "4Y": 5, "4.5Y": 5, "5Y": 5, "5.5Y": 5, "6Y": 5, "6.5Y": 5 } }
 ];
 
 // NAVBAR SCROLL HIDING
@@ -142,14 +151,25 @@ function renderFooter() {
         <footer class="footer-section">
             <div class="footer-container">
                 <div class="footer-column">
-                    <h4>COMPANY</h4>
-                    <a href="#">About Pace</a>
-                    <a href="#">Collection</a>
+                    <h4>SHOP</h4>
+                    <a href="men.html">Men's Collection</a>
+                    <a href="women.html">Women's Collection</a>
+                    <a href="kids.html">Kids' Collection</a>
+                    <a href="new.html">New Arrivals</a>
                 </div>
                 <div class="footer-column">
                     <h4>SUPPORT</h4>
-                    <a href="#">Contact Us</a>
-                    <a href="#">FAQs</a>
+                    <a href="size-guide.html">Size Guide</a>
+                    <a href="shipping-guide.html">Shipping & Pick-Up </a>
+                    <a href="faqs.html">FAQs</a>
+                    <a href="contact-us.html">Contact Us</a>
+                </div>
+                <div class="footer-column">
+                    <h4>ABOUT</h4>
+                    <a href="about-pace.html">Our Story</a>
+                    <a href="team.html">Meet the Team</a>
+                    <a href="why-us.html">Why Choose Us</a>
+                    <a href="store-loc.html">Store Location</a>
                 </div>
                 <div class="footer-column">
                     <h4>CONNECT WITH US</h4>
@@ -164,8 +184,8 @@ function renderFooter() {
             <div class="footer-bottom">
                 <p>&copy; 2026 PACE, Inc. All Rights Reserved.</p>
                 <div class="legal-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms & Conditions</a>
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms-conditions.html">Terms & Conditions</a>
                 </div>
             </div>
         </footer>
@@ -374,8 +394,17 @@ function renderCartPreview() {
 
     let validCart = cart.filter(item => {
         let liveProduct = globalProducts.find(p => String(p.id) === String(item.productId));
-        if (!liveProduct || parseInt(liveProduct.stock) === 0) {
-            removedItems.push(item.name);
+
+        // Check stock for the SPECIFIC size the user added to the cart
+        let specificSizeStock = 0;
+        if (liveProduct && typeof liveProduct.stock === 'object') {
+            specificSizeStock = liveProduct.stock[item.size] || 0;
+        } else if (liveProduct) {
+            specificSizeStock = window.getTotalStock(liveProduct.stock);
+        }
+
+        if (!liveProduct || specificSizeStock === 0) {
+            removedItems.push(item.name + " (" + item.size + ")");
             return false;
         }
         return true;
@@ -816,9 +845,9 @@ function saveChatToDatabase(sender, text) {
     const now = new Date();
     const timeString = now.toLocaleDateString() + ' at ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    currentUser.chatHistory.push({ 
-        sender: sender, 
-        text: text, 
+    currentUser.chatHistory.push({
+        sender: sender,
+        text: text,
         time: timeString,
         timestamp: Date.now(),
         read: false // Mark as Unread initially
@@ -1023,8 +1052,8 @@ function renderSearchPanelProducts(query) {
     }
 
     productsToShow.sort((a, b) => {
-        let aStock = parseInt(a.stock) || 0;
-        let bStock = parseInt(b.stock) || 0;
+        let aStock = window.getTotalStock(a.stock);
+        let bStock = window.getTotalStock(b.stock);
         if (aStock === 0 && bStock > 0) return 1;
         if (bStock === 0 && aStock > 0) return -1;
         return a.name.localeCompare(b.name);
@@ -1037,7 +1066,7 @@ function renderSearchPanelProducts(query) {
         let heartClass = isSaved ? "fi-ss-heart" : "fi-rs-heart";
 
         let badgeHTML = '';
-        if (parseInt(p.stock) === 0) {
+        if (window.getTotalStock(p.stock) === 0) {
             badgeHTML = '<span class="new-badge" style="background-color: #d9534f;">OUT OF STOCK</span>';
         } else if (p.isNew) {
             badgeHTML = '<span class="new-badge">NEW</span>';
