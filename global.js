@@ -29,8 +29,11 @@ function adminDatabase() {
 
     if (!hasAdmins) {
         const adminAccounts = [
-            { id: 'ADMIN-1', firstName: 'Mark', lastName: 'Admin', email: 'mark@pace.com', username: 'admin', password: 'Admin@123', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026', isSuperAdmin: true },
-            { id: 'ADMIN-2', firstName: 'Jomari', lastName: 'Admin', email: 'jomari@pace.com', username: 'admin1', password: 'Admin@1234', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026' },
+            { id: 'ADMIN-1', firstName: 'Mark', lastName: 'Admin', email: 'mark@pace.com', username: 'admin1', password: 'Admin@123', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026', isSuperAdmin: true },
+            { id: 'ADMIN-2', firstName: 'Aldrin', lastName: 'Admin', email: 'aldrin@pace.com', username: 'admin2', password: 'Admin@1234', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026' },
+            { id: 'ADMIN-3', firstName: 'Gad', lastName: 'Admin', email: 'gad@pace.com', username: 'admin3', password: 'Admin@1234', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026' },
+            { id: 'ADMIN-4', firstName: 'Mikel', lastName: 'Admin', email: 'mikel@pace.com', username: 'admin4', password: 'Admin@1234', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026' },
+            { id: 'ADMIN-5', firstName: 'Jomari', lastName: 'Admin', email: 'jomari@pace.com', username: 'admin5', password: 'Admin@1234', role: 'admin', status: 'Active', registeredDate: 'Mar 24, 2026' }
         ];
         users = [...users, ...adminAccounts];
         localStorage.setItem('pace_users', JSON.stringify(users));

@@ -45,10 +45,18 @@ function renderOrderStats(orders) {
         if (o.status === 'Completed') completed++;
     });
 
-    document.getElementById('stat-all-orders').innerText = orders.length;
-    document.getElementById('stat-to-ship').innerText = toShip;
-    document.getElementById('stat-to-receive').innerText = toReceive;
-    document.getElementById('stat-completed').innerText = completed;
+    // Added Null Checks here
+    const statAllOrders = document.getElementById('stat-all-orders');
+    if (statAllOrders) statAllOrders.innerText = orders.length;
+
+    const statToShip = document.getElementById('stat-to-ship');
+    if (statToShip) statToShip.innerText = toShip;
+
+    const statToReceive = document.getElementById('stat-to-receive');
+    if (statToReceive) statToReceive.innerText = toReceive;
+
+    const statCompleted = document.getElementById('stat-completed');
+    if (statCompleted) statCompleted.innerText = completed;
 }
 
 window.filterOrders = function(status, element) {

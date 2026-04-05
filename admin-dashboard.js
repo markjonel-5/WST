@@ -124,10 +124,15 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Populate Main Numbers
-    document.getElementById('stat-users').innerText = totalUsers;
-    document.getElementById('stat-products').innerText = products.length;
-    document.getElementById('stat-sales').innerText = '₱ ' + totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 });
+    // Populate Main Numbers (with Null Checks)
+    const statUsers = document.getElementById('stat-users');
+    if (statUsers) statUsers.innerText = totalUsers;
+
+    const statProducts = document.getElementById('stat-products');
+    if (statProducts) statProducts.innerText = products.length;
+
+    const statSales = document.getElementById('stat-sales');
+    if (statSales) statSales.innerText = '₱ ' + totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 });
 
     // Helper Function for Trends
     function getTrendHTML(current, previous) {

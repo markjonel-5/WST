@@ -20,6 +20,8 @@ window.addEventListener('DOMContentLoaded', () => {
 function loadUsersTable() {
     let users = JSON.parse(localStorage.getItem('pace_users')) || [];
 
+    users.reverse();
+
     users = users.map(u => {
         if (!u.status) u.status = 'Active';
         return u;
