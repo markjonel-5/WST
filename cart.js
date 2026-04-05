@@ -35,17 +35,15 @@ function renderCartPage() {
                 ['1Y', '1.5Y', '2Y', '2.5Y', '3Y', '3.5Y', '4Y', '4.5Y', '5Y', '5.5Y', '6Y', '6.5Y'];
 
         let liveProductForDropdown = (JSON.parse(localStorage.getItem('pace_products')) || []).find(p => String(p.id) === String(item.productId));
-        
+
         let sizeOptionsHTML = sizes.map(size => {
             let label = (item.type === 'MEN') ? 'M ' + size : (item.type === 'WOMEN') ? 'W ' + size : size;
-            
-            // Check stock specifically for this dropdown option
+
             let isOutOfStock = false;
             if (liveProductForDropdown && typeof liveProductForDropdown.stock === 'object') {
                 if ((liveProductForDropdown.stock[label] || 0) === 0) isOutOfStock = true;
             }
 
-            // Disable the option and add an Out of Stock label if qty is 0 (and it's not their currently selected size)
             if (isOutOfStock && item.size !== label) {
                 return `<option style="color: #ccc;" value="${label}" disabled>${label}</option>`;
             } else {
@@ -77,10 +75,13 @@ function renderCartPage() {
                         <button class="cart-delete-btn" onclick="removeFromCart(${index})"><i class="fi fi-rs-trash"></i></button>
                     </div>
                     <div class="cart-item-bottom">
-                        <div class="qty-selector">
-                            <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                            <span class="qty-number">${qty}</span>
-                            <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                        <div style="display: flex; flex-direction: column;">
+                            <div id="qty-error-${index}" style="color: #d9534f; font-size: 12px; margin-bottom: 5px; display: none; text-align: center;"></div>
+                            <div class="qty-selector">
+                                <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                                <span class="qty-number">${qty}</span>
+                                <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                            </div>
                         </div>
                         <div class="cart-item-price">₱ ${formattedUnitPrice}</div>
                     </div>
@@ -127,10 +128,40 @@ function toggleSelectAllCartItems(isChecked) {
 function updateQuantity(index, change) {
     let cart = getCartData();
     if (!cart[index]) return;
+
+    let item = cart[index];
+    let currentProducts = JSON.parse(localStorage.getItem('pace_products')) || [];
+    let liveProduct = currentProducts.find(p => String(p.id) === String(item.productId));
+
+    let maxStock = 0;
+    if (liveProduct && typeof liveProduct.stock === 'object') {
+        maxStock = liveProduct.stock[item.size] || 0;
+    } else if (liveProduct) {
+        maxStock = typeof window.getTotalStock === 'function' ? window.getTotalStock(liveProduct.stock) : 0;
+    }
+
     if (!cart[index].quantity) cart[index].quantity = 1;
+
+    if (change > 0 && cart[index].quantity >= maxStock) {
+        let errorDiv = document.getElementById(`qty-error-${index}`);
+        if (errorDiv) {
+            if (maxStock === 1) {
+                errorDiv.innerText = `Only ${maxStock} stock left`;
+            } else {
+                errorDiv.innerText = `Only ${maxStock} stocks left`;
+            }
+            errorDiv.style.display = 'block';
+        }
+        return;
+    }
+
     cart[index].quantity += change;
     if (cart[index].quantity < 1) cart[index].quantity = 1;
     saveCartData(cart);
+
+    if (typeof renderCartPage === 'function') {
+        renderCartPage();
+    }
 }
 
 // UPDATE COLOR FUNCTION
@@ -261,7 +292,6 @@ window.addEventListener('DOMContentLoaded', () => {
     let validCart = cart.filter(item => {
         let liveProduct = globalProducts.find(p => String(p.id) === String(item.productId));
 
-        // Check stock for the SPECIFIC size the user added to the cart
         let specificSizeStock = 0;
         if (liveProduct && typeof liveProduct.stock === 'object') {
             specificSizeStock = liveProduct.stock[item.size] || 0;
